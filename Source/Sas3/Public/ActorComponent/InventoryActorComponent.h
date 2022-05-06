@@ -6,24 +6,6 @@
 #include "Components/ActorComponent.h"
 #include "InventoryActorComponent.generated.h"
 
-USTRUCT(BlueprintType)
-struct FInventoryItem
-{
-	GENERATED_BODY()
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	FName Title;
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	FName Disabled;
-
-	// 
-	FInventoryItem() 
-	{
-		this->Title = FName(TEXT(""));
-		this->Disabled = FName(TEXT("Debug text"));
-	}
-};
 
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
 class SAS3_API UInventoryActorComponent : public UActorComponent
