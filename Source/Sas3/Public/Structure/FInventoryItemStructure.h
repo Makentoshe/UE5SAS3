@@ -31,6 +31,12 @@ struct FInventoryItemStructure
 	// Default constructor
 	FInventoryItemStructure();
 
+	// Copying constructor with new Count parameter
+	FInventoryItemStructure(const FInventoryItemStructure& Structure, int32 Count);
+
 	// Default destructor
 	~FInventoryItemStructure();
+
+	// Copying constructor
+	FInventoryItemStructure copy(int32 Count);
 };

@@ -10,6 +10,13 @@ FInventoryItemStructure::FInventoryItemStructure()
 	this->IsStacking = false;
 }
 
+FInventoryItemStructure::FInventoryItemStructure(const FInventoryItemStructure& Structure, int32 Count)
+{
+	this->Title = Structure.Title;
+	this->Count = Count;
+	this->IsStacking = Structure.IsStacking;
+}
+
 FInventoryItemStructure::~FInventoryItemStructure()
 {
 }

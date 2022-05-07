@@ -2,6 +2,7 @@
 
 
 #include "Actor/InventoryItemActor.h"
+#include <Sas3/Public/Interface/InventoryActorComponentHolder.h>
 
 // Sets default values
 AInventoryItemActor::AInventoryItemActor()
@@ -32,9 +33,14 @@ void AInventoryItemActor::BeginPlay()
 {
 	Super::BeginPlay();
 
-	// Define item pickup action and disable input by default
-	GetWorld()->GetFirstPlayerController()->InputComponent->BindKey(EKeys::E, IE_Pressed, this, &AInventoryItemActor::OnItemPickupAction);
-	GetWorld()->GetFirstPlayerController()->DisableInput(GetWorld()->GetFirstPlayerController());
+	// Initialize InputComponent via EnableInput method
+	EnableInput(GetWorld()->GetFirstPlayerController());
+
+	// Define item pickup action
+	InputComponent->BindKey(EKeys::E, IE_Pressed, this, &AInventoryItemActor::OnItemPickupAction);
+
+	// Disable InputComponent by default
+	DisableInput(GetWorld()->GetFirstPlayerController());
 }
 
 // Called every frame
@@ -45,31 +51,26 @@ void AInventoryItemActor::Tick(float DeltaTime)
 
 // Signature for OnBeginOverlap for SphereComponent
 void AInventoryItemActor::OnSphereComponentBeginOverlap(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult) 
-{
-	auto message = FString::Printf(TEXT("OnBeginOverlap"));
-	GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Purple, message);
-	PlayerCharacter = OtherActor;
+{   // Enable PlayerController inputs
+	EnableInput(GetWorld()->GetFirstPlayerController());
 
-	// Enable PlayerController inputs
-	GetWorld()->GetFirstPlayerController()->EnableInput(GetWorld()->GetFirstPlayerController());
+	this->PlayerCharacter = OtherActor;
 }
 
 // Signature for OnEndOverlap for SphereComponent
 void AInventoryItemActor::OnSphereComponentEndOverlap(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
-{
-	auto message = FString::Printf(TEXT("OnEndOverlap"));
-	GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Purple, message);
-	PlayerCharacter = OtherActor;
+{   // Disable PlayerController inputs
+	DisableInput(GetWorld()->GetFirstPlayerController());
 
-	// Disable PlayerController inputs
-	GetWorld()->GetFirstPlayerController()->DisableInput(GetWorld()->GetFirstPlayerController());
+	this->PlayerCharacter = OtherActor;
 }
 
 // Signature for OnKeyEventPressed(E)
-void AInventoryItemActor::OnItemPickupAction() {
-	//PlayerCharacter->GetClass()->ImplementsInterface()
-	//bool bIsImplemented = GetWorld()->GetPlayerC
-
-	auto message = FString::Printf(TEXT("ItemPickup"));
-	GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Purple, message);
+void AInventoryItemActor::OnItemPickupAction() 
+{   // Check actor implements Inventory Component interface
+	if (!PlayerCharacter->GetClass()->ImplementsInterface(UInventoryActorComponentHolder::StaticClass())) return;
+	// Add item to the inventory
+	IInventoryActorComponentHolder::Execute_GetInventoryActorComponent(PlayerCharacter)->AddInventoryItem(InventoryItem);
+	// Remove actor from the scene
+	K2_DestroyActor();
 }

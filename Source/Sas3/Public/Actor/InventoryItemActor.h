@@ -6,6 +6,7 @@
 #include "GameFramework/Actor.h"
 #include "Components/SphereComponent.h"
 #include "UObject/ConstructorHelpers.h"
+#include <Sas3/Public/Structure/FInventoryItemStructure.h>
 #include "InventoryItemActor.generated.h"
 
 UCLASS()
@@ -41,10 +42,14 @@ public:
 
 //private:
 	// Sphere collision that triggers ability to pick up an item
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Components)
+	UPROPERTY(BlueprintReadOnly, Category = Components)
 	TObjectPtr<USphereComponent> SphereComponent;
 	
 	// Actor that overlaps SphereComponent
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
+	UPROPERTY(BlueprintReadOnly)
 	TObjectPtr<AActor> PlayerCharacter;
+
+	// Contains info about item
+	UPROPERTY(EditAnywhere, AdvancedDisplay, BlueprintReadOnly, Category = "Inventory Item")
+	FInventoryItemStructure InventoryItem;
 };
