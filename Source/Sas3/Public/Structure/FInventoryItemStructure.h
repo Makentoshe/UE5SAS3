@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include <Sas3/Public/Structure/FGameItemStructure.h>
 #include "FInventoryItemStructure.generated.h"
 
 /**
@@ -13,20 +14,20 @@ struct FInventoryItemStructure
 {
 	GENERATED_BODY()
 
-	// Contains the item name that will be displayed in the inventory UI
+	// Contains the base item 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	FName Title;
+	FGameItemStructure Item;
 
-	// Contains how many items in the current instance
+	// Contains how many items is in the current instance
 	// Note: uint32 isn't supported by blueprint, so be careful about negative values
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	int32 Count;
 
-	// If item isn't stackable each new item in the inventory will consume a new slot.
-	// If item is stackable they will try to stack between each other and will consume 
-	// a new slot if all stacks are full.
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	bool IsStacking;
+	// How many items might be in one stack. Each new stack consumes an inventory slot
+	// Note: uint32 isn't supported by blueprint, so be careful about negative values
+	// Note: if we don't want item to be stackable, this value should be equal 1
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Metainfo")
+	int32 StackSize;
 
 	// Default constructor
 	FInventoryItemStructure();
@@ -36,7 +37,4 @@ struct FInventoryItemStructure
 
 	// Default destructor
 	~FInventoryItemStructure();
-
-	// Copying constructor
-	FInventoryItemStructure copy(int32 Count);
 };

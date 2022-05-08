@@ -4,17 +4,19 @@
 #include "Structure/FInventoryItemStructure.h"
 
 FInventoryItemStructure::FInventoryItemStructure()
-{
-	this->Title = FName(TEXT(""));
+{   // Main item info
+	this->Item = FGameItemStructure();
 	this->Count = 0;
-	this->IsStacking = false;
+	// Metainfo
+	this->StackSize = 10;
 }
 
 FInventoryItemStructure::FInventoryItemStructure(const FInventoryItemStructure& Structure, int32 Count)
-{
-	this->Title = Structure.Title;
+{   // Main item info
+	this->Item = Structure.Item;
 	this->Count = Count;
-	this->IsStacking = Structure.IsStacking;
+	// Metainfo
+	this->StackSize = Structure.StackSize;
 }
 
 FInventoryItemStructure::~FInventoryItemStructure()
