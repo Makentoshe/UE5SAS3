@@ -5,12 +5,14 @@
 #include "CoreMinimal.h"
 #include "Components/ActorComponent.h"
 #include <Sas3/Public/Structure/FInventoryItemStructure.h>
+#include <Sas3/Public/Actor/InventoryItemActor.h>
 #include "InventoryActorComponent.generated.h"
 
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnAddPickupableInventoryItem, FInventoryItemStructure, Item);
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnRemovePickupableInventoryItem, FInventoryItemStructure, Item);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnAddPickupableInventoryItem, FInventoryItemStructure, InventoryItem, AInventoryItemActor*, InventoryItemActor);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnRemovePickupableInventoryItem, FInventoryItemStructure, InventoryItem, AInventoryItemActor*, InventoryItemActor);
 
-UCLASS()
+/* Component declares, that the Actor contains Inventory */
+UCLASS(BlueprintType)
 class SAS3_API UInventoryActorComponent : public UActorComponent
 {
 	GENERATED_BODY()
@@ -18,14 +20,6 @@ class SAS3_API UInventoryActorComponent : public UActorComponent
 public:	
 	// Sets default values for this component's properties
 	UInventoryActorComponent();
-
-protected:
-	// Called when the game starts
-	virtual void BeginPlay() override;
-
-public:	
-	// Called every frame
-	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 
 public: 
 	// Defines how many stacks of items might be in the inventory
@@ -48,13 +42,13 @@ public:
 
 	// Add provided item to list of available for pick uping
 	UFUNCTION(BlueprintCallable)
-	void AddPickupableInventoryItem(FInventoryItemStructure InventoryItem);
+	void AddPickupableInventoryItem(FInventoryItemStructure InventoryItem, AInventoryItemActor* Actor);
 	UPROPERTY(BlueprintAssignable, Category = "Delegates")
 	FOnAddPickupableInventoryItem OnAddPickupableInventoryItem;
 
 	// Remove provided item from list of available for pick uping
 	UFUNCTION(BlueprintCallable)
-	void RemovePickupableInventoryItem(FInventoryItemStructure InventoryItem);
+	void RemovePickupableInventoryItem(FInventoryItemStructure InventoryItem, AInventoryItemActor* Actor);
 	UPROPERTY(BlueprintAssignable, Category = "Delegates")
 	FOnRemovePickupableInventoryItem OnRemovePickupableInventoryItem;
 	
@@ -65,5 +59,4 @@ public:
 private:
 	// Add provided item to the inventory starting from the new stack
 	void AddInventoryItemNewStack(FInventoryItemStructure InventoryItem);
-
 };

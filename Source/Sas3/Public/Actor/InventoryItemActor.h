@@ -9,7 +9,10 @@
 #include <Sas3/Public/Structure/FInventoryItemStructure.h>
 #include "InventoryItemActor.generated.h"
 
-UCLASS()
+/* 
+ * This actor might be pick upped into the Inventory
+ */
+UCLASS(BlueprintType)
 class SAS3_API AInventoryItemActor : public AActor
 {
 	GENERATED_BODY()
@@ -17,10 +20,6 @@ class SAS3_API AInventoryItemActor : public AActor
 public:	
 	// Sets default values for this actor's properties
 	AInventoryItemActor();
-
-protected:
-	// Called when the game starts or when spawned
-	virtual void BeginPlay() override;
 
 public:	
 	// Called when something overlaps SphereComponent

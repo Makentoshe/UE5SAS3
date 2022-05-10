@@ -7,42 +7,24 @@
 // Sets default values for this component's properties
 UInventoryActorComponent::UInventoryActorComponent()
 {
-	// Set this component to be initialized when the game starts, and to be ticked every frame.  You can turn these features
-	// off to improve performance if you don't need them.
+	// Set this component to be initialized when the game starts, and to be ticked every frame.
 	PrimaryComponentTick.bCanEverTick = false;
 
 	// Intialize default inventory settings
 	this->InventorySize = 10;
 }
 
-// Called when the game starts
-void UInventoryActorComponent::BeginPlay()
-{
-	Super::BeginPlay();
-}
-
-// Called every frame
-void UInventoryActorComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
-{
-	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
-}
-
 // Returns all items from the current inventory state
-TArray<FInventoryItemStructure> UInventoryActorComponent::GetInventoryItems()
+TArray<FInventoryItemStructure> UInventoryActorComponent::GetInventoryItems() { return Inventory; }
+
+void UInventoryActorComponent::AddPickupableInventoryItem(FInventoryItemStructure InventoryItem, AInventoryItemActor* Actor) 
 {
-	return Inventory;
+	OnAddPickupableInventoryItem.Broadcast(InventoryItem, Actor);
 }
 
-void UInventoryActorComponent::AddPickupableInventoryItem(FInventoryItemStructure InventoryItem) 
+void UInventoryActorComponent::RemovePickupableInventoryItem(FInventoryItemStructure InventoryItem, AInventoryItemActor* Actor)
 {
-	//PickupableItems.Add(InventoryItem);
-	OnAddPickupableInventoryItem.Broadcast(InventoryItem);
-}
-
-void UInventoryActorComponent::RemovePickupableInventoryItem(FInventoryItemStructure InventoryItem) 
-{
-	//PickupableItems.Remove(InventoryItem);
-	OnRemovePickupableInventoryItem.Broadcast(InventoryItem);
+	OnRemovePickupableInventoryItem.Broadcast(InventoryItem, Actor);
 }
 
 // Add item to the inventory

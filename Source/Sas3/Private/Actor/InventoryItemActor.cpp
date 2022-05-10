@@ -28,31 +28,12 @@ AInventoryItemActor::AInventoryItemActor()
 	SphereComponent->OnComponentEndOverlap.Add(FScriptDelegateSphereComponentEndOverlap);
 }
 
-// Called when the game starts or when spawned
-void AInventoryItemActor::BeginPlay()
-{
-	Super::BeginPlay();
-
-	// Initialize InputComponent via EnableInput method
-	EnableInput(GetWorld()->GetFirstPlayerController());
-
-	// Define item pickup action
-	InputComponent->BindKey(EKeys::E, IE_Pressed, this, &AInventoryItemActor::OnItemPickupAction);
-
-	// Disable InputComponent by default
-	DisableInput(GetWorld()->GetFirstPlayerController());
-}
-
 // Signature for OnBeginOverlap for SphereComponent
 void AInventoryItemActor::OnSphereComponentBeginOverlap(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult) 
 {	// Check actor implements Inventory Component interface
 	if (!OtherActor->GetClass()->ImplementsInterface(UInventoryActorComponentHolder::StaticClass())) return;
 	// Add current item to the pickupable items list
-	IInventoryActorComponentHolder::Execute_GetInventoryActorComponent(OtherActor)->AddPickupableInventoryItem(InventoryItem);
-
-	//// Enable PlayerController inputs
-	//EnableInput(GetWorld()->GetFirstPlayerController());
-	//this->PlayerCharacter = OtherActor;
+	IInventoryActorComponentHolder::Execute_GetInventoryActorComponent(OtherActor)->AddPickupableInventoryItem(InventoryItem, this);
 }
 
 // Signature for OnEndOverlap for SphereComponent
@@ -60,12 +41,7 @@ void AInventoryItemActor::OnSphereComponentEndOverlap(UPrimitiveComponent* Overl
 {   // Check actor implements Inventory Component interface
 	if (!OtherActor->GetClass()->ImplementsInterface(UInventoryActorComponentHolder::StaticClass())) return;
 	// Add current item to the pickupable items list
-	IInventoryActorComponentHolder::Execute_GetInventoryActorComponent(OtherActor)->RemovePickupableInventoryItem(InventoryItem);
-
-	
-	//// Disable PlayerController inputs
-	//DisableInput(GetWorld()->GetFirstPlayerController());
-	//this->PlayerCharacter = OtherActor;
+	IInventoryActorComponentHolder::Execute_GetInventoryActorComponent(OtherActor)->RemovePickupableInventoryItem(InventoryItem, this);
 }
 
 // Signature for OnKeyEventPressed(E)
