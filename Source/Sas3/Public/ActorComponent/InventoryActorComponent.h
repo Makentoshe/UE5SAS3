@@ -7,8 +7,10 @@
 #include <Sas3/Public/Structure/FInventoryItemStructure.h>
 #include "InventoryActorComponent.generated.h"
 
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnAddPickupableInventoryItem, FInventoryItemStructure, Item);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnRemovePickupableInventoryItem, FInventoryItemStructure, Item);
 
-UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
+UCLASS()
 class SAS3_API UInventoryActorComponent : public UActorComponent
 {
 	GENERATED_BODY()
@@ -35,10 +37,26 @@ private:
 	UPROPERTY()
 	TArray<FInventoryItemStructure> Inventory;
 
+	// List of nearby items available to pick up from the ground
+	UPROPERTY()
+	TArray<FInventoryItemStructure> PickupableItems;
+
 public:
 	// Add provided item to the inventory
 	UFUNCTION(BlueprintCallable)
 	void AddInventoryItem(FInventoryItemStructure InventoryItem);
+
+	// Add provided item to list of available for pick uping
+	UFUNCTION(BlueprintCallable)
+	void AddPickupableInventoryItem(FInventoryItemStructure InventoryItem);
+	UPROPERTY(BlueprintAssignable, Category = "Delegates")
+	FOnAddPickupableInventoryItem OnAddPickupableInventoryItem;
+
+	// Remove provided item from list of available for pick uping
+	UFUNCTION(BlueprintCallable)
+	void RemovePickupableInventoryItem(FInventoryItemStructure InventoryItem);
+	UPROPERTY(BlueprintAssignable, Category = "Delegates")
+	FOnRemovePickupableInventoryItem OnRemovePickupableInventoryItem;
 	
 	// Returns all items currently placed in the inventory
 	UFUNCTION(BlueprintCallable)

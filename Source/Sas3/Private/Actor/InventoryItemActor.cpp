@@ -43,26 +43,29 @@ void AInventoryItemActor::BeginPlay()
 	DisableInput(GetWorld()->GetFirstPlayerController());
 }
 
-// Called every frame
-void AInventoryItemActor::Tick(float DeltaTime)
-{
-	Super::Tick(DeltaTime);
-}
-
 // Signature for OnBeginOverlap for SphereComponent
 void AInventoryItemActor::OnSphereComponentBeginOverlap(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult) 
-{   // Enable PlayerController inputs
-	EnableInput(GetWorld()->GetFirstPlayerController());
+{	// Check actor implements Inventory Component interface
+	if (!OtherActor->GetClass()->ImplementsInterface(UInventoryActorComponentHolder::StaticClass())) return;
+	// Add current item to the pickupable items list
+	IInventoryActorComponentHolder::Execute_GetInventoryActorComponent(OtherActor)->AddPickupableInventoryItem(InventoryItem);
 
-	this->PlayerCharacter = OtherActor;
+	//// Enable PlayerController inputs
+	//EnableInput(GetWorld()->GetFirstPlayerController());
+	//this->PlayerCharacter = OtherActor;
 }
 
 // Signature for OnEndOverlap for SphereComponent
 void AInventoryItemActor::OnSphereComponentEndOverlap(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
-{   // Disable PlayerController inputs
-	DisableInput(GetWorld()->GetFirstPlayerController());
+{   // Check actor implements Inventory Component interface
+	if (!OtherActor->GetClass()->ImplementsInterface(UInventoryActorComponentHolder::StaticClass())) return;
+	// Add current item to the pickupable items list
+	IInventoryActorComponentHolder::Execute_GetInventoryActorComponent(OtherActor)->RemovePickupableInventoryItem(InventoryItem);
 
-	this->PlayerCharacter = OtherActor;
+	
+	//// Disable PlayerController inputs
+	//DisableInput(GetWorld()->GetFirstPlayerController());
+	//this->PlayerCharacter = OtherActor;
 }
 
 // Signature for OnKeyEventPressed(E)

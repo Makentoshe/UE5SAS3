@@ -2,6 +2,7 @@
 
 
 #include "ActorComponent/InventoryActorComponent.h"
+#include <Runtime/UMG/Public/Blueprint/UserWidget.h>
 
 // Sets default values for this component's properties
 UInventoryActorComponent::UInventoryActorComponent()
@@ -30,6 +31,18 @@ void UInventoryActorComponent::TickComponent(float DeltaTime, ELevelTick TickTyp
 TArray<FInventoryItemStructure> UInventoryActorComponent::GetInventoryItems()
 {
 	return Inventory;
+}
+
+void UInventoryActorComponent::AddPickupableInventoryItem(FInventoryItemStructure InventoryItem) 
+{
+	//PickupableItems.Add(InventoryItem);
+	OnAddPickupableInventoryItem.Broadcast(InventoryItem);
+}
+
+void UInventoryActorComponent::RemovePickupableInventoryItem(FInventoryItemStructure InventoryItem) 
+{
+	//PickupableItems.Remove(InventoryItem);
+	OnRemovePickupableInventoryItem.Broadcast(InventoryItem);
 }
 
 // Add item to the inventory
