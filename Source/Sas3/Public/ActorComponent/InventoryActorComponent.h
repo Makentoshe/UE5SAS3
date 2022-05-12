@@ -11,7 +11,7 @@
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnAddPickupableInventoryItem, FInventoryItemStructure, InventoryItem, AInventoryItemActor*, InventoryItemActor);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnRemovePickupableInventoryItem, FInventoryItemStructure, InventoryItem, AInventoryItemActor*, InventoryItemActor);
 
-/* Component declares, that the Actor contains Inventory */
+/* Component declares that the Actor contains Inventory */
 UCLASS(BlueprintType)
 class SAS3_API UInventoryActorComponent : public UActorComponent
 {
@@ -28,27 +28,24 @@ public:
 
 private:
 	// Contains all items in the inventory
-	UPROPERTY()
 	TArray<FInventoryItemStructure> Inventory;
-
-	// List of nearby items available to pick up from the ground
-	UPROPERTY()
-	TArray<FInventoryItemStructure> PickupableItems;
 
 public:
 	// Add provided item to the inventory
 	UFUNCTION(BlueprintCallable)
 	void AddInventoryItem(FInventoryItemStructure InventoryItem);
 
-	// Add provided item to list of available for pick uping
+	// Add provided item to list of available for pickuping
 	UFUNCTION(BlueprintCallable)
 	void AddPickupableInventoryItem(FInventoryItemStructure InventoryItem, AInventoryItemActor* Actor);
+	// Calls when InventoryItem adds to the pickuping list
 	UPROPERTY(BlueprintAssignable, Category = "Delegates")
 	FOnAddPickupableInventoryItem OnAddPickupableInventoryItem;
 
-	// Remove provided item from list of available for pick uping
+	// Remove provided item from list of available for pickuping
 	UFUNCTION(BlueprintCallable)
 	void RemovePickupableInventoryItem(FInventoryItemStructure InventoryItem, AInventoryItemActor* Actor);
+	// Calls when InventoryItem removes from the pickuping list
 	UPROPERTY(BlueprintAssignable, Category = "Delegates")
 	FOnRemovePickupableInventoryItem OnRemovePickupableInventoryItem;
 	
