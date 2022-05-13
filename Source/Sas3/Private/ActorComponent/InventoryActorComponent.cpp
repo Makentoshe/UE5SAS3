@@ -31,11 +31,11 @@ void UInventoryActorComponent::RemovePickupableInventoryItem(FInventoryItemStruc
 void UInventoryActorComponent::AddInventoryItem(FInventoryItemStructure InventoryItem) 
 {   // First of all check that count is a valid value
 	if(InventoryItem.Count < 1) throw std::invalid_argument("Count shouldn't be negative or zero");
-	if (InventoryItem.StackSize < 1) throw std::invalid_argument("StackSize shouldn't be negative or zero");
+	if(InventoryItem.StackSize < 1) throw std::invalid_argument("StackSize shouldn't be negative or zero");
 
 	// Go through all inventory items and try to find our item
 	for (int i = 0; i < Inventory.Num(); i++) { // Skip item if it is not our type or already have full stacks
-		if (!Inventory[i].Item.Title.IsEqual(InventoryItem.Item.Title, ENameCase::CaseSensitive)) continue;
+		if (!Inventory[i].Title.IsEqual(InventoryItem.Title, ENameCase::CaseSensitive)) continue;
 		if (Inventory[i].Count == InventoryItem.StackSize) continue;
 
 		int32 CountSum = Inventory[i].Count + InventoryItem.Count;

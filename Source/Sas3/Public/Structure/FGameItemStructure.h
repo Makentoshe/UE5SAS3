@@ -19,7 +19,4 @@ struct SAS3_API FGameItemStructure
 
 	// Default constructor
 	FGameItemStructure();
-
-	// Default destructor
-	~FGameItemStructure();
 };

@@ -10,13 +10,13 @@
  * Structure contains valuable parameters for inventory feature
  */
 USTRUCT(BlueprintType)
-struct FInventoryItemStructure
+struct SAS3_API FInventoryItemStructure: public FGameItemStructure
 {
 	GENERATED_BODY()
 
-	// Contains the base item 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	FGameItemStructure Item;
+	//// Contains the base item 
+	//UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	//FGameItemStructure Item;
 
 	// Contains how many items is in the current instance
 	// Note: uint32 isn't supported by blueprint, so be careful about negative values
@@ -34,7 +34,4 @@ struct FInventoryItemStructure
 
 	// Copying constructor with new Count parameter
 	FInventoryItemStructure(const FInventoryItemStructure& Structure, int32 Count);
-
-	// Default destructor
-	~FInventoryItemStructure();
 };

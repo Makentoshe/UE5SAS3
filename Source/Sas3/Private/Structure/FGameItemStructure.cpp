@@ -7,7 +7,3 @@ FGameItemStructure::FGameItemStructure()
 {
 	this->Title = FName(TEXT(""));
 }
-
-FGameItemStructure::~FGameItemStructure()
-{
-}
