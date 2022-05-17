@@ -10,7 +10,7 @@
 /*
  * Most based game item that can be placed on the scene.
  */
-UCLASS(BlueprintType)
+UCLASS(BlueprintType, Abstract)
 class SAS3_API AGameItemActor : public AActor
 {
 	GENERATED_BODY()
@@ -21,6 +21,6 @@ public:
 
 public:
 	// Contains general info about item
-	UPROPERTY(EditAnywhere, AdvancedDisplay, BlueprintReadOnly, Category = "Item info")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Item")
 	FGameItemStructure GameItem;
 };
