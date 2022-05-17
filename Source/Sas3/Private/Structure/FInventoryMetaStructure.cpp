@@ -5,6 +5,6 @@
 
 FInventoryMetaStructure::FInventoryMetaStructure()
 {
-	this->StackSize = 10;
 	this->ItemCount = 0;
+	this->StackSize = 10;
 }

@@ -2,17 +2,20 @@
 
 #pragma once
 
+// Fill out your copyright notice in the Description page of Project Settings.
+
+#pragma once
 
 #include "CoreMinimal.h"
 #include "Engine/DataTable.h"
 #include "FInventoryMetaStructure.generated.h"
 
 /**
- * Meta structure works with GameItemStructure that allows 
+ * Meta structure works with GameItemStructure that allows
  * to understand inventory preferences for this item.
  */
 USTRUCT(BlueprintType)
-struct SAS3_API FInventoryMetaStructure: public FTableRowBase
+struct SAS3_API FInventoryMetaStructure : public FTableRowBase
 {
 	GENERATED_BODY()
 
