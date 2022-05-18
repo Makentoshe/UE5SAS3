@@ -7,7 +7,7 @@
 // Sets default values
 AInventoryItemActor::AInventoryItemActor()
 {
- 	// Set this actor to call Tick() every frame. You can turn this off to improve performance if you don't need it.
+ 	// Set this actor to call Tick() every frame.
 	PrimaryActorTick.bCanEverTick = false;
 
 	// Initialize OnBeginOverlap delegate for SphereComponent
