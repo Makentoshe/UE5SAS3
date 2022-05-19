@@ -4,7 +4,7 @@
 #include "Feature/Feature_Interaction/Structure/Wrapper/ANearbyInteractionWrapper.h"
 
 // Sets default values
-AANearbyInteractionWrapper::AANearbyInteractionWrapper()
+ANearbyInteractionWrapper::ANearbyInteractionWrapper()
 {   // Set this actor to call Tick() every frame.
 	PrimaryActorTick.bCanEverTick = false;
 }
