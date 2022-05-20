@@ -7,6 +7,10 @@
 #include <Sas3/Public/ActorComponent/InventoryActorComponent.h>
 #include "InteractorUiActorComponent.generated.h"
 
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnAddNearbyInteraction, ANearbyInteractionWrapper*, Wrapper);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnRemoveNearbyInteraction, ANearbyInteractionWrapper*, Wrapper);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnChangeSelectedNearbyInteractionIndex, int32, NewIndex);
+
 UCLASS(BlueprintType, Abstract, Blueprintable, Meta = (BlueprintSpawnableComponent))
 class SAS3_API UInteractorUiActorComponent : public UActorComponent
 {
@@ -21,5 +25,15 @@ protected:
 	virtual void BeginPlay() override;
 		
 public:
+	// Calls when new interaction should be added to the interactions list
+	UPROPERTY(BlueprintAssignable, BlueprintCallable, Category = "Interactor Delegates")
+	FOnAddNearbyInteraction OnAddNearbyInteraction;
 
+	// Calls when new interaction should be removed from the interactions list
+	UPROPERTY(BlueprintAssignable, BlueprintCallable, Category = "Interactor Delegates")
+	FOnRemoveNearbyInteraction OnRemoveNearbyInteraction;
+
+	// Calls when selection was changed in the interactions list
+	UPROPERTY(BlueprintAssignable, BlueprintCallable, Category = "Interactor Delegates")
+	FOnChangeSelectedNearbyInteractionIndex OnChangeSelectedNearbyInteractionIndex;
 };
