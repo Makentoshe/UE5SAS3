@@ -8,6 +8,9 @@ public class Sas3 : ModuleRules
 	{
 		PCHUsage = PCHUsageMode.UseExplicitOrSharedPCHs;
 
-		PublicDependencyModuleNames.AddRange(new string[] { "Core", "CoreUObject", "Engine", "InputCore", "HeadMountedDisplay", "SourceControl" });
+		PublicDependencyModuleNames.AddRange(new string[] { "Core", "CoreUObject", "Engine", "InputCore", "HeadMountedDisplay", "SourceControl", "UMG" });
+
+		PrivateDependencyModuleNames.AddRange(new string[] { "Slate", "SlateCore" });
+
 	}
 }
