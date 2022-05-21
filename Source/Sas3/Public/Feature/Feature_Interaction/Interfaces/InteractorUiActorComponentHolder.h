@@ -15,7 +15,7 @@ class UInteractorUiActorComponentHolder : public UInterface
 };
 
 /**
- * 
+ * Type-safe access to the InteractionUiActorComponent
  */
 class SAS3_API IInteractorUiActorComponentHolder
 {

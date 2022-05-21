@@ -1,7 +1,8 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
-
 #include "Feature/Feature_Interaction/Components/InteractorActorComponent.h"
+#include "Feature/Feature_Inventory/Interfaces/InventoryActorComponentHolder.h"
+#include "Feature/Feature_Interaction/Interfaces/InteractorUiActorComponentHolder.h"
 
 // Sets default values for this component's properties
 UInteractorActorComponent::UInteractorActorComponent()
@@ -10,19 +11,33 @@ UInteractorActorComponent::UInteractorActorComponent()
 	PrimaryComponentTick.bCanEverTick = false;
 }
 
-void UInteractorActorComponent::InitializeComponent()
+// Called when a component is registered, after Scene is set, but before CreateRenderState_Concurrent or OnCreatePhysicsState are called.
+void UInteractorActorComponent::OnRegister()
 {
-	Super::InitializeComponent();
+	Super::OnRegister();
 
-	//FString s = FString(TEXT("InitializeComponent"));
-	//GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Yellow, s);
+	// Setup InventoryActorComponent variable
+	if (GetOwner()->GetClass()->ImplementsInterface(UInventoryActorComponentHolder::StaticClass())) {
+		this->InventoryActorComponent = IInventoryActorComponentHolder::Execute_GetInventoryActorComponent(GetOwner());
+	}
+	else {
+		GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Red, TEXT("Error: Owner doesn't contents InventoryActorComponent"));
+	}
+
+	// Setup InteractorUiActorComponent variable
+	if (GetOwner()->GetClass()->ImplementsInterface(UInteractorUiActorComponentHolder::StaticClass())) {
+		this->InteractorUiActorComponent = IInteractorUiActorComponentHolder::Execute_GetInteractorUiActorComponent(GetOwner());
+	}
+	else {
+		GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Red, TEXT("Error: Owner doesn't contents InteractorActorComponent"));
+	}
 }
 
-// Called when the game starts
-void UInteractorActorComponent::BeginPlay()
+// Called when a component is unregistered.Called after DestroyRenderState_Concurrentand OnDestroyPhysicsState are called.
+void UInteractorActorComponent::OnUnregister()
 {
-	Super::BeginPlay();
+	Super::OnUnregister();
 
-	//FString s = FString(TEXT("Begin play"));
-	//GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Yellow, s);
+	this->InventoryActorComponent = nullptr;
+	this->InteractorUiActorComponent = nullptr;
 }

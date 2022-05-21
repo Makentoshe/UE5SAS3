@@ -3,7 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include <Sas3/Public/Actor/GameItemActor.h>
+#include <Sas3/Public/Items/Items/Actors/GameItemActor.h>
 #include <Sas3/Public/Feature/Features/Enums/ENearbyInteractionType.h>
 #include "FNearbyInteractionStructure.generated.h"
 

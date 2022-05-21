@@ -4,7 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "UObject/NoExportTypes.h"
-#include <Sas3/Public/Structure/FInventoryItemStructure.h>
+#include <Sas3/Public/Feature/Feature_Inventory/Structures/FInventoryItemStructure.h>
 #include "UInventoryItemWrapper.generated.h"
 
 /**
