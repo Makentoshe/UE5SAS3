@@ -27,16 +27,6 @@ void UInventoryActorComponent::OnUnregister()
 // Returns all items from the current inventory state
 TArray<FInventoryItemStructure> UInventoryActorComponent::GetInventoryItems() { return Inventory; }
 
-void UInventoryActorComponent::AddPickupableInventoryItem(FInventoryItemStructure InventoryItem, AInventoryItemActor* Actor) 
-{
-	OnAddPickupableInventoryItem.Broadcast(InventoryItem, Actor);
-}
-
-void UInventoryActorComponent::RemovePickupableInventoryItem(FInventoryItemStructure InventoryItem, AInventoryItemActor* Actor)
-{
-	OnRemovePickupableInventoryItem.Broadcast(InventoryItem, Actor);
-}
-
 // Add item to the inventory
 void UInventoryActorComponent::AddInventoryItem(FInventoryItemStructure InventoryItem) 
 {   // First of all check that count is a valid value
