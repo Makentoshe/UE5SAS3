@@ -1,7 +1,7 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include <Sas3/Public/Items/Environment/Actors/EnvironmentItemActor.h>
+#include <Sas3/Public/Items/Inventory/Actors/InventoryItemActor.h>
 #include <Sas3/Public/Feature/Feature_Interaction/Components/InteractorActorComponent.h>
 #include <Sas3/Public/Feature/Feature_Interaction/Interfaces/InteractorActorComponentHolder.h>
 #include <Sas3/Public/Items/Items/Actors/GameItemActor.h>
