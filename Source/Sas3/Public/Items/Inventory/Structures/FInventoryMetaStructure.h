@@ -31,4 +31,11 @@ struct SAS3_API FInventoryMetaStructure : public FTableRowBase
 	int32 StackSize;
 
 	FInventoryMetaStructure();
+
+	// Note: virtual for the super call
+	virtual ~FInventoryMetaStructure();
+
+	// Allows to assign an object using = operator.
+	// Note: this assign makes an copy of the object which allows us to avoid memory loss on base object change
+	FInventoryMetaStructure& operator=(const FInventoryMetaStructure Structure);
 };

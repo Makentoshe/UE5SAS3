@@ -28,9 +28,7 @@ AGameItemActor::AGameItemActor()
 	InteractionSphereComponent->OnComponentEndOverlap.Add(FScriptDelegateSphereComponentEndOverlap);
 }
 
-AGameItemActor::~AGameItemActor()
-{
-}
+AGameItemActor::~AGameItemActor() {}
 
 // Signature for OnBeginOverlap for SphereComponent
 void AGameItemActor::OnSphereComponentBeginOverlap(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)

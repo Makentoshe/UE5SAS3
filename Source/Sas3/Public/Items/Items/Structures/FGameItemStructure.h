@@ -20,4 +20,11 @@ struct SAS3_API FGameItemStructure: public FTableRowBase
 
 	// Default constructor
 	FGameItemStructure();
+
+	// Default destructor
+	// Note: virtual for the super call
+	virtual ~FGameItemStructure();
+
+	FGameItemStructure& operator=(const FGameItemStructure Structure);
+
 };

@@ -8,7 +8,7 @@
 #include "InventoryItemStructureWrapper.generated.h"
 
 /**
- * 
+ * Object for wrapping FInventoryItemStructure for UMG
  */
 UCLASS(BlueprintType)
 class SAS3_API UInventoryItemStructureWrapper : public UObject
@@ -20,7 +20,12 @@ public:
 	UInventoryItemStructureWrapper();
 
 	// Constructor with value
-	UInventoryItemStructureWrapper(FInventoryItemStructure Structure);
+	UInventoryItemStructureWrapper(FInventoryItemStructure& Structure);
+
+	virtual ~UInventoryItemStructureWrapper();
+
+	UFUNCTION(BlueprintCallable) // returns a copied InventoryItemStructure
+	FInventoryItemStructure GetInventoryItemStructure();
 
 	// Wrapped structure
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)

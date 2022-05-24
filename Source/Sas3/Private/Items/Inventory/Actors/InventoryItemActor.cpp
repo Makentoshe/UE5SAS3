@@ -13,6 +13,10 @@ AInventoryItemActor::AInventoryItemActor()
 	PrimaryActorTick.bCanEverTick = false;
 }
 
+AInventoryItemActor::~AInventoryItemActor()
+{
+}
+
 void AInventoryItemActor::BeginPlay()
 {
 	Super::BeginPlay();

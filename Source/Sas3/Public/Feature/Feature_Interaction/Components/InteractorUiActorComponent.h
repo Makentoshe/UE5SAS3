@@ -7,8 +7,8 @@
 #include <Sas3/Public/Feature/Feature_Inventory/Components/InventoryActorComponent.h>
 #include "InteractorUiActorComponent.generated.h"
 
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnAddNearbyInteractionUi, ANearbyInteractionWrapper*, Wrapper);
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnRemoveNearbyInteractionUi, ANearbyInteractionWrapper*, Wrapper);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnAddNearbyInteractionUi, UNearbyInteractionWrapper*, Wrapper);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnRemoveNearbyInteractionUi, UNearbyInteractionWrapper*, Wrapper);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnChangeSelectedNearbyInteractionIndexUi, int32, NewIndex);
 
 UCLASS(BlueprintType, Abstract, Blueprintable, Meta = (BlueprintSpawnableComponent))
