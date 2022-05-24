@@ -23,6 +23,8 @@ public:
 	// Sets default values for this actor's properties
 	AInventoryItemActor();
 
+	virtual ~AInventoryItemActor();
+
 protected:
 
 	virtual void BeginPlay() override;
@@ -39,11 +41,12 @@ private:
 	void OnNearbyInteractionBeginEvent(AActor* OverlappedActor);
 
 	// Creates a NearbyInteractionStructure
-	UFUNCTION()
+	UFUNCTION()// TODO make a FNearbyInteractionStructure ptr with lazy init
 	FNearbyInteractionStructure BuildNearbyInteractionStructure();
 
 public:
 	// Contains inventory info about item
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Item")
 	FInventoryMetaStructure InventoryMeta;
+
 };
