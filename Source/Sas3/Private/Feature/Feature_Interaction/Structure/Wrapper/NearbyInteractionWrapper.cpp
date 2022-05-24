@@ -8,3 +8,17 @@ UNearbyInteractionWrapper::UNearbyInteractionWrapper()
 {   
 	this->NearbyInteractionStructure = FNearbyInteractionStructure();
 }
+
+UNearbyInteractionWrapper::UNearbyInteractionWrapper(FNearbyInteractionStructure& Structure)
+{   // copy Structure
+	this->NearbyInteractionStructure = Structure;
+}
+
+UNearbyInteractionWrapper::~UNearbyInteractionWrapper()
+{
+}
+
+FNearbyInteractionStructure UNearbyInteractionWrapper::GetNearbyInteractionStructure()
+{
+	return this->NearbyInteractionStructure;
+}

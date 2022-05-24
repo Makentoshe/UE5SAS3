@@ -13,9 +13,20 @@ class SAS3_API UNearbyInteractionWrapper : public UObject
 	GENERATED_BODY()
 	
 public:	
-	// Sets default values for this actor's properties
+	// Default constructor
 	UNearbyInteractionWrapper();
 
+	// Constructor with value
+	UNearbyInteractionWrapper(FNearbyInteractionStructure& Structure);
+
+	// Default virtual destructor
+	virtual ~UNearbyInteractionWrapper();
+
+	// Returns a copied NearbyInteractionStructure
+	UFUNCTION(BlueprintCallable)
+	FNearbyInteractionStructure GetNearbyInteractionStructure();
+
+	// Wrapped structure
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	FNearbyInteractionStructure NearbyInteractionStructure;
 };
