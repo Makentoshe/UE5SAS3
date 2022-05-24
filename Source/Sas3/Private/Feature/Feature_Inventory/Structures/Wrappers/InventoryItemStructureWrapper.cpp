@@ -8,7 +8,16 @@ UInventoryItemStructureWrapper::UInventoryItemStructureWrapper()
 	this->InventoryItemStructure = FInventoryItemStructure();
 }
 
-UInventoryItemStructureWrapper::UInventoryItemStructureWrapper(FInventoryItemStructure Structure)
-{
+UInventoryItemStructureWrapper::UInventoryItemStructureWrapper(FInventoryItemStructure& Structure)
+{   // copy Structure
 	this->InventoryItemStructure = Structure;
+}
+
+UInventoryItemStructureWrapper::~UInventoryItemStructureWrapper()
+{
+}
+
+FInventoryItemStructure UInventoryItemStructureWrapper::GetInventoryItemStructure()
+{
+	return InventoryItemStructure;
 }
