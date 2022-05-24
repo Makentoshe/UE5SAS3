@@ -5,16 +5,16 @@
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
 #include <Sas3/Public/Feature/Feature_Interaction/Structure/FNearbyInteractionStructure.h>
-#include "ANearbyInteractionWrapper.generated.h"
+#include "NearbyInteractionWrapper.generated.h"
 
 UCLASS(Blueprintable)
-class SAS3_API ANearbyInteractionWrapper : public AActor
+class SAS3_API UNearbyInteractionWrapper : public UObject
 {
 	GENERATED_BODY()
 	
 public:	
 	// Sets default values for this actor's properties
-	ANearbyInteractionWrapper();
+	UNearbyInteractionWrapper();
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	FNearbyInteractionStructure NearbyInteractionStructure;

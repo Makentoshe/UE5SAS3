@@ -27,7 +27,6 @@ public:
 	UFUNCTION(BlueprintCallable) // returns a copied InventoryItemStructure
 	FInventoryItemStructure GetInventoryItemStructure();
 
-private:
 	// Wrapped structure
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	FInventoryItemStructure InventoryItemStructure;
