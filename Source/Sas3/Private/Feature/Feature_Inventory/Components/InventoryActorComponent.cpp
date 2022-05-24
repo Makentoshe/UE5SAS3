@@ -2,6 +2,7 @@
 
 
 #include <Sas3/Public/Feature/Feature_Inventory/Components/InventoryActorComponent.h>
+#include "Feature/Feature_Inventory/Interfaces/InventoryUiActorComponentHolder.h"
 #include <Runtime/UMG/Public/Blueprint/UserWidget.h>
 
 // Sets default values for this component's properties
@@ -17,15 +18,26 @@ UInventoryActorComponent::UInventoryActorComponent()
 void UInventoryActorComponent::OnRegister()
 {
 	Super::OnRegister();
+
+	// Setup InventoryActorComponent variable
+	if (GetOwner()->GetClass()->ImplementsInterface(UInventoryUiActorComponentHolder::StaticClass())) {
+		this->InventoryUiActorComponent = IInventoryUiActorComponentHolder::Execute_GetInventoryUiActorComponent(GetOwner());
+	}
+	else {
+		GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Red, TEXT("Error: Owner doesn't contents InventoryUiActorComponent"));
+	}
 }
 
 void UInventoryActorComponent::OnUnregister()
 {
 	Super::OnUnregister();
+
+	this->InventoryUiActorComponent = nullptr;
 }
 
 // Returns all items from the current inventory state
 TArray<FInventoryItemStructure> UInventoryActorComponent::GetInventoryItems() { return Inventory; }
+
 
 // Add item to the inventory
 void UInventoryActorComponent::AddInventoryItem(FInventoryItemStructure InventoryItem) 
