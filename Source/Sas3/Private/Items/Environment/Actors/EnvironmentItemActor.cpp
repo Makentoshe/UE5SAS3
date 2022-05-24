@@ -14,6 +14,10 @@ AEnvironmentItemActor::AEnvironmentItemActor()
 	PrimaryActorTick.bCanEverTick = false;
 }
 
+AEnvironmentItemActor::~AEnvironmentItemActor()
+{
+}
+
 void AEnvironmentItemActor::BeginPlay()
 {
 	Super::BeginPlay();
