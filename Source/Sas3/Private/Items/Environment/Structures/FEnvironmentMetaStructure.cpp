@@ -8,3 +8,16 @@ FEnvironmentMetaStructure::FEnvironmentMetaStructure()
 	this->Description = FName(TEXT(""));
 }
 
+FEnvironmentMetaStructure::~FEnvironmentMetaStructure()
+{
+}
+
+FEnvironmentMetaStructure& FEnvironmentMetaStructure::operator=(const FEnvironmentMetaStructure Structure)
+{   // destory current data
+	this->~FEnvironmentMetaStructure();
+	// fillup with new data
+	this->Description = Structure.Description;
+	// return reference
+	return *this;
+}
+
