@@ -14,10 +14,16 @@ struct SAS3_API FEnvironmentMetaStructure
 {
 	GENERATED_BODY()
 
-public:
-	FEnvironmentMetaStructure();
-
 	// Contains additional interaction description for this item that player will see
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	FName Description;
+
+	FEnvironmentMetaStructure();
+
+	// Note: virtual for the super call
+	virtual ~FEnvironmentMetaStructure();
+
+	// Allows to assign an object using = operator.
+	// Note: this assign makes an copy of the object which allows us to avoid memory loss on base object change
+	FEnvironmentMetaStructure& operator=(const FEnvironmentMetaStructure Structure);
 };

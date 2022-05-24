@@ -28,6 +28,12 @@ struct SAS3_API FInventoryItemStructure: public FGameItemStructure
 	// Default constructor
 	FInventoryItemStructure();
 
+	virtual ~FInventoryItemStructure();
+
 	// Copying constructor with new Count parameter
 	FInventoryItemStructure(const FInventoryItemStructure& Structure, int32 Count);
+
+	// Allows to assign an object using = operator.
+	// Note: this assign makes an copy of the object which allows us to avoid memory loss on base object change
+	FInventoryItemStructure& operator=(const FInventoryItemStructure Structure);
 };

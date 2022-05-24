@@ -10,3 +10,19 @@ FNearbyInteractionStructure::FNearbyInteractionStructure()
 	this->NearbyInteractionType = NearbyInteractionType::None;
 	this->Actor = nullptr;
 }
+
+FNearbyInteractionStructure::~FNearbyInteractionStructure()
+{
+}
+
+FNearbyInteractionStructure& FNearbyInteractionStructure::operator=(const FNearbyInteractionStructure Structure)
+{
+	this->~FNearbyInteractionStructure();
+
+	this->Title = Structure.Title;
+	this->Description = Structure.Description;
+	this->NearbyInteractionType = Structure.NearbyInteractionType;
+	this->Actor = Structure.Actor;
+
+	return *this;
+}

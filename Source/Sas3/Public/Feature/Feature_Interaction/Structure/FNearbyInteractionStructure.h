@@ -23,11 +23,21 @@ struct SAS3_API FNearbyInteractionStructure
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	FName Description;
 
+	// Contains the interaction type that may help to understand how interaction should be acted
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	NearbyInteractionType NearbyInteractionType;
 
+	// Reference to the Actor that should be acted
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	TObjectPtr<AGameItemActor> Actor;
 
+	// Default constructor
 	FNearbyInteractionStructure();
+
+	// Default virtual desrtuctor
+	virtual ~FNearbyInteractionStructure();
+
+	// Allows to assign an object using = operator.
+	// Note: this assign makes an copy of the object which allows us to avoid memory loss on base object change
+	FNearbyInteractionStructure& operator=(const FNearbyInteractionStructure Structure);
 };

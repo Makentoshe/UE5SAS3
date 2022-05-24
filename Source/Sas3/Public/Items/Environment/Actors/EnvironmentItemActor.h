@@ -11,7 +11,6 @@
 
 /**
  * Player may interact with this actor
- * TODO: not finished yet
  */
 UCLASS(BlueprintType)
 class SAS3_API AEnvironmentItemActor : public AGameItemActor
@@ -19,6 +18,8 @@ class SAS3_API AEnvironmentItemActor : public AGameItemActor
 	GENERATED_BODY()
 public: 
 	AEnvironmentItemActor();
+
+	virtual ~AEnvironmentItemActor();
 
 protected:
 
@@ -36,7 +37,7 @@ private:
 	void OnNearbyInteractionBeginEvent(AActor* OverlappedActor);
 
 	// Creates a NearbyInteractionStructure
-	UFUNCTION()
+	UFUNCTION()// TODO make a FNearbyInteractionStructure ptr with lazy init
 	FNearbyInteractionStructure BuildNearbyInteractionStructure();
 
 public:

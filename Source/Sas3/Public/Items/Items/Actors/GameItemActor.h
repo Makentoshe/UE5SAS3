@@ -13,18 +13,20 @@ DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnNearbyInteractionBegin, AActor*, 
 
 UDELEGATE()
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnNearbyInteractionEnd, AActor*, OverlappedActor);
+
+
 /*
- * Most based game item that can be placed on the scene.
+ * Most based game item that can be placed on the scene but not this one.
  */
-UCLASS(BlueprintType)
+UCLASS(BlueprintType, Abstract)
 class SAS3_API AGameItemActor : public AActor
 {
 	GENERATED_BODY()
 	
 public:	
-	// Sets default values for this actor's properties
+
 	AGameItemActor(); //const
-	~AGameItemActor(); //dest
+	virtual ~AGameItemActor(); //dest
 
 	// Called when something overlaps SphereComponent
 	UFUNCTION(BlueprintCallable)
