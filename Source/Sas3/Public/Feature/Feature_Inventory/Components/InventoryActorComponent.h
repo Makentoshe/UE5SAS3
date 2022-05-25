@@ -20,8 +20,11 @@ class SAS3_API UInventoryActorComponent : public UActorComponent
 	GENERATED_BODY()
 
 public:	
-	// Sets default values for this component's properties
+	// Default constructor
 	UInventoryActorComponent();
+
+	//Default virtual destructor
+	~UInventoryActorComponent();
 
 protected:
 	// Called when a component is registered, after Scene is set, but before CreateRenderState_Concurrent or OnCreatePhysicsState are called.
@@ -47,18 +50,22 @@ protected:
 	UPROPERTY(BlueprintReadOnly, Category = Components)
 	TObjectPtr<UInventoryUiActorComponent> InventoryUiActorComponent;
 
-private:
 	// Contains all items in the inventory
-	TArray<FInventoryItemStructure> Inventory;
+	UPROPERTY(BlueprintReadOnly)
+	TArray<UInventoryItemStructureWrapper*> InventoryItems;
 
 public:
 	// Add provided item to the inventory
 	UFUNCTION(BlueprintCallable)
 	void AddInventoryItem(FInventoryItemStructure InventoryItem);
-	
+
 	// Returns all items currently placed in the inventory
 	UFUNCTION(BlueprintCallable)
-	TArray<FInventoryItemStructure> GetInventoryItems();
+	TArray<UInventoryItemStructureWrapper*> GetInventoryItems();
+
+protected:
+	UFUNCTION()
+	UInventoryItemStructureWrapper* BuildInventoryItemStructureWrapper(FInventoryItemStructure& Structure);
 
 private:
 	// Add provided item to the inventory starting from the new stack

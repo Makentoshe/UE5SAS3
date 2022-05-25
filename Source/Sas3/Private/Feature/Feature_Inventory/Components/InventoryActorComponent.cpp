@@ -15,6 +15,12 @@ UInventoryActorComponent::UInventoryActorComponent()
 	this->InventorySize = 10;
 }
 
+UInventoryActorComponent::~UInventoryActorComponent()
+{
+	// Empties the array.It calls the destructors on held items if needed.
+	this->InventoryItems.Empty();
+}
+
 void UInventoryActorComponent::OnRegister()
 {
 	Super::OnRegister();
@@ -35,45 +41,71 @@ void UInventoryActorComponent::OnUnregister()
 	this->InventoryUiActorComponent = nullptr;
 }
 
-// Returns all items from the current inventory state
-TArray<FInventoryItemStructure> UInventoryActorComponent::GetInventoryItems() { return Inventory; }
+// Returns all items in the inventory
+TArray<UInventoryItemStructureWrapper*> UInventoryActorComponent::GetInventoryItems() { return InventoryItems; }
+
+UInventoryItemStructureWrapper* UInventoryActorComponent::BuildInventoryItemStructureWrapper(FInventoryItemStructure& Structure)
+{   // Create object
+	UInventoryItemStructureWrapper* Wrapper = NewObject<UInventoryItemStructureWrapper>();
+	// Initialize object
+	Wrapper->InventoryItemStructure = Structure;
+	// Return pointer
+	return Wrapper;
+}
 
 
 // Add item to the inventory
-void UInventoryActorComponent::AddInventoryItem(FInventoryItemStructure InventoryItem) 
-{   // First of all check that count is a valid value
-	if(InventoryItem.Count < 1) throw std::invalid_argument("Count shouldn't be negative or zero");
-	if(InventoryItem.StackSize < 1) throw std::invalid_argument("StackSize shouldn't be negative or zero");
+void UInventoryActorComponent::AddInventoryItem(FInventoryItemStructure InventoryItemStructure) 
+{   // Check that count is a valid value
+	if (InventoryItemStructure.Count < 1) { 
+		GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Red, TEXT("Error: Count shouldn't be negative or zero"));
+		return;
+	}
+	// Check that StackSize in a valid value
+	if (InventoryItemStructure.StackSize < 1) {
+		GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Red, TEXT("Error: StackSize shouldn't be negative or zero"));
+		return;
+	}
 
 	// Go through all inventory items and try to find our item
-	for (int i = 0; i < Inventory.Num(); i++) { // Skip item if it is not our type or already have full stacks
-		if (!Inventory[i].Title.IsEqual(InventoryItem.Title, ENameCase::CaseSensitive)) continue;
-		if (Inventory[i].Count == InventoryItem.StackSize) continue;
+	for (int i = 0; i < InventoryItems.Num(); i++) { 
+		auto CurrentStructure = InventoryItems[i]->InventoryItemStructure;
+		// Skip item if it is not our type or already have full stacks
+		if (!CurrentStructure.Title.IsEqual(InventoryItemStructure.Title, ENameCase::CaseSensitive)) {
+			continue;
+		}
+		if (CurrentStructure.Count == InventoryItemStructure.StackSize) {
+			continue;
+		}
 
-		int32 CountSum = Inventory[i].Count + InventoryItem.Count;
-		if (CountSum < InventoryItem.StackSize) { // Just append and return
-			Inventory[i] = FInventoryItemStructure(Inventory[i], CountSum);
+		int32 CountSum = CurrentStructure.Count + InventoryItemStructure.Count;
+		if (CountSum < InventoryItemStructure.StackSize) { // Just append and return
+			auto NewStructure = FInventoryItemStructure(CurrentStructure, CountSum);
+			InventoryItems[i] = BuildInventoryItemStructureWrapper(NewStructure);
 			return;
 		}
 		else { // Append current item till full stack and then add new stacks
-			Inventory[i] = FInventoryItemStructure(Inventory[i], InventoryItem.StackSize);
-			AddInventoryItemNewStack(FInventoryItemStructure(Inventory[i], CountSum - InventoryItem.StackSize));
+			auto Structure = FInventoryItemStructure(CurrentStructure, InventoryItemStructure.StackSize);
+			InventoryItems[i] = BuildInventoryItemStructureWrapper(Structure);
+			AddInventoryItemNewStack(FInventoryItemStructure(CurrentStructure, CountSum - InventoryItemStructure.StackSize));
 			return;
 		}
 	}
 	// Will be here only if we didn't find our item type in the inventory, so we just create a new stacks
-	AddInventoryItemNewStack(InventoryItem);
+	AddInventoryItemNewStack(InventoryItemStructure);
 }
 
-// Add item to the inventory starting from the new stack
-void UInventoryActorComponent::AddInventoryItemNewStack(FInventoryItemStructure InventoryItem) 
+// Add provided item to the inventory starting from the new stack
+void UInventoryActorComponent::AddInventoryItemNewStack(FInventoryItemStructure InventoryItemStructure) 
 {   // If Items more than the one stack can have - add full stack and repeat call else just add
-	if (InventoryItem.Count > InventoryItem.StackSize) {
-		Inventory.Add(FInventoryItemStructure(InventoryItem, InventoryItem.StackSize));
+	if (InventoryItemStructure.Count > InventoryItemStructure.StackSize) {
+		auto Structure = FInventoryItemStructure(InventoryItemStructure, InventoryItemStructure.StackSize);
+		InventoryItems.Add(BuildInventoryItemStructureWrapper(Structure));
 
-		auto NewInventoryItem = FInventoryItemStructure(InventoryItem, InventoryItem.Count - InventoryItem.StackSize);
+		auto NewInventoryItem = FInventoryItemStructure(InventoryItemStructure, InventoryItemStructure.Count - InventoryItemStructure.StackSize);
 		AddInventoryItemNewStack(NewInventoryItem);
-	} else {
-		Inventory.Add(InventoryItem);
+	} 
+	else {
+		InventoryItems.Add(BuildInventoryItemStructureWrapper(InventoryItemStructure));
 	}
 }
