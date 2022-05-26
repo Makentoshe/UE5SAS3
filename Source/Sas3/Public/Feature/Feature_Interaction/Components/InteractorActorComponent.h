@@ -35,12 +35,19 @@ protected:
 
 public:
 
+	// Index of selected element in the interaction list
 	UPROPERTY(BlueprintReadWrite)
 	int32 SelectedInteractionIndex;
 
+	// List of all available nearby interactions
+	UPROPERTY(BlueprintReadWrite)
+	TArray<UNearbyInteractionWrapper*> NearbyInteractions;
+
+	// Required if interaction with this item requires inventory (pick upping inventory item)
 	UPROPERTY(BlueprintReadWrite, Category = Components)
 	TObjectPtr<UInventoryActorComponent> InventoryActorComponent;
 
+	// UI of the current component
 	UPROPERTY(BlueprintReadWrite, Category = Components)
 	TObjectPtr<UInteractorUiActorComponent> InteractorUiActorComponent;
 
