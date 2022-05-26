@@ -14,6 +14,8 @@ DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnNearbyInteractionBegin, AActor*, 
 UDELEGATE()
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnNearbyInteractionEnd, AActor*, OverlappedActor);
 
+UDELEGATE()
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnGameItemInteracted);
 
 /*
  * Most based game item that can be placed on the scene but not this one.
@@ -36,6 +38,7 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void OnSphereComponentEndOverlap(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
 
+public:
 	// Contains general info about item
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Item")
 	FGameItemStructure GameItem;
@@ -44,9 +47,15 @@ public:
 	UPROPERTY(BlueprintReadOnly, Category = Components)
 	TObjectPtr<USphereComponent> InteractionSphereComponent;
 
-	UPROPERTY(BlueprintAssignable, Category = "Event Dispatchers")
+	// Calls when this object is ready to be interacted with the character
+	UPROPERTY(BlueprintAssignable, Category = "GameItem Delegates")
 	FOnNearbyInteractionBegin OnNearbyInteractionBegin;
 
-	UPROPERTY(BlueprintAssignable, Category = "Event Dispatchers")
+	// Calls when this object isn't ready to be interacted with the character
+	UPROPERTY(BlueprintAssignable, Category = "GameItem Delegates")
 	FOnNearbyInteractionEnd OnNearbyInteractionEnd;
+
+	// Calls when this object was interacted 
+	UPROPERTY(BlueprintAssignable, BlueprintCallable, Category = "GameItem Delegates")
+	FOnGameItemInteracted OnGameItemInteracted;
 };
