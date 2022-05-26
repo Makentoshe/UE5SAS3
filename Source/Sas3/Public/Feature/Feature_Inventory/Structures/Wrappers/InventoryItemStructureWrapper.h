@@ -19,7 +19,7 @@ public:
 	// Sets default values for this actor's properties
 	UInventoryItemStructureWrapper();
 
-	// Constructor with value
+	// Constructor with copying value
 	UInventoryItemStructureWrapper(FInventoryItemStructure& Structure);
 
 	virtual ~UInventoryItemStructureWrapper();

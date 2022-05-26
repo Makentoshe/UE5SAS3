@@ -5,11 +5,13 @@
 #include "CoreMinimal.h"
 #include "Components/ActorComponent.h"
 #include <Sas3/Public/Feature/Feature_Inventory/Structures/FInventoryItemStructure.h>
+#include <Sas3/Public/Feature/Feature_Inventory/Components/InventoryUiActorComponent.h>
 #include <Sas3/Public/Items/Inventory/Actors/InventoryItemActor.h>
+#include <Sas3/Public/Feature/Feature_Inventory/Structures/Wrappers/InventoryItemStructureWrapper.h>
 #include "InventoryActorComponent.generated.h"
 
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnAddPickupableInventoryItem, FInventoryItemStructure, InventoryItem, AInventoryItemActor*, InventoryItemActor);
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnRemovePickupableInventoryItem, FInventoryItemStructure, InventoryItem, AInventoryItemActor*, InventoryItemActor);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnShowInventory);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnHideInventory);
 
 /* Component declares that the Actor contains Inventory */
 UCLASS(BlueprintType)
@@ -18,8 +20,11 @@ class SAS3_API UInventoryActorComponent : public UActorComponent
 	GENERATED_BODY()
 
 public:	
-	// Sets default values for this component's properties
+	// Default constructor
 	UInventoryActorComponent();
+
+	//Default virtual destructor
+	~UInventoryActorComponent();
 
 protected:
 	// Called when a component is registered, after Scene is set, but before CreateRenderState_Concurrent or OnCreatePhysicsState are called.
@@ -33,32 +38,34 @@ public:
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Category = "Inventory Settings")
 	int32 InventorySize;
 
-private:
+	// Calls when inventory widget should be displayed
+	UPROPERTY(BlueprintAssignable, BlueprintCallable, Category = "Inventory Delegates")
+	FOnShowInventory OnShowInventory;
+
+	// Calls when inventory widget should be hide
+	UPROPERTY(BlueprintAssignable, BlueprintCallable, Category = "Inventory Delegates")
+	FOnHideInventory OnHideInventory;
+
+protected:
+	UPROPERTY(BlueprintReadOnly, Category = Components)
+	TObjectPtr<UInventoryUiActorComponent> InventoryUiActorComponent;
+
 	// Contains all items in the inventory
-	TArray<FInventoryItemStructure> Inventory;
+	UPROPERTY(BlueprintReadOnly)
+	TArray<UInventoryItemStructureWrapper*> InventoryItems;
 
 public:
 	// Add provided item to the inventory
 	UFUNCTION(BlueprintCallable)
 	void AddInventoryItem(FInventoryItemStructure InventoryItem);
 
-	// Add provided item to list of available for pickuping
-	UFUNCTION(BlueprintCallable)
-	void AddPickupableInventoryItem(FInventoryItemStructure InventoryItem, AInventoryItemActor* Actor);
-	// Calls when InventoryItem adds to the pickuping list
-	UPROPERTY(BlueprintAssignable, Category = "Delegates")
-	FOnAddPickupableInventoryItem OnAddPickupableInventoryItem;
-
-	// Remove provided item from list of available for pickuping
-	UFUNCTION(BlueprintCallable)
-	void RemovePickupableInventoryItem(FInventoryItemStructure InventoryItem, AInventoryItemActor* Actor);
-	// Calls when InventoryItem removes from the pickuping list
-	UPROPERTY(BlueprintAssignable, Category = "Delegates")
-	FOnRemovePickupableInventoryItem OnRemovePickupableInventoryItem;
-	
 	// Returns all items currently placed in the inventory
 	UFUNCTION(BlueprintCallable)
-	TArray<FInventoryItemStructure> GetInventoryItems();
+	TArray<UInventoryItemStructureWrapper*> GetInventoryItems();
+
+protected:
+	UFUNCTION()
+	UInventoryItemStructureWrapper* BuildInventoryItemStructureWrapper(FInventoryItemStructure& Structure);
 
 private:
 	// Add provided item to the inventory starting from the new stack
