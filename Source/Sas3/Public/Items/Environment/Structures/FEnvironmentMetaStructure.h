@@ -18,6 +18,11 @@ struct SAS3_API FEnvironmentMetaStructure
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	FName Description;
 
+	// Is player able to interact with this item right now
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	bool IsEnabled;
+
+	// Default constructor
 	FEnvironmentMetaStructure();
 
 	// Note: virtual for the super call
