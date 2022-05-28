@@ -22,6 +22,7 @@ public:
 	// Constructor with copying value
 	UInventoryItemStructureWrapper(FInventoryItemStructure& Structure);
 
+	// Default destructor
 	virtual ~UInventoryItemStructureWrapper();
 
 	UFUNCTION(BlueprintCallable) // returns a copied InventoryItemStructure

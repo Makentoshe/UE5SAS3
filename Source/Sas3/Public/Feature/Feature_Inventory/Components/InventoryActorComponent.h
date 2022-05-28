@@ -57,7 +57,7 @@ protected:
 public:
 	// Add provided item to the inventory
 	UFUNCTION(BlueprintCallable)
-	void AddInventoryItem(FInventoryItemStructure InventoryItem);
+	void AddInventoryItemWrapper(UInventoryItemStructureWrapper* Wrapper);
 
 	// Returns all items currently placed in the inventory
 	UFUNCTION(BlueprintCallable)
@@ -68,6 +68,7 @@ protected:
 	UInventoryItemStructureWrapper* BuildInventoryItemStructureWrapper(FInventoryItemStructure& Structure);
 
 private:
+
 	// Add provided item to the inventory starting from the new stack
-	void AddInventoryItemNewStack(FInventoryItemStructure InventoryItem);
+	void AddInventoryItemNewStackWrapper(UInventoryItemStructureWrapper* Wrapper);
 };
