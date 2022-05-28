@@ -1,7 +1,7 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "Feature/Feature_Obtained/ObtainedActorComponent.h"
+#include "Feature/Feature_Obtained/Components/ObtainedActorComponent.h"
 
 // Sets default values for this component's properties
 UObtainedActorComponent::UObtainedActorComponent()

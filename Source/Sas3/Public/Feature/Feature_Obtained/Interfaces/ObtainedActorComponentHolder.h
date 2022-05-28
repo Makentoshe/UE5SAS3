@@ -4,7 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "UObject/Interface.h"
-#include "Feature/Feature_Obtained/ObtainedActorComponent.h"
+#include "Feature/Feature_Obtained/Components/ObtainedActorComponent.h"
 #include "ObtainedActorComponentHolder.generated.h"
 
 // This class does not need to be modified.
