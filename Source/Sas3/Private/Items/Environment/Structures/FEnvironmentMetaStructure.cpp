@@ -6,6 +6,7 @@
 FEnvironmentMetaStructure::FEnvironmentMetaStructure()
 {
 	this->Description = FName(TEXT(""));
+	this->IsEnabled = true;
 }
 
 FEnvironmentMetaStructure::~FEnvironmentMetaStructure()
@@ -17,6 +18,7 @@ FEnvironmentMetaStructure& FEnvironmentMetaStructure::operator=(const FEnvironme
 	this->~FEnvironmentMetaStructure();
 	// fillup with new data
 	this->Description = Structure.Description;
+	this->IsEnabled = Structure.IsEnabled;
 	// return reference
 	return *this;
 }
