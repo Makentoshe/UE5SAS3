@@ -15,6 +15,23 @@ AInventoryItemActor::AInventoryItemActor()
 
 AInventoryItemActor::~AInventoryItemActor()
 {
+	//if(InventoryItemWrapper) delete InventoryItemWrapper;
+}
+
+UInventoryItemStructureWrapper* AInventoryItemActor::GetInventoryItemWrapper()
+{   // if property initialized - just return it
+	if (this->InventoryItemWrapper) return this->InventoryItemWrapper;
+	// Create InventoryItemStructure requred to wrapper
+	FInventoryItemStructure Structure;
+	Structure.Count = this->InventoryMeta.ItemCount;
+	Structure.StackSize = this->InventoryMeta.StackSize;
+	Structure.Title = this->GameItem.Title;
+	// Create wrapper object and assign InventoryItemStructure 
+	auto Temp = NewObject<UInventoryItemStructureWrapper>();
+	Temp->InventoryItemStructure = Structure;
+	this->InventoryItemWrapper = Temp;
+
+	return Temp;
 }
 
 void AInventoryItemActor::BeginPlay()

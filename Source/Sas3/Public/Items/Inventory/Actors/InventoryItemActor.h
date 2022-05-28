@@ -8,6 +8,7 @@
 #include "UObject/ConstructorHelpers.h"
 #include <Sas3/Public/Feature/Feature_Interaction/Structure/FNearbyInteractionStructure.h>
 #include <Sas3/Public/Items/Inventory/Structures/FInventoryMetaStructure.h>
+#include "Feature/Feature_Inventory/Structures/Wrappers/InventoryItemStructureWrapper.h"
 #include <Sas3/Public/Items/Items/Actors/GameItemActor.h>
 #include "InventoryItemActor.generated.h"
 
@@ -24,6 +25,10 @@ public:
 	AInventoryItemActor();
 
 	virtual ~AInventoryItemActor();
+
+	// Returns lazy initialized InventoryItemWrapper
+	UFUNCTION(BlueprintCallable)
+	UInventoryItemStructureWrapper* GetInventoryItemWrapper();
 
 protected:
 
@@ -49,4 +54,8 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Item")
 	FInventoryMetaStructure InventoryMeta;
 
+private:
+	// Lazy property from GetInventoryItemWrapper method
+	UPROPERTY()
+	TObjectPtr<UInventoryItemStructureWrapper> InventoryItemWrapper;
 };

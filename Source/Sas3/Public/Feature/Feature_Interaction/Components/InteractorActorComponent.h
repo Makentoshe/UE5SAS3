@@ -7,6 +7,7 @@
 #include <Sas3/Public/Feature/Feature_Interaction/Components/InteractorUiActorComponent.h>
 #include <Sas3/Public/Feature/Feature_Interaction/Structure/FNearbyInteractionStructure.h>
 #include <Sas3/Public/Feature/Feature_Inventory/Components/InventoryActorComponent.h>
+#include "Feature/Feature_Obtained/ObtainedActorComponent.h"
 #include "InteractorActorComponent.generated.h"
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnAddNearbyInteraction, FNearbyInteractionStructure, Structure);
@@ -50,6 +51,10 @@ public:
 	// UI of the current component
 	UPROPERTY(BlueprintReadWrite, Category = Components)
 	TObjectPtr<UInteractorUiActorComponent> InteractorUiActorComponent;
+
+	// Works along with the inventory component and allows to display pickupped items
+	UPROPERTY(BlueprintReadWrite, Category = Components)
+	TObjectPtr<UObtainedActorComponent> ObtainedActorComponent;
 
 	// Calls when new interaction should be added to the interactions list
 	UPROPERTY(BlueprintAssignable, BlueprintCallable, Category = "Interactor Delegates")

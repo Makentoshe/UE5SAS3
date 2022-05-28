@@ -53,59 +53,61 @@ UInventoryItemStructureWrapper* UInventoryActorComponent::BuildInventoryItemStru
 	return Wrapper;
 }
 
-
-// Add item to the inventory
-void UInventoryActorComponent::AddInventoryItem(FInventoryItemStructure InventoryItemStructure) 
-{   // Check that count is a valid value
-	if (InventoryItemStructure.Count < 1) { 
+void UInventoryActorComponent::AddInventoryItemWrapper(UInventoryItemStructureWrapper* Wrapper) 
+{
+	if (Wrapper->InventoryItemStructure.Count < 1) {
 		GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Red, TEXT("Error: Count shouldn't be negative or zero"));
 		return;
 	}
 	// Check that StackSize in a valid value
-	if (InventoryItemStructure.StackSize < 1) {
+	if (Wrapper->InventoryItemStructure.StackSize < 1) {
 		GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Red, TEXT("Error: StackSize shouldn't be negative or zero"));
 		return;
 	}
-
+	
 	// Go through all inventory items and try to find our item
-	for (int i = 0; i < InventoryItems.Num(); i++) { 
-		auto CurrentStructure = InventoryItems[i]->InventoryItemStructure;
+	for (int i = 0; i < InventoryItems.Num(); i++) {
+		auto CurrentWrapper = InventoryItems[i];
 		// Skip item if it is not our type or already have full stacks
-		if (!CurrentStructure.Title.IsEqual(InventoryItemStructure.Title, ENameCase::CaseSensitive)) {
+		if (!InventoryItems[i]->InventoryItemStructure.Title.IsEqual(Wrapper->InventoryItemStructure.Title, ENameCase::CaseSensitive)) {
 			continue;
 		}
-		if (CurrentStructure.Count == InventoryItemStructure.StackSize) {
+		if (InventoryItems[i]->InventoryItemStructure.Count == Wrapper->InventoryItemStructure.StackSize) {
 			continue;
 		}
 
-		int32 CountSum = CurrentStructure.Count + InventoryItemStructure.Count;
-		if (CountSum < InventoryItemStructure.StackSize) { // Just append and return
-			auto NewStructure = FInventoryItemStructure(CurrentStructure, CountSum);
-			InventoryItems[i] = BuildInventoryItemStructureWrapper(NewStructure);
+		int32 CountSum = InventoryItems[i]->InventoryItemStructure.Count + Wrapper->InventoryItemStructure.Count;
+		if (CountSum <= Wrapper->InventoryItemStructure.StackSize) { // Just append and return  
+			InventoryItems[i]->InventoryItemStructure = FInventoryItemStructure(InventoryItems[i]->InventoryItemStructure, CountSum);
 			return;
 		}
 		else { // Append current item till full stack and then add new stacks
-			auto Structure = FInventoryItemStructure(CurrentStructure, InventoryItemStructure.StackSize);
-			InventoryItems[i] = BuildInventoryItemStructureWrapper(Structure);
-			AddInventoryItemNewStack(FInventoryItemStructure(CurrentStructure, CountSum - InventoryItemStructure.StackSize));
+			InventoryItems[i]->InventoryItemStructure = FInventoryItemStructure(InventoryItems[i]->InventoryItemStructure, Wrapper->InventoryItemStructure.StackSize);
+			auto NewStructure = FInventoryItemStructure(InventoryItems[i]->InventoryItemStructure, CountSum - Wrapper->InventoryItemStructure.StackSize);
+			auto NewWrapper = BuildInventoryItemStructureWrapper(NewStructure);
+			AddInventoryItemNewStackWrapper(NewWrapper);
 			return;
 		}
 	}
+
 	// Will be here only if we didn't find our item type in the inventory, so we just create a new stacks
-	AddInventoryItemNewStack(InventoryItemStructure);
+	AddInventoryItemNewStackWrapper(Wrapper);
 }
 
 // Add provided item to the inventory starting from the new stack
-void UInventoryActorComponent::AddInventoryItemNewStack(FInventoryItemStructure InventoryItemStructure) 
+void UInventoryActorComponent::AddInventoryItemNewStackWrapper(UInventoryItemStructureWrapper* Wrapper)
 {   // If Items more than the one stack can have - add full stack and repeat call else just add
-	if (InventoryItemStructure.Count > InventoryItemStructure.StackSize) {
-		auto Structure = FInventoryItemStructure(InventoryItemStructure, InventoryItemStructure.StackSize);
-		InventoryItems.Add(BuildInventoryItemStructureWrapper(Structure));
+	if (Wrapper->InventoryItemStructure.Count > Wrapper->InventoryItemStructure.StackSize) {
+		auto NewFullStackedStructure = FInventoryItemStructure(Wrapper->InventoryItemStructure, Wrapper->InventoryItemStructure.StackSize);
+		auto NewFullStackedWrapper = BuildInventoryItemStructureWrapper(NewFullStackedStructure);
+		InventoryItems.Add(NewFullStackedWrapper);
 
-		auto NewInventoryItem = FInventoryItemStructure(InventoryItemStructure, InventoryItemStructure.Count - InventoryItemStructure.StackSize);
-		AddInventoryItemNewStack(NewInventoryItem);
-	} 
+		auto NextNewStackCount = Wrapper->InventoryItemStructure.Count - Wrapper->InventoryItemStructure.StackSize;
+		auto NextNewStructure = FInventoryItemStructure(Wrapper->InventoryItemStructure, NextNewStackCount);
+		auto NextNewWrapper = BuildInventoryItemStructureWrapper(NextNewStructure);
+		AddInventoryItemNewStackWrapper(NextNewWrapper);
+	}
 	else {
-		InventoryItems.Add(BuildInventoryItemStructureWrapper(InventoryItemStructure));
+		InventoryItems.Add(Wrapper);
 	}
 }

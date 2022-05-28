@@ -2,6 +2,7 @@
 
 #include "Feature/Feature_Interaction/Components/InteractorActorComponent.h"
 #include "Feature/Feature_Inventory/Interfaces/InventoryActorComponentHolder.h"
+#include "Feature/Feature_Obtained/Interfaces/ObtainedActorComponentHolder.h"
 #include "Feature/Feature_Interaction/Interfaces/InteractorUiActorComponentHolder.h"
 
 // Sets default values for this component's properties
@@ -22,6 +23,14 @@ void UInteractorActorComponent::OnRegister()
 	}
 	else {
 		GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Red, TEXT("Error: Owner doesn't contents InventoryActorComponent"));
+	}
+
+	// Setup ObtainedActorComponent variable
+	if (GetOwner()->GetClass()->ImplementsInterface(UObtainedActorComponentHolder::StaticClass())) {
+		this->ObtainedActorComponent = IObtainedActorComponentHolder::Execute_GetObtainedActorComponent(GetOwner());
+	}
+	else {
+		GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Red, TEXT("Error: Owner doesn't contents InteractorActorComponent"));
 	}
 
 	// Setup InteractorUiActorComponent variable
