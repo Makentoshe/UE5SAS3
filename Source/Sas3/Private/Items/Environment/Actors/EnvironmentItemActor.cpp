@@ -42,7 +42,9 @@ void AEnvironmentItemActor::EndPlay(const EEndPlayReason::Type EndPlayReason)
 }
 
 void AEnvironmentItemActor::OnNearbyInteractionBeginEvent(AActor* OverlappedActor)
-{   // Check overlapped actor can interact with this item
+{   // If this item is enabled for the player - skip it
+	if (!EnvironmentMeta.IsEnabled) return;
+	// Check overlapped actor can interact with this item
 	if (!OverlappedActor->GetClass()->ImplementsInterface(UInteractorActorComponentHolder::StaticClass())) {
 		//if(GEngine) GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Red, "OverlappedActor doesn't implements UInteractorActorComponentHolder interface");
 		return;
@@ -53,7 +55,9 @@ void AEnvironmentItemActor::OnNearbyInteractionBeginEvent(AActor* OverlappedActo
 }
 
 void AEnvironmentItemActor::OnNearbyInteractionEndEvent(AActor* OverlappedActor)
-{   // Check overlapped actor can interact with this item
+{   // If this item is enabled for the player - skip it
+	if (!EnvironmentMeta.IsEnabled) return;
+	// Check overlapped actor can interact with this item
 	if (!OverlappedActor->GetClass()->ImplementsInterface(UInteractorActorComponentHolder::StaticClass())) {
 		//if (GEngine) GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Red, "OverlappedActor doesn't implements UInteractorActorComponentHolder interface");
 		return;

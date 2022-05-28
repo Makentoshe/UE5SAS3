@@ -37,7 +37,7 @@ private:
 	void OnNearbyInteractionBeginEvent(AActor* OverlappedActor);
 
 	// Creates a NearbyInteractionStructure
-	UFUNCTION()// TODO make a FNearbyInteractionStructure ptr with lazy init
+	UFUNCTION(BlueprintCallable)
 	FNearbyInteractionStructure BuildNearbyInteractionStructure();
 
 public:
