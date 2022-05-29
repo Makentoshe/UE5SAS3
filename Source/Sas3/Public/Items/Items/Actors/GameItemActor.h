@@ -15,7 +15,7 @@ UDELEGATE()
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnNearbyInteractionEnd, AActor*, OverlappedActor);
 
 UDELEGATE()
-DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnGameItemInteracted);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnGameItemInteracted, AActor*, InteractedActor);
 
 /*
  * Most based game item that can be placed on the scene but not this one.

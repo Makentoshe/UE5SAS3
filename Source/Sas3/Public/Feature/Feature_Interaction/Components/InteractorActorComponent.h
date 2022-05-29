@@ -14,7 +14,9 @@ DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnAddNearbyInteraction, FNearbyInte
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnRemoveNearbyInteraction, FNearbyInteractionStructure, Structure);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnNextSelectedNearbyInteractionIndex);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnPrevSelectedNearbyInteractionIndex);
-DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnNearbyInteraction);
+
+UDELEGATE()
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnNearbyInteraction, AActor*, InteractedActor);
 
 
 UCLASS(BlueprintType, Abstract, Blueprintable, Meta = (BlueprintSpawnableComponent))
