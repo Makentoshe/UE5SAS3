@@ -7,7 +7,7 @@
 #include <Sas3/Public/Feature/Feature_Interaction/Components/InteractorUiActorComponent.h>
 #include <Sas3/Public/Feature/Feature_Interaction/Structure/FNearbyInteractionStructure.h>
 #include <Sas3/Public/Feature/Feature_Inventory/Components/InventoryActorComponent.h>
-#include "Feature/Feature_Obtained/Components/ObtainedActorComponent.h"
+#include "Feature/Feature_Ui_Obtained/Components/ObtainedActorComponent.h"
 #include "InteractorActorComponent.generated.h"
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnAddNearbyInteraction, FNearbyInteractionStructure, Structure);

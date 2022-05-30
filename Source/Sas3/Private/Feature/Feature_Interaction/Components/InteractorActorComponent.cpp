@@ -2,7 +2,7 @@
 
 #include "Feature/Feature_Interaction/Components/InteractorActorComponent.h"
 #include "Feature/Feature_Inventory/Interfaces/InventoryActorComponentHolder.h"
-#include "Feature/Feature_Obtained/Interfaces/ObtainedActorComponentHolder.h"
+#include "Feature/Feature_Ui_Obtained/Interfaces/ObtainedActorComponentHolder.h"
 #include "Feature/Feature_Interaction/Interfaces/InteractorUiActorComponentHolder.h"
 
 // Sets default values for this component's properties
