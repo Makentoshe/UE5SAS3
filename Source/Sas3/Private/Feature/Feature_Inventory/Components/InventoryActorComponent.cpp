@@ -21,26 +21,6 @@ UInventoryActorComponent::~UInventoryActorComponent()
 	this->InventoryItems.Empty();
 }
 
-void UInventoryActorComponent::OnRegister()
-{
-	Super::OnRegister();
-
-	// Setup InventoryActorComponent variable
-	if (GetOwner()->GetClass()->ImplementsInterface(UInventoryUiActorComponentHolder::StaticClass())) {
-		this->InventoryUiActorComponent = IInventoryUiActorComponentHolder::Execute_GetInventoryUiActorComponent(GetOwner());
-	}
-	else {
-		GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Red, TEXT("Error: Owner doesn't contents InventoryUiActorComponent"));
-	}
-}
-
-void UInventoryActorComponent::OnUnregister()
-{
-	Super::OnUnregister();
-
-	this->InventoryUiActorComponent = nullptr;
-}
-
 // Returns all items in the inventory
 TArray<UInventoryItemStructureWrapper*> UInventoryActorComponent::GetInventoryItems() { return InventoryItems; }
 
