@@ -7,7 +7,6 @@
 #include <Sas3/Public/Feature/Feature_Interaction/Components/InteractorUiActorComponent.h>
 #include <Sas3/Public/Feature/Feature_Interaction/Structure/FNearbyInteractionStructure.h>
 #include <Sas3/Public/Feature/Feature_Inventory/Components/InventoryActorComponent.h>
-#include "Feature/Feature_Ui_Obtained/Components/ObtainedActorComponent.h"
 #include "InteractorActorComponent.generated.h"
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnAddNearbyInteraction, FNearbyInteractionStructure, Structure);
@@ -19,7 +18,10 @@ UDELEGATE()
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnNearbyInteraction, AActor*, InteractedActor);
 
 UDELEGATE()
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnInventoryItemInteracted, AInventoryItemActor*, InventoryItemActor, AActor*, InteractedActor);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnGameItemInteracted2, AGameItemActor*, GameItemActor);
+
+UDELEGATE()
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnInventoryItemInteracted2, AInventoryItemActor*, InventoryItemActor, AActor*, InteractedActor);
 
 UCLASS(BlueprintType, Abstract, Blueprintable, Meta = (BlueprintSpawnableComponent))
 class SAS3_API UInteractorActorComponent : public UActorComponent
@@ -30,14 +32,6 @@ public:
 	// Sets default values for this component's properties
 	UInteractorActorComponent();
 
-protected:
-	
-	// Called when a component is registered, after Scene is set, but before CreateRenderState_Concurrent or OnCreatePhysicsState are called.
-	virtual void OnRegister() override;
-
-	// Called when a component is unregistered. Called after DestroyRenderState_Concurrent and OnDestroyPhysicsState are called.
-	virtual void OnUnregister() override;
-
 public:
 
 	// Index of selected element in the interaction list
@@ -47,10 +41,6 @@ public:
 	// List of all available nearby interactions
 	UPROPERTY(BlueprintReadWrite)
 	TArray<UNearbyInteractionWrapper*> NearbyInteractions;
-
-	// UI of the current component
-	UPROPERTY(BlueprintReadWrite, Category = Components)
-	TObjectPtr<UInteractorUiActorComponent> InteractorUiActorComponent;
 
 	// Calls when new interaction should be added to the interactions list
 	UPROPERTY(BlueprintAssignable, BlueprintCallable, Category = "Interactor Delegates")
@@ -72,7 +62,11 @@ public:
 	UPROPERTY(BlueprintAssignable, BlueprintCallable, Category = "Interactor Delegates")
 	FOnNearbyInteraction OnNearbyInteraction;
 
-	// Calls when inventory item was interacted
+	// Calls when inventory item was interacted. Called only on inventory item.
 	UPROPERTY(BlueprintAssignable, BlueprintCallable, Category = "Interactor Delegates")
-	FOnInventoryItemInteracted OnInventoryItemInteracted;
+	FOnInventoryItemInteracted2 OnInventoryItemInteracted;
+
+	// Calls when game item was interacted. No matter which item was interacted this event will be called
+	UPROPERTY(BlueprintAssignable, BlueprintCallable, Category = "Interactor Delegates")
+	FOnGameItemInteracted2 OnGameItemInteracted;
 };
