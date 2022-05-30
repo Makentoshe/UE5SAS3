@@ -18,6 +18,8 @@ DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnPrevSelectedNearbyInteractionIndex);
 UDELEGATE()
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnNearbyInteraction, AActor*, InteractedActor);
 
+UDELEGATE()
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnInventoryItemInteracted, AInventoryItemActor*, InventoryItemActor, AActor*, InteractedActor);
 
 UCLASS(BlueprintType, Abstract, Blueprintable, Meta = (BlueprintSpawnableComponent))
 class SAS3_API UInteractorActorComponent : public UActorComponent
@@ -46,10 +48,6 @@ public:
 	UPROPERTY(BlueprintReadWrite)
 	TArray<UNearbyInteractionWrapper*> NearbyInteractions;
 
-	// Required if interaction with this item requires inventory (pick upping inventory item)
-	UPROPERTY(BlueprintReadWrite, Category = Components)
-	TObjectPtr<UInventoryActorComponent> InventoryActorComponent;
-
 	// UI of the current component
 	UPROPERTY(BlueprintReadWrite, Category = Components)
 	TObjectPtr<UInteractorUiActorComponent> InteractorUiActorComponent;
@@ -73,4 +71,8 @@ public:
 	// Calls when previous item in the interactions list should be selected. The next item should be deselected.
 	UPROPERTY(BlueprintAssignable, BlueprintCallable, Category = "Interactor Delegates")
 	FOnNearbyInteraction OnNearbyInteraction;
+
+	// Calls when inventory item was interacted
+	UPROPERTY(BlueprintAssignable, BlueprintCallable, Category = "Interactor Delegates")
+	FOnInventoryItemInteracted OnInventoryItemInteracted;
 };

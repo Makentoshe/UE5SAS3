@@ -17,14 +17,6 @@ void UInteractorActorComponent::OnRegister()
 {
 	Super::OnRegister();
 
-	// Setup InventoryActorComponent variable
-	if (GetOwner()->GetClass()->ImplementsInterface(UInventoryActorComponentHolder::StaticClass())) {
-		this->InventoryActorComponent = IInventoryActorComponentHolder::Execute_GetInventoryActorComponent(GetOwner());
-	}
-	else {
-		GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Red, TEXT("Error: Owner doesn't contents InventoryActorComponent"));
-	}
-
 	// Setup InteractorUiActorComponent variable
 	if (GetOwner()->GetClass()->ImplementsInterface(UInteractorUiActorComponentHolder::StaticClass())) {
 		this->InteractorUiActorComponent = IInteractorUiActorComponentHolder::Execute_GetInteractorUiActorComponent(GetOwner());
@@ -39,6 +31,5 @@ void UInteractorActorComponent::OnUnregister()
 {
 	Super::OnUnregister();
 
-	this->InventoryActorComponent = nullptr;
 	this->InteractorUiActorComponent = nullptr;
 }

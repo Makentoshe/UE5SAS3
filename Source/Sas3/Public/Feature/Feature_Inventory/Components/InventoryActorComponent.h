@@ -26,21 +26,6 @@ public:
 	//Default virtual destructor
 	~UInventoryActorComponent();
 
-public: 
-	// Defines how many stacks of items might be in the inventory
-	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Category = "Inventory Settings")
-	int32 InventorySize;
-
-protected:
-	// Calls when new inventory item was added to the inventory
-	UPROPERTY(BlueprintAssignable, Category = "Inventory Delegates")
-	FOnAddInventoryItemWrapper OnAddInventoryItemWrapper;
-
-	// Contains all items in the inventory
-	UPROPERTY(BlueprintReadOnly)
-	TArray<UInventoryItemStructureWrapper*> InventoryItems;
-
-public:
 	// Add provided item to the inventory
 	UFUNCTION(BlueprintCallable)
 	void AddInventoryItemWrapper(UInventoryItemStructureWrapper* Wrapper);
@@ -57,4 +42,20 @@ private:
 	// Add provided item to the inventory starting from the new stack
 	UFUNCTION()
 	void AddInventoryItemNewStackWrapper(UInventoryItemStructureWrapper* Wrapper);
+
+
+
+public:
+	// Defines how many stacks of items might be in the inventory
+	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Category = "Inventory Settings")
+	int32 InventorySize;
+
+protected:
+	// Calls when new inventory item was added to the inventory
+	UPROPERTY(BlueprintAssignable, Category = "Inventory Delegates")
+	FOnAddInventoryItemWrapper OnAddInventoryItemWrapper;
+
+	// Contains all items in the inventory
+	UPROPERTY(BlueprintReadOnly)
+	TArray<UInventoryItemStructureWrapper*> InventoryItems;
 };
