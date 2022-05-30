@@ -44,6 +44,8 @@ void UInventoryActorComponent::AddInventoryItemWrapper(UInventoryItemStructureWr
 		GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Red, TEXT("Error: StackSize shouldn't be negative or zero"));
 		return;
 	}
+
+	this->OnAddInventoryItemWrapper.Broadcast(Wrapper);
 	
 	// Go through all inventory items and try to find our item
 	for (int i = 0; i < InventoryItems.Num(); i++) {

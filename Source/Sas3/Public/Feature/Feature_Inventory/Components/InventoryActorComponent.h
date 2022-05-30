@@ -10,6 +10,9 @@
 #include <Sas3/Public/Feature/Feature_Inventory/Structures/Wrappers/InventoryItemStructureWrapper.h>
 #include "InventoryActorComponent.generated.h"
 
+UDELEGATE()
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnAddInventoryItemWrapper, UInventoryItemStructureWrapper*, ItemStructureWrapper);
+
 /* Component declares that the Actor contains Inventory */
 UCLASS(BlueprintType)
 class SAS3_API UInventoryActorComponent : public UActorComponent
@@ -29,6 +32,9 @@ public:
 	int32 InventorySize;
 
 protected:
+	// Calls when new inventory item was added to the inventory
+	UPROPERTY(BlueprintAssignable, Category = "Inventory Delegates")
+	FOnAddInventoryItemWrapper OnAddInventoryItemWrapper;
 
 	// Contains all items in the inventory
 	UPROPERTY(BlueprintReadOnly)
@@ -48,7 +54,7 @@ protected:
 	UInventoryItemStructureWrapper* BuildInventoryItemStructureWrapper(FInventoryItemStructure& Structure);
 
 private:
-
 	// Add provided item to the inventory starting from the new stack
+	UFUNCTION()
 	void AddInventoryItemNewStackWrapper(UInventoryItemStructureWrapper* Wrapper);
 };

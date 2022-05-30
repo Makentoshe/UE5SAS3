@@ -54,10 +54,6 @@ public:
 	UPROPERTY(BlueprintReadWrite, Category = Components)
 	TObjectPtr<UInteractorUiActorComponent> InteractorUiActorComponent;
 
-	// Works along with the inventory component and allows to display pickupped items
-	UPROPERTY(BlueprintReadWrite, Category = Components)
-	TObjectPtr<UObtainedActorComponent> ObtainedActorComponent;
-
 	// Calls when new interaction should be added to the interactions list
 	UPROPERTY(BlueprintAssignable, BlueprintCallable, Category = "Interactor Delegates")
 	FOnAddNearbyInteraction OnAddNearbyInteraction;

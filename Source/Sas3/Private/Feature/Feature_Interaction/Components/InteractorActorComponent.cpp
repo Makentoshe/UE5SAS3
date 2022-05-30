@@ -25,14 +25,6 @@ void UInteractorActorComponent::OnRegister()
 		GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Red, TEXT("Error: Owner doesn't contents InventoryActorComponent"));
 	}
 
-	// Setup ObtainedActorComponent variable
-	if (GetOwner()->GetClass()->ImplementsInterface(UObtainedActorComponentHolder::StaticClass())) {
-		this->ObtainedActorComponent = IObtainedActorComponentHolder::Execute_GetObtainedActorComponent(GetOwner());
-	}
-	else {
-		GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Red, TEXT("Error: Owner doesn't contents InteractorActorComponent"));
-	}
-
 	// Setup InteractorUiActorComponent variable
 	if (GetOwner()->GetClass()->ImplementsInterface(UInteractorUiActorComponentHolder::StaticClass())) {
 		this->InteractorUiActorComponent = IInteractorUiActorComponentHolder::Execute_GetInteractorUiActorComponent(GetOwner());
