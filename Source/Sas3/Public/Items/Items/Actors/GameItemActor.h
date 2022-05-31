@@ -56,6 +56,6 @@ public:
 	FOnNearbyInteractionEnd OnNearbyInteractionEnd;
 
 	// Calls when this object was interacted 
-	UPROPERTY(BlueprintAssignable, BlueprintCallable, Category = "GameItem Delegates")
+	UPROPERTY(BlueprintAssignable, Category = "GameItem Delegates")
 	FOnGameItemInteracted OnGameItemInteracted;
 };

@@ -4,20 +4,22 @@
 
 #include "CoreMinimal.h"
 #include "Components/ActorComponent.h"
-#include <Sas3/Public/Feature/Feature_Interaction/Components/InteractorUiActorComponent.h>
 #include <Sas3/Public/Feature/Feature_Interaction/Structure/FNearbyInteractionStructure.h>
 #include <Sas3/Public/Feature/Feature_Interaction/Structure/Wrapper/NearbyInteractionWrapper.h>
+#include <Sas3/Public/Feature/Feature_Interaction/Enums/ENearbyInteractionIssue.h>
 #include <Sas3/Public/Feature/Feature_Inventory/Components/InventoryActorComponent.h>
+#include <Sas3/Public/Items/Environment/Actors/EnvironmentItemActor.h>
 #include "InteractorActorComponent.generated.h"
 
-UDELEGATE()
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnNearbyInteraction, AActor*, InteractedActor);
 
 UDELEGATE()
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnGameItemInteracted2, AGameItemActor*, GameItemActor);
 
 UDELEGATE()
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnInventoryItemInteracted2, AInventoryItemActor*, InventoryItemActor, AActor*, InteractedActor);
+
+UDELEGATE()
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnEnvironmentItemInteracted2, AEnvironmentItemActor*, EnvironmentItemActor, AActor*, InteractedActor);
 
 UDELEGATE()
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnAddNearbyInteraction3, UNearbyInteractionWrapper*, NearbyInteractionWrapper);
@@ -27,6 +29,9 @@ DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnRemoveNearbyInteraction3, UNearby
 
 UDELEGATE()
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnChangeSelectedInteractionIndex, int32, NewIndex, UNearbyInteractionWrapper*, NewSelectedWrapper);
+
+UDELEGATE()
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnNearbyInteractionIssue, ENearbyInteractionIssue, Reason);
 
 
 UCLASS(BlueprintType, Abstract, Blueprintable, Meta = (BlueprintSpawnableComponent))
@@ -68,37 +73,62 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void SelectNearbyInteractionIndex(int32 NewIndex);
 
+	// Executes selected NearbyInteraction
+	UFUNCTION(BlueprintCallable)
+	void ExecuteSelectedNearbyInteraction(AActor* InteractedActor);
+
+private:
+
+	// Called when interacted actor has None type
+	UFUNCTION()
+	void NearbyInteractionNone(UNearbyInteractionWrapper* Wrapper, AActor* InteractedActor);
+
+	// Called when interacted actor has Inventory type
+	UFUNCTION()
+	void NearbyInteractionInventory(UNearbyInteractionWrapper* Wrapper, AActor* InteractedActor);
+
+	// Called when interacted actor has Environment type
+	UFUNCTION()
+	void NearbyInteractionEnvironment(UNearbyInteractionWrapper* Wrapper, AActor* InteractedActor);
+
 public:
 
 	// Index of selected element in the interaction list
-	UPROPERTY(BlueprintReadWrite)
+	UPROPERTY(BlueprintReadOnly)
 	int32 SelectedInteractionIndex;
 
 	// List of all available nearby interactions
-	UPROPERTY(BlueprintReadWrite)
+	UPROPERTY(BlueprintReadOnly)
 	TArray<UNearbyInteractionWrapper*> NearbyInteractions;
 
-	// Calls when previous item in the interactions list should be selected. The next item should be deselected.
-	UPROPERTY(BlueprintAssignable, BlueprintCallable, Category = "Interactor Delegates")
-	FOnNearbyInteraction OnNearbyInteraction;
-
-	// Calls when inventory item was interacted. Called only on inventory item.
-	UPROPERTY(BlueprintAssignable, BlueprintCallable, Category = "Interactor Delegates")
-	FOnInventoryItemInteracted2 OnInventoryItemInteracted;
 
 	// Calls when game item was interacted. No matter which item was interacted this event will be called
-	UPROPERTY(BlueprintAssignable, BlueprintCallable, Category = "Interactor Delegates")
+	UPROPERTY(BlueprintAssignable, Category = "Interactor Delegates | Interactions")
 	FOnGameItemInteracted2 OnGameItemInteracted;
 
+	// Calls when inventory item was interacted. Called only on inventory item.
+	UPROPERTY(BlueprintAssignable, Category = "Interactor Delegates | Interactions")
+	FOnInventoryItemInteracted2 OnInventoryItemInteracted;
+
+	// Calls when Environment item was interacted. Called only on environment item.
+	UPROPERTY(BlueprintAssignable, BlueprintCallable, Category = "Interactor Delegates | Interactions")
+	FOnEnvironmentItemInteracted2 OnEnvironmentItemInteracted;
+
+
 	// Calls when new interaction was be added to the interactions list
-	UPROPERTY(BlueprintAssignable, BlueprintCallable, Category = "Interactor Delegates")
+	UPROPERTY(BlueprintAssignable, BlueprintCallable, Category = "Interactor Delegates | States")
 	FOnAddNearbyInteraction3 OnAddNearbyInteraction3;
 
 	// Calls when interaction was removed to the interactions list
-	UPROPERTY(BlueprintAssignable, BlueprintCallable, Category = "Interactor Delegates")
+	UPROPERTY(BlueprintAssignable, BlueprintCallable, Category = "Interactor Delegates | States")
 	FOnRemoveNearbyInteraction3 OnRemoveNearbyInteraction3;
 	
 	// Calls when selected interaction index was changed
-	UPROPERTY(BlueprintAssignable, BlueprintCallable, Category = "Interactor Delegates")
+	UPROPERTY(BlueprintAssignable, BlueprintCallable, Category = "Interactor Delegates | States")
 	FOnChangeSelectedInteractionIndex OnChangeSelectedInteractionIndex;
+
+
+	// Calls when any issue occurs
+	UPROPERTY(BlueprintAssignable, BlueprintCallable, Category = "Interactor Delegates | Errors")
+	FOnNearbyInteractionIssue OnNearbyInteractionIssue;
 };

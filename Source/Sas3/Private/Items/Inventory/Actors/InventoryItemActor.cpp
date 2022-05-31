@@ -20,7 +20,7 @@ AInventoryItemActor::~AInventoryItemActor()
 
 UInventoryItemStructureWrapper* AInventoryItemActor::GetInventoryItemWrapper()
 {   // if property initialized - just return it
-	if (this->InventoryItemWrapper) return this->InventoryItemWrapper;
+	if (this->InventoryItemWrapper != nullptr) return this->InventoryItemWrapper;
 	// Create InventoryItemStructure requred to wrapper
 	FInventoryItemStructure Structure;
 	Structure.Count = this->InventoryMeta.ItemCount;

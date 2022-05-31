@@ -30,6 +30,9 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void AddInventoryItemWrapper(UInventoryItemStructureWrapper* Wrapper);
 
+	//UFUNCTION(BlueprintCallable)
+	//void AddInventoryItemStructure(FInventoryItemStructure)
+
 	// Returns all items currently placed in the inventory
 	UFUNCTION(BlueprintCallable)
 	TArray<UInventoryItemStructureWrapper*> GetInventoryItems();
