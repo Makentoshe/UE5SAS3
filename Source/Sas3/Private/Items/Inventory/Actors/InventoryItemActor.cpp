@@ -67,7 +67,7 @@ void AInventoryItemActor::OnNearbyInteractionBeginEvent(AActor* OverlappedActor)
 	}
 	// Invoke InteractorActorComponent OnAddNearbyInteraction event
 	auto InteractorActorComponent = IInteractorActorComponentHolder::Execute_GetInteractorActorComponent(OverlappedActor);
-	InteractorActorComponent->OnAddNearbyInteraction.Broadcast(BuildNearbyInteractionStructure());
+	InteractorActorComponent->AddNearbyInteractionStructure(BuildNearbyInteractionStructure());
 }
 
 void AInventoryItemActor::OnNearbyInteractionEndEvent(AActor* OverlappedActor)

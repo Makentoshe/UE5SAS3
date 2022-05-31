@@ -11,3 +11,20 @@ UInteractorActorComponent::UInteractorActorComponent()
 	PrimaryComponentTick.bCanEverTick = false;
 }
 
+UInteractorActorComponent::~UInteractorActorComponent()
+{
+}
+
+void UInteractorActorComponent::AddNearbyInteractionWrapper(UNearbyInteractionWrapper* Wrapper)
+{   // Add wrapper to the list and notify about it
+	this->NearbyInteractions.Add(Wrapper);
+	this->OnAddNearbyInteraction3.Broadcast(Wrapper);
+}
+
+void UInteractorActorComponent::AddNearbyInteractionStructure(UPARAM(ref)const FNearbyInteractionStructure& Structure)
+{   // Create wrapper and call AddNearbyInteractionWrapper
+	UNearbyInteractionWrapper* Wrapper = NewObject<UNearbyInteractionWrapper>();
+	Wrapper->NearbyInteractionStructure = Structure;
+	AddNearbyInteractionWrapper(Wrapper);
+}
+

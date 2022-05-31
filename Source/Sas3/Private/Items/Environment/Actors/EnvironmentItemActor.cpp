@@ -51,7 +51,7 @@ void AEnvironmentItemActor::OnNearbyInteractionBeginEvent(AActor* OverlappedActo
 	}
 	// Invoke InteractorActorComponent OnAddNearbyInteraction event
 	auto InteractorActorComponent = IInteractorActorComponentHolder::Execute_GetInteractorActorComponent(OverlappedActor);
-	InteractorActorComponent->OnAddNearbyInteraction.Broadcast(BuildNearbyInteractionStructure());
+	InteractorActorComponent->AddNearbyInteractionStructure(BuildNearbyInteractionStructure());
 }
 
 void AEnvironmentItemActor::OnNearbyInteractionEndEvent(AActor* OverlappedActor)

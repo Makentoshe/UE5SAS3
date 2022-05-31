@@ -6,10 +6,10 @@
 #include "Components/ActorComponent.h"
 #include <Sas3/Public/Feature/Feature_Interaction/Components/InteractorUiActorComponent.h>
 #include <Sas3/Public/Feature/Feature_Interaction/Structure/FNearbyInteractionStructure.h>
+#include <Sas3/Public/Feature/Feature_Interaction/Structure/Wrapper/NearbyInteractionWrapper.h>
 #include <Sas3/Public/Feature/Feature_Inventory/Components/InventoryActorComponent.h>
 #include "InteractorActorComponent.generated.h"
 
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnAddNearbyInteraction, FNearbyInteractionStructure, Structure);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnRemoveNearbyInteraction, FNearbyInteractionStructure, Structure);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnNextSelectedNearbyInteractionIndex);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnPrevSelectedNearbyInteractionIndex);
@@ -23,6 +23,9 @@ DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnGameItemInteracted2, AGameItemAct
 UDELEGATE()
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnInventoryItemInteracted2, AInventoryItemActor*, InventoryItemActor, AActor*, InteractedActor);
 
+UDELEGATE()
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnAddNearbyInteraction3, UNearbyInteractionWrapper*, NearbyInteractionWrapper);
+
 UCLASS(BlueprintType, Abstract, Blueprintable, Meta = (BlueprintSpawnableComponent))
 class SAS3_API UInteractorActorComponent : public UActorComponent
 {
@@ -31,6 +34,14 @@ class SAS3_API UInteractorActorComponent : public UActorComponent
 public:	
 	// Sets default values for this component's properties
 	UInteractorActorComponent();
+	// Default virtual destructor
+	virtual ~UInteractorActorComponent();
+
+	UFUNCTION(BlueprintCallable)
+	void AddNearbyInteractionWrapper(UNearbyInteractionWrapper* Wrapper);
+
+	UFUNCTION(BlueprintCallable)
+	void AddNearbyInteractionStructure(UPARAM(ref) const FNearbyInteractionStructure& Structure);
 
 public:
 
@@ -41,10 +52,6 @@ public:
 	// List of all available nearby interactions
 	UPROPERTY(BlueprintReadWrite)
 	TArray<UNearbyInteractionWrapper*> NearbyInteractions;
-
-	// Calls when new interaction should be added to the interactions list
-	UPROPERTY(BlueprintAssignable, BlueprintCallable, Category = "Interactor Delegates")
-	FOnAddNearbyInteraction OnAddNearbyInteraction;
 
 	// Calls when new interaction should be added to the interactions list
 	UPROPERTY(BlueprintAssignable, BlueprintCallable, Category = "Interactor Delegates")
@@ -69,4 +76,8 @@ public:
 	// Calls when game item was interacted. No matter which item was interacted this event will be called
 	UPROPERTY(BlueprintAssignable, BlueprintCallable, Category = "Interactor Delegates")
 	FOnGameItemInteracted2 OnGameItemInteracted;
+
+	// Calls when new interaction was be added to the interactions list
+	UPROPERTY(BlueprintAssignable, BlueprintCallable, Category = "Interactor Delegates")
+	FOnAddNearbyInteraction3 OnAddNearbyInteraction3;
 };
