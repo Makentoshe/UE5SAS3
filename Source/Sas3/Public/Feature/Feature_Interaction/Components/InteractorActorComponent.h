@@ -10,10 +10,6 @@
 #include <Sas3/Public/Feature/Feature_Inventory/Components/InventoryActorComponent.h>
 #include "InteractorActorComponent.generated.h"
 
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnRemoveNearbyInteraction, FNearbyInteractionStructure, Structure);
-DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnNextSelectedNearbyInteractionIndex);
-DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnPrevSelectedNearbyInteractionIndex);
-
 UDELEGATE()
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnNearbyInteraction, AActor*, InteractedActor);
 
@@ -26,6 +22,13 @@ DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnInventoryItemInteracted2, AInven
 UDELEGATE()
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnAddNearbyInteraction3, UNearbyInteractionWrapper*, NearbyInteractionWrapper);
 
+UDELEGATE()
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnRemoveNearbyInteraction3, UNearbyInteractionWrapper*, NearbyInteractionWrapper);
+
+UDELEGATE()
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnChangeSelectedInteractionIndex, int32, NewIndex, UNearbyInteractionWrapper*, NewSelectedWrapper);
+
+
 UCLASS(BlueprintType, Abstract, Blueprintable, Meta = (BlueprintSpawnableComponent))
 class SAS3_API UInteractorActorComponent : public UActorComponent
 {
@@ -37,11 +40,33 @@ public:
 	// Default virtual destructor
 	virtual ~UInteractorActorComponent();
 
+	// Add provided Wrapper to the nearby interactions list
 	UFUNCTION(BlueprintCallable)
 	void AddNearbyInteractionWrapper(UNearbyInteractionWrapper* Wrapper);
 
+	// Creates a Wrapper from the Structure and adds it to the nearby interactions list
 	UFUNCTION(BlueprintCallable)
 	void AddNearbyInteractionStructure(UPARAM(ref) const FNearbyInteractionStructure& Structure);
+
+	// Removes provided Wrapper from the nearby interactions list
+	UFUNCTION(BlueprintCallable)
+	void RemoveNearbyInteractionWrapper(UNearbyInteractionWrapper* Wrapper);
+
+	// Finds a Wrapper in the interactions list by the Structure and removes it
+	UFUNCTION(BlueprintCallable)
+	void RemoveNearbyInteractionStructure(UPARAM(ref) const FNearbyInteractionStructure& Structure);
+
+	// Moves SelectedInteractionIndex to the next value or resets it to the start
+	UFUNCTION(BlueprintCallable)
+	void SelectNextNearbyInteractionIndex();
+
+	// Moves SelectedInteractionIndex to the next value or resets it to the start
+	UFUNCTION(BlueprintCallable)
+	void SelectPrevNearbyInteractionIndex();
+
+	// Moves SelectedInteractionIndex to the exactly provided value
+	UFUNCTION(BlueprintCallable)
+	void SelectNearbyInteractionIndex(int32 NewIndex);
 
 public:
 
@@ -52,18 +77,6 @@ public:
 	// List of all available nearby interactions
 	UPROPERTY(BlueprintReadWrite)
 	TArray<UNearbyInteractionWrapper*> NearbyInteractions;
-
-	// Calls when new interaction should be added to the interactions list
-	UPROPERTY(BlueprintAssignable, BlueprintCallable, Category = "Interactor Delegates")
-	FOnRemoveNearbyInteraction OnRemoveNearbyInteraction;
-
-	// Calls when next item in the interactions list should be selected. The previous item should be deselected.
-	UPROPERTY(BlueprintAssignable, BlueprintCallable, Category = "Interactor Delegates")
-	FOnNextSelectedNearbyInteractionIndex OnNextSelectedNearbyInteractionIndex;
-
-	// Calls when previous item in the interactions list should be selected. The next item should be deselected.
-	UPROPERTY(BlueprintAssignable, BlueprintCallable, Category = "Interactor Delegates")
-	FOnPrevSelectedNearbyInteractionIndex OnPrevSelectedNearbyInteractionIndex;
 
 	// Calls when previous item in the interactions list should be selected. The next item should be deselected.
 	UPROPERTY(BlueprintAssignable, BlueprintCallable, Category = "Interactor Delegates")
@@ -80,4 +93,12 @@ public:
 	// Calls when new interaction was be added to the interactions list
 	UPROPERTY(BlueprintAssignable, BlueprintCallable, Category = "Interactor Delegates")
 	FOnAddNearbyInteraction3 OnAddNearbyInteraction3;
+
+	// Calls when interaction was removed to the interactions list
+	UPROPERTY(BlueprintAssignable, BlueprintCallable, Category = "Interactor Delegates")
+	FOnRemoveNearbyInteraction3 OnRemoveNearbyInteraction3;
+	
+	// Calls when selected interaction index was changed
+	UPROPERTY(BlueprintAssignable, BlueprintCallable, Category = "Interactor Delegates")
+	FOnChangeSelectedInteractionIndex OnChangeSelectedInteractionIndex;
 };

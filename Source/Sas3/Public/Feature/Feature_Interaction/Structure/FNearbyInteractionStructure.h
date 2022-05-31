@@ -40,4 +40,14 @@ struct SAS3_API FNearbyInteractionStructure
 	// Allows to assign an object using = operator.
 	// Note: this assign makes an copy of the object which allows us to avoid memory loss on base object change
 	FNearbyInteractionStructure& operator=(const FNearbyInteractionStructure Structure);
+
+	// Allows to compare 2 Structures
+	// Note: here we checking actors only, because this structures cant be unassigned from the provided actors
+	// So, if actors are equal -> structures also equal
+	bool operator==(const FNearbyInteractionStructure& Structure);
+
+	// Allows to compare 2 Structures
+	// Note: here we checking actors only, because this structures cant be unassigned from the provided actors
+	// So, if actors aren't equal -> structures also not equal
+	bool operator!=(const FNearbyInteractionStructure& Structure);
 };

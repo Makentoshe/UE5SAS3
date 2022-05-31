@@ -26,3 +26,14 @@ FNearbyInteractionStructure& FNearbyInteractionStructure::operator=(const FNearb
 
 	return *this;
 }
+
+
+bool FNearbyInteractionStructure::operator==(const FNearbyInteractionStructure& Structure)
+{   
+	return this->Actor == Structure.Actor;
+}
+
+bool FNearbyInteractionStructure::operator!=(const FNearbyInteractionStructure& Structure)
+{
+	return this->Actor != Structure.Actor;
+}

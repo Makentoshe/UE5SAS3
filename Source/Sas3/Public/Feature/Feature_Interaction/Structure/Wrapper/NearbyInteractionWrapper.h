@@ -29,4 +29,7 @@ public:
 	// Wrapped structure
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	FNearbyInteractionStructure NearbyInteractionStructure;
+
+	// Allows to compare 2 Wrappers
+	bool operator==(UNearbyInteractionWrapper* Wrapper);
 };

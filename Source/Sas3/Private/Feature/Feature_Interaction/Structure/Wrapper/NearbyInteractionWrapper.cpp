@@ -22,3 +22,9 @@ FNearbyInteractionStructure UNearbyInteractionWrapper::GetNearbyInteractionStruc
 {
 	return this->NearbyInteractionStructure;
 }
+
+//Note: Wrappers contains only structures so we should compare them
+bool UNearbyInteractionWrapper::operator==(UNearbyInteractionWrapper* Wrapper)
+{
+	return this->NearbyInteractionStructure == Wrapper->NearbyInteractionStructure;
+}
