@@ -13,5 +13,9 @@ UCLASS(BlueprintType, Abstract)
 class SAS3_API UCharacterHudObtainerWidget : public UUserWidget
 {
 	GENERATED_BODY()
-	
+
+protected:
+	// Widget to use to display last obtained items
+	UPROPERTY(BlueprintReadOnly, meta=(BindWidget))
+	TObjectPtr<class UListView> ObtainingsContainer;
 };
