@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "Components/ActorComponent.h"
+#include "Feature/Feature_CharacterHud/Widgets/CharacterHudObtainerWidget.h"
 #include "CharacterHudActorComponent.generated.h"
 
 
@@ -30,10 +31,13 @@ protected:
 
 protected:
 	// Reference to the owners controller
-	UPROPERTY(BlueprintReadWrite)
+	UPROPERTY(BlueprintReadWrite, Category = "Owner")
 	TObjectPtr<APlayerController> OwnerController;
 
 	// Reference to the owner
-	UPROPERTY(BlueprintReadWrite)
+	UPROPERTY(BlueprintReadWrite, Category = "Owner")
 	TObjectPtr<APawn> OwnerPawn;
+
+	UPROPERTY(BlueprintReadWrite, Category = "Widgets")
+	TObjectPtr<UCharacterHudObtainerWidget> ObtainingsWidget;
 };
