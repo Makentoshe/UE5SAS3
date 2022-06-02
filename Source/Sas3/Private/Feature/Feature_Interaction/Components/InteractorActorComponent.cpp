@@ -58,7 +58,9 @@ void UInteractorActorComponent::RemoveNearbyInteractionStructure(UPARAM(ref) con
 }
 
 void UInteractorActorComponent::SelectNextNearbyInteractionIndex()
-{   // if current index < last index
+{   // If there aren't any available interactions - just ignore method invokation
+	if (this->NearbyInteractions.Num() == 0) return;
+	// if current index < last index
 	if (this->SelectedInteractionIndex < this->NearbyInteractions.Num() - 1) {
 		this->SelectedInteractionIndex = this->SelectedInteractionIndex + 1;
 	}
@@ -70,7 +72,9 @@ void UInteractorActorComponent::SelectNextNearbyInteractionIndex()
 }
 
 void UInteractorActorComponent::SelectPrevNearbyInteractionIndex()
-{
+{   // If there aren't any available interactions - just ignore method invokation
+	if (this->NearbyInteractions.Num() == 0) return;
+
 	if (this->SelectedInteractionIndex <= 0) {
 		this->SelectedInteractionIndex = FMath::Max(NearbyInteractions.Num() - 1, 0);
 	}
