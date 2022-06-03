@@ -110,6 +110,8 @@ void UInteractorActorComponent::NearbyInteractionInventory(UNearbyInteractionWra
 	this->RemoveNearbyInteractionWrapper(Wrapper);
 	// Fix selection: decrease index if it out of the length bound
 	this->SelectedInteractionIndex = FMath::Max(FMath::Min(this->NearbyInteractions.Num() - 1, this->SelectedInteractionIndex), 0);
+	// Just return if we cant select anything
+	if (this->NearbyInteractions.IsEmpty()) return;
 	// Invoke change selection event	
 	auto NewSelectedWrapper = this->NearbyInteractions[this->SelectedInteractionIndex];
 	this->OnChangeSelectedInteractionIndex.Broadcast(this->SelectedInteractionIndex, NewSelectedWrapper);
