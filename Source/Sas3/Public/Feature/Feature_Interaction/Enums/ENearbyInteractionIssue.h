@@ -9,7 +9,6 @@
  */
 UENUM(BlueprintType)
 enum class ENearbyInteractionIssue: uint8 {
-	RemoveCantFindWrapperInList			UMETA(DisplayName = "Remove: Can't find wrapper in the list"),
 	RemoveCantRemoveWrapperFromList		UMETA(DisplayName = "Remove: Can't remove wrapper from the list"),
 	InteractionEmptyInteractionsList    UMETA(DisplayName = "Interaction: Interactions list empty"),
 	InteractionSelectionIssue			UMETA(DisplayName = "Interaction: Invalid selection and list size"),
