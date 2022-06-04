@@ -21,7 +21,7 @@ class SAS3_API IGameItemActorComponentHolder
 {
 	GENERATED_BODY()
 
-	// Add interface functions to this class. This is the class that will be inherited to implement this interface.
 public:
-	UGameItemActorComponent GetGameItemActorComponent();
+	UFUNCTION(BlueprintCallable, BlueprintImplementableEvent)
+	UGameItemActorComponent* GetGameItemActorComponent();
 };
