@@ -50,8 +50,8 @@ void AEnvironmentItemActor::OnNearbyInteractionBeginEvent(AActor* OverlappedActo
 		return;
 	}
 	// Invoke InteractorActorComponent OnAddNearbyInteraction event
-	auto InteractorActorComponent = IInteractorActorComponentHolder::Execute_GetInteractorActorComponent(OverlappedActor);
-	InteractorActorComponent->AddNearbyInteractionStructure(BuildNearbyInteractionStructure());
+	//auto InteractorActorComponent = IInteractorActorComponentHolder::Execute_GetInteractorActorComponent(OverlappedActor);
+	//InteractorActorComponent->AddNearbyInteractionStructure(BuildNearbyInteractionStructure());
 }
 
 void AEnvironmentItemActor::OnNearbyInteractionEndEvent(AActor* OverlappedActor)
@@ -63,8 +63,8 @@ void AEnvironmentItemActor::OnNearbyInteractionEndEvent(AActor* OverlappedActor)
 		return;
 	}
 	// Invoke InteractorActorComponent OnRemoveNearbyInteraction event
-	auto InteractorActorComponent = IInteractorActorComponentHolder::Execute_GetInteractorActorComponent(OverlappedActor);
-	InteractorActorComponent->RemoveNearbyInteractionStructure(BuildNearbyInteractionStructure());
+	//auto InteractorActorComponent = IInteractorActorComponentHolder::Execute_GetInteractorActorComponent(OverlappedActor);
+	//InteractorActorComponent->RemoveNearbyInteractionStructure(BuildNearbyInteractionStructure());
 }
 
 // Create structure that will describe interaction

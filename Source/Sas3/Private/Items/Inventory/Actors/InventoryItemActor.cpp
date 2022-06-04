@@ -66,8 +66,8 @@ void AInventoryItemActor::OnNearbyInteractionBeginEvent(AActor* OverlappedActor)
 		return;
 	}
 	// Invoke InteractorActorComponent OnAddNearbyInteraction event
-	auto InteractorActorComponent = IInteractorActorComponentHolder::Execute_GetInteractorActorComponent(OverlappedActor);
-	InteractorActorComponent->AddNearbyInteractionStructure(BuildNearbyInteractionStructure());
+	//auto InteractorActorComponent = IInteractorActorComponentHolder::Execute_GetInteractorActorComponent(OverlappedActor);
+	//InteractorActorComponent->AddNearbyInteractionStructure(BuildNearbyInteractionStructure());
 }
 
 void AInventoryItemActor::OnNearbyInteractionEndEvent(AActor* OverlappedActor)
@@ -77,8 +77,8 @@ void AInventoryItemActor::OnNearbyInteractionEndEvent(AActor* OverlappedActor)
 		return;
 	}
 	// Invoke InteractorActorComponent OnRemoveNearbyInteraction event
-	auto InteractorActorComponent = IInteractorActorComponentHolder::Execute_GetInteractorActorComponent(OverlappedActor);
-	InteractorActorComponent->RemoveNearbyInteractionStructure(BuildNearbyInteractionStructure());
+	//auto InteractorActorComponent = IInteractorActorComponentHolder::Execute_GetInteractorActorComponent(OverlappedActor);
+	//InteractorActorComponent->RemoveNearbyInteractionStructure(BuildNearbyInteractionStructure());
 }
 
 // Create structure that will describe interaction
