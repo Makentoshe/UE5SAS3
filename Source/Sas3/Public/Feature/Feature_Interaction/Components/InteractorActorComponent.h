@@ -9,6 +9,7 @@
 #include <Sas3/Public/Feature/Feature_Interaction/Enums/ENearbyInteractionIssue.h>
 #include <Sas3/Public/Feature/Feature_Inventory/Components/InventoryActorComponent.h>
 #include <Sas3/Public/Items/Environment/Actors/EnvironmentItemActor.h>
+#include <Sas3/Public/Feature/Feature_Interaction/Structure/Wrapper/InteractionWrapper.h>
 #include "InteractorActorComponent.generated.h"
 
 
@@ -22,13 +23,13 @@ UDELEGATE()
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnEnvironmentItemInteracted2, AEnvironmentItemActor*, EnvironmentItemActor, AActor*, InteractedActor);
 
 UDELEGATE()
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnAddNearbyInteraction3, UNearbyInteractionWrapper*, NearbyInteractionWrapper);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnAddNearbyInteraction3, UInteractionWrapper*, InteractionWrapper);
 
 UDELEGATE()
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnRemoveNearbyInteraction3, UNearbyInteractionWrapper*, NearbyInteractionWrapper);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnRemoveNearbyInteraction3, UInteractionWrapper*, InteractionWrapper);
 
 UDELEGATE()
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnChangeSelectedInteractionIndex, int32, NewIndex, UNearbyInteractionWrapper*, NewSelectedWrapper);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnChangeSelectedInteractionIndex, int32, NewIndex, UInteractionWrapper*, NewSelectedWrapper);
 
 UDELEGATE()
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnNearbyInteractionIssue, ENearbyInteractionIssue, Reason);
@@ -45,33 +46,27 @@ public:
 	// Default virtual destructor
 	virtual ~UInteractorActorComponent();
 
-	// Add provided Wrapper to the nearby interactions list
-	UFUNCTION(BlueprintCallable)
-	void AddNearbyInteractionWrapper(UNearbyInteractionWrapper* Wrapper);
-
-	// Creates a Wrapper from the Structure and adds it to the nearby interactions list
-	UFUNCTION(BlueprintCallable)
-	void AddNearbyInteractionStructure(UPARAM(ref) const FNearbyInteractionStructure& Structure);
+	// Add provided Wrapper to the interactions list
+	UFUNCTION(BlueprintCallable, Category="Interactions | Manipulation")
+	void AddInteractionWrapper(UInteractionWrapper* Wrapper);
 
 	// Removes provided Wrapper from the nearby interactions list
-	UFUNCTION(BlueprintCallable)
-	void RemoveNearbyInteractionWrapper(UNearbyInteractionWrapper* Wrapper);
-
-	// Finds a Wrapper in the interactions list by the Structure and removes it
-	UFUNCTION(BlueprintCallable)
-	void RemoveNearbyInteractionStructure(UPARAM(ref) const FNearbyInteractionStructure& Structure);
+	UFUNCTION(BlueprintCallable, Category = "Interactions | Manipulation")
+	void RemoveInteractionWrapper(UInteractionWrapper* Wrapper);
 
 	// Moves SelectedInteractionIndex to the next value or resets it to the start
-	UFUNCTION(BlueprintCallable)
+	UFUNCTION(BlueprintCallable, Category = "Interactions | Selection")
 	void SelectNextNearbyInteractionIndex();
 
 	// Moves SelectedInteractionIndex to the next value or resets it to the start
-	UFUNCTION(BlueprintCallable)
+	UFUNCTION(BlueprintCallable, Category = "Interactions | Selection")
 	void SelectPrevNearbyInteractionIndex();
 
 	// Moves SelectedInteractionIndex to the exactly provided value
-	UFUNCTION(BlueprintCallable)
+	UFUNCTION(BlueprintCallable, Category = "Interactions | Selection")
 	void SelectNearbyInteractionIndex(int32 NewIndex);
+
+
 
 	// Executes selected NearbyInteraction
 	UFUNCTION(BlueprintCallable)
@@ -101,6 +96,10 @@ public:
 	UPROPERTY(BlueprintReadOnly)
 	TArray<UNearbyInteractionWrapper*> NearbyInteractions;
 
+	// List of available interactions
+	UPROPERTY(BlueprintReadOnly)
+	TArray<UInteractionWrapper*> Interactions;
+
 
 	// Calls when game item was interacted. No matter which item was interacted this event will be called
 	UPROPERTY(BlueprintAssignable, Category = "Interactor Delegates | Interactions")
@@ -126,7 +125,6 @@ public:
 	// Calls when selected interaction index was changed
 	UPROPERTY(BlueprintAssignable, BlueprintCallable, Category = "Interactor Delegates | States")
 	FOnChangeSelectedInteractionIndex OnChangeSelectedInteractionIndex;
-
 
 	// Calls when any issue occurs
 	UPROPERTY(BlueprintAssignable, BlueprintCallable, Category = "Interactor Delegates | Errors")
