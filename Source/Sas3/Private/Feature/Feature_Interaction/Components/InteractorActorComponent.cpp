@@ -1,6 +1,7 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #include "Feature/Feature_Interaction/Components/InteractorActorComponent.h"
+#include "Feature/Feature_Interaction/Interfaces/InteractableSphereComponentHolder.h"
 #include "Feature/Feature_Inventory/Interfaces/InventoryActorComponentHolder.h"
 #include "Feature/Feature_Inventory/Interfaces/InventorableActorComponentHolder.h"
 
@@ -141,7 +142,17 @@ void UInteractorActorComponent::ExecuteSelectedInteractionActionInternal(AActor*
 {   // Check if actor is inventorable
 	if (Wrapper->InteractableActor->GetClass()->ImplementsInterface(UInventorableActorComponentHolder::StaticClass())) {
 		auto InventorableActorComponent = IInventorableActorComponentHolder::Execute_GetInventorableActorComponent(Wrapper->InteractableActor);
-		InventorableActorComponent->ExecuteInventoryItemAction(this->GetOwner());
+		if (IsValid(InventorableActorComponent)) {
+			InventorableActorComponent->ExecuteInventoryItemAction(this->GetOwner());
+		}
 	}
 
+	// When all interactions was finished - invoke event on the interacted component and current component to finalize it
+	this->OnInteractionFinished.Broadcast(InteractedActor, Wrapper);
+	if (Wrapper->InteractableActor->GetClass()->ImplementsInterface(UInteractableSphereComponentHolder::StaticClass())) {
+		auto InteractableSphereComponent = IInteractableSphereComponentHolder::Execute_GetInteractableSphereComponent(Wrapper->InteractableActor);
+		if (IsValid(InteractableSphereComponent)) {
+			InteractableSphereComponent->OnInteractionFinished.Broadcast(InteractedActor, Wrapper);
+		}
+	}
 }

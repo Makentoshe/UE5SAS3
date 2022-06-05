@@ -7,6 +7,11 @@
 #include <Sas3/Public/Feature/Feature_Interaction/Structure/FInteractionStructure.h>
 #include "InteractableSphereComponent.generated.h"
 
+
+UDELEGATE()
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FInteractableComponentInteractionFinished, AActor*, InteractedActor, UInteractionWrapper*, InteractionWrapper);
+
+
 /**
  * SphereComponent enables interaction on collision events
  * 
@@ -41,7 +46,9 @@ protected:
 
 
 public:
-
+	// Called when interaction was finished and component can finalize its interaction 
+	UPROPERTY(BlueprintAssignable)
+	FInteractableComponentInteractionFinished OnInteractionFinished;
 
 protected:
 	// This structure will be passed to interactor component to specify interaction
