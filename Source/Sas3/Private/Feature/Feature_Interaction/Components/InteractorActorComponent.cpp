@@ -2,6 +2,8 @@
 
 #include "Feature/Feature_Interaction/Components/InteractorActorComponent.h"
 #include "Feature/Feature_Inventory/Interfaces/InventoryActorComponentHolder.h"
+#include "Feature/Feature_Inventory/Interfaces/InventorableActorComponentHolder.h"
+
 
 // Sets default values for this component's properties
 UInteractorActorComponent::UInteractorActorComponent()
@@ -102,22 +104,22 @@ void UInteractorActorComponent::NearbyInteractionEnvironment(UNearbyInteractionW
 	this->OnEnvironmentItemInteracted.Broadcast(EnvironmentItemActor, InteractedActor);
 }
 
-void UInteractorActorComponent::ExecuteSelectedNearbyInteraction(AActor* InteractedActor)
+void UInteractorActorComponent::ExecuteSelectedInteractionAction(AActor* InteractedActor)
 {   // Check NearbyIteractions list is not empty
-	GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Yellow, TEXT("Execute"));
-	if (this->NearbyInteractions.Num() == 0) {
+	if (this->Interactions.Num() == 0) {
 		this->OnNearbyInteractionIssue.Broadcast(ENearbyInteractionIssue::InteractionEmptyInteractionsList);
 		return;
 	}
 	// Check SelectedInteractionItem is valid
-	if (this->NearbyInteractions.Num() < SelectedInteractionIndex) {
+	if (this->Interactions.Num() < SelectedInteractionIndex) {
 		this->OnNearbyInteractionIssue.Broadcast(ENearbyInteractionIssue::InteractionSelectionIssue);
 		return;
 	}
 	// Get selected NearbyInteraction
-	auto Wrapper = this->NearbyInteractions[this->SelectedInteractionIndex];
-	// Call event that GameItem was interacted
-	this->OnGameItemInteracted.Broadcast(Wrapper->NearbyInteractionStructure.Actor);
+	auto Wrapper = this->Interactions[this->SelectedInteractionIndex];
+	// Call event that actor was interacted
+	this->OnActorInteracted.Broadcast(Wrapper->InteractableActor);
+	ExecuteSelectedInteractionActionInternal(InteractedActor, Wrapper);
 	// TODO implement components for environment interactions and inventory interactions
 //	switch (Wrapper->NearbyInteractionStructure.NearbyInteractionType) {
 //	case NearbyInteractionType::None:
@@ -135,3 +137,11 @@ void UInteractorActorComponent::ExecuteSelectedNearbyInteraction(AActor* Interac
 //	Wrapper->NearbyInteractionStructure.Actor->OnGameItemInteracted.Broadcast(InteractedActor);
 }
 
+void UInteractorActorComponent::ExecuteSelectedInteractionActionInternal(AActor* InteractedActor, UInteractionWrapper* Wrapper)
+{   // Check if actor is inventorable
+	if (Wrapper->InteractableActor->GetClass()->ImplementsInterface(UInventorableActorComponentHolder::StaticClass())) {
+		auto InventorableActorComponent = IInventorableActorComponentHolder::Execute_GetInventorableActorComponent(Wrapper->InteractableActor);
+		InventorableActorComponent->ExecuteInventoryItemAction(this->GetOwner());
+	}
+
+}

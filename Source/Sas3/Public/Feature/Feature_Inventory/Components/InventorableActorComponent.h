@@ -9,8 +9,7 @@
 
 
 UDELEGATE()
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnInventoryItemAction, AActor*, InventoryActor);
-
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnInventoryItemAction, AActor*, InventoryActor, UInventoryItemStructureWrapper*, InventoryItemWrapper);
 
 UCLASS(BlueprintType, Abstract, Blueprintable, meta = (BlueprintSpawnableComponent))
 class SAS3_API UInventorableActorComponent : public UActorComponent
@@ -26,6 +25,11 @@ public:
 	// Called to execute inventory item action
 	UFUNCTION(BlueprintCallable)
 	void ExecuteInventoryItemAction(AActor* InventoryActor);
+
+protected:
+
+	UFUNCTION(BlueprintCallable)
+	UInventoryItemStructureWrapper* GetInventoryItemWrapper(FName Title);
 
 public:
 	// Holds meta info about item usefull for inventory feature
