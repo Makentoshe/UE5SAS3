@@ -17,6 +17,10 @@ UDELEGATE()
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnActorInteracted, AActor*, InteractedActor);
 
 UDELEGATE()
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FInteractorComponentInteractionFinished, AActor*, InteractedActor, UInteractionWrapper*, InteractionWrapper);
+
+
+UDELEGATE()
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnInventoryItemInteracted2, AInventoryItemActor*, InventoryItemActor, AActor*, InteractedActor);
 
 UDELEGATE()
@@ -109,6 +113,10 @@ public:
 	// Calls when game item was interacted. No matter which item was interacted this event will be called
 	UPROPERTY(BlueprintAssignable, Category = "Interactor Delegates | Interactions")
 	FOnActorInteracted OnActorInteracted;
+
+	// Called when interaction was finished and component can finalize its interaction 
+	UPROPERTY(BlueprintAssignable, Category = "Interactor Delegates | Interactions")
+	FInteractorComponentInteractionFinished OnInteractionFinished;
 
 	// Calls when inventory item was interacted. Called only on inventory item.
 	UPROPERTY(BlueprintAssignable, Category = "Interactor Delegates | Interactions")
