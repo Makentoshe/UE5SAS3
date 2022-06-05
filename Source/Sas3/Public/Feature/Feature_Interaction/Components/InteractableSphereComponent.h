@@ -13,6 +13,9 @@ UDELEGATE()
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FInteractableComponentInteractionFinished, AActor*, InteractedActor, UInteractionWrapper*, InteractionWrapper);
 
 UDELEGATE()
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FInteractableComponentInteractionAction, AActor*, InteractedActor, UInteractionWrapper*, InteractionWrapper);
+
+UDELEGATE()
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FInteractableComponentIssue, EInteractableComponentIssues, Reason);
 
 
@@ -50,6 +53,10 @@ protected:
 
 
 public:
+	// Called when interaction was started and component should do something
+	UPROPERTY(BlueprintAssignable)
+	FInteractableComponentInteractionAction OnInteractionAction;
+
 	// Called when interaction was finished and component can finalize its interaction 
 	UPROPERTY(BlueprintAssignable)
 	FInteractableComponentInteractionFinished OnInteractionFinished;
