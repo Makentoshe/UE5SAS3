@@ -36,22 +36,30 @@ UInteractableSphereComponent::~UInteractableSphereComponent()
 void UInteractableSphereComponent::OnSphereComponentBeginOverlap(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {   // Check overlapped actor can interact with this item
 	if (!OtherActor->GetClass()->ImplementsInterface(UInteractorActorComponentHolder::StaticClass())) {
-		//if(GEngine) GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Red, "OverlappedActor doesn't implements UInteractorActorComponentHolder interface");
+		this->OnComponentIssues.Broadcast(EInteractableComponentIssues::InteractionOverlapInterface);
+		return;
+	}
+	auto InteractorActorComponent = IInteractorActorComponentHolder::Execute_GetInteractorActorComponent(OtherActor);
+	if (!IsValid(InteractorActorComponent)) {
+		this->OnComponentIssues.Broadcast(EInteractableComponentIssues::InteractionOverlapPointer);
 		return;
 	}
 
-	auto InteractorActorComponent = IInteractorActorComponentHolder::Execute_GetInteractorActorComponent(OtherActor);
 	InteractorActorComponent->AddInteractionWrapper(GetInteractionWrapper());
 }
 
 void UInteractableSphereComponent::OnSphereComponentEndOverlap(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
-{   // Check overlapped actor can interact with this item
+{    // Check overlapped actor can interact with this item
 	if (!OtherActor->GetClass()->ImplementsInterface(UInteractorActorComponentHolder::StaticClass())) {
-		//if(GEngine) GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Red, "OverlappedActor doesn't implements UInteractorActorComponentHolder interface");
+		this->OnComponentIssues.Broadcast(EInteractableComponentIssues::InteractionOverlapInterface);
+		return;
+	}
+	auto InteractorActorComponent = IInteractorActorComponentHolder::Execute_GetInteractorActorComponent(OtherActor);
+	if (!IsValid(InteractorActorComponent)) {
+		this->OnComponentIssues.Broadcast(EInteractableComponentIssues::InteractionOverlapPointer);
 		return;
 	}
 	
-	auto InteractorActorComponent = IInteractorActorComponentHolder::Execute_GetInteractorActorComponent(OtherActor);
 	InteractorActorComponent->RemoveInteractionWrapper(GetInteractionWrapper());
 }
 
