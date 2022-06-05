@@ -14,7 +14,7 @@
 
 
 UDELEGATE()
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnGameItemInteracted2, AGameItemActor*, GameItemActor);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnActorInteracted, AActor*, InteractedActor);
 
 UDELEGATE()
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnInventoryItemInteracted2, AInventoryItemActor*, InventoryItemActor, AActor*, InteractedActor);
@@ -35,6 +35,7 @@ UDELEGATE()
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnNearbyInteractionIssue, ENearbyInteractionIssue, Reason);
 
 
+/* Any Actor that can interact with other actors should contain this component */
 UCLASS(BlueprintType, Abstract, Blueprintable, Meta = (BlueprintSpawnableComponent))
 class SAS3_API UInteractorActorComponent : public UActorComponent
 {
@@ -70,9 +71,13 @@ public:
 
 	// Executes selected NearbyInteraction
 	UFUNCTION(BlueprintCallable)
-	void ExecuteSelectedNearbyInteraction(AActor* InteractedActor);
+	void ExecuteSelectedInteractionAction(AActor* InteractedActor);
 
 private:
+
+	// Executes selected NearbyInteraction after checks
+	UFUNCTION()
+	void ExecuteSelectedInteractionActionInternal(AActor* InteractedActor, UInteractionWrapper* Wrapper);
 
 	// Called when interacted actor has None type
 	UFUNCTION()
@@ -103,7 +108,7 @@ public:
 
 	// Calls when game item was interacted. No matter which item was interacted this event will be called
 	UPROPERTY(BlueprintAssignable, Category = "Interactor Delegates | Interactions")
-	FOnGameItemInteracted2 OnGameItemInteracted;
+	FOnActorInteracted OnActorInteracted;
 
 	// Calls when inventory item was interacted. Called only on inventory item.
 	UPROPERTY(BlueprintAssignable, Category = "Interactor Delegates | Interactions")
