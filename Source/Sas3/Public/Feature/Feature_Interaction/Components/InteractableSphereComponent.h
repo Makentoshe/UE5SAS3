@@ -5,11 +5,15 @@
 #include "CoreMinimal.h"
 #include "Components/SphereComponent.h"
 #include <Sas3/Public/Feature/Feature_Interaction/Structure/FInteractionStructure.h>
+#include "Feature/Feature_Interaction/Enums/EInteractableComponentIssues.h"
 #include "InteractableSphereComponent.generated.h"
 
 
 UDELEGATE()
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FInteractableComponentInteractionFinished, AActor*, InteractedActor, UInteractionWrapper*, InteractionWrapper);
+
+UDELEGATE()
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FInteractableComponentIssue, EInteractableComponentIssues, Reason);
 
 
 /**
@@ -58,5 +62,9 @@ protected:
 	// This structure will be passed to interactor component to specify interaction
 	UPROPERTY()
 	TObjectPtr<UInteractionWrapper> InteractionWrapper;
+
+	// Cause when any issue occurs to notify about it
+	UPROPERTY(BlueprintAssignable)
+	FInteractableComponentIssue OnComponentIssues;
 
 };
