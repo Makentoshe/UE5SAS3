@@ -27,10 +27,11 @@ void UInteractorActorComponent::RemoveInteractionWrapper(UInteractionWrapper* Wr
 {   // Remove wrapper from the list using operator== to equal elements
 	if (this->Interactions.Remove(Wrapper)) { // Notify about removement
         this->OnRemoveNearbyInteraction3.Broadcast(Wrapper);
-		return;
+		return; 
 	}
 	// If we don't remove wrapper - notify about it
 	this->OnNearbyInteractionIssue.Broadcast(ENearbyInteractionIssue::RemoveCantRemoveWrapperFromList);
+	//todo fix issue
 }
 
 void UInteractorActorComponent::SelectNextNearbyInteractionIndex()
@@ -68,78 +69,40 @@ void UInteractorActorComponent::SelectNearbyInteractionIndex(int32 NewIndex)
 	this->OnChangeSelectedInteractionIndex.Broadcast(this->SelectedInteractionIndex, this->Interactions[SelectedInteractionIndex]);
 }
 
-void UInteractorActorComponent::NearbyInteractionNone(UNearbyInteractionWrapper* Wrapper, AActor* InteractedActor)
-{
-	this->OnNearbyInteractionIssue.Broadcast(ENearbyInteractionIssue::InteractionTypeIsNone);
-}
-
-void UInteractorActorComponent::NearbyInteractionInventory(UNearbyInteractionWrapper* Wrapper, AActor* InteractedActor)
-{   // Cast to InventoryItemActor
-	auto InventoryItemActor = Cast<AInventoryItemActor>(Wrapper->NearbyInteractionStructure.Actor);
-	if (InventoryItemActor == nullptr) {
-		this->OnNearbyInteractionIssue.Broadcast(ENearbyInteractionIssue::InteractionInventoryItemActorCast);
-		return;
-	}
-	// Call event that InventoryItem was interacted
-	this->OnInventoryItemInteracted.Broadcast(InventoryItemActor, InteractedActor);
-	// Remove InteractionWrapper from the list (hide it)
-	//this->RemoveNearbyInteractionWrapper(Wrapper);
-	// Fix selection: decrease index if it out of the length bound
-	this->SelectedInteractionIndex = FMath::Max(FMath::Min(this->NearbyInteractions.Num() - 1, this->SelectedInteractionIndex), 0);
-	// Just return if we cant select anything
-	if (this->NearbyInteractions.IsEmpty()) return;
-	// Invoke change selection event	
-	auto NewSelectedWrapper = this->NearbyInteractions[this->SelectedInteractionIndex];
-	//this->OnChangeSelectedInteractionIndex.Broadcast(this->SelectedInteractionIndex, NewSelectedWrapper);
-}
-
-void UInteractorActorComponent::NearbyInteractionEnvironment(UNearbyInteractionWrapper* Wrapper, AActor* InteractedActor)
-{
-	// Cast to InventoryItemActor
-	auto EnvironmentItemActor = Cast<AEnvironmentItemActor>(Wrapper->NearbyInteractionStructure.Actor);
-	if (EnvironmentItemActor == nullptr) {
-		this->OnNearbyInteractionIssue.Broadcast(ENearbyInteractionIssue::InteractionEnvironmentItemActorCast);
-		return;
-	}
-	// Call event that EnvironmentItem was interacted
-	this->OnEnvironmentItemInteracted.Broadcast(EnvironmentItemActor, InteractedActor);
-}
-
 void UInteractorActorComponent::ExecuteSelectedInteractionAction(AActor* InteractedActor)
 {   // Check NearbyIteractions list is not empty
 	if (this->Interactions.Num() == 0) {
-		this->OnNearbyInteractionIssue.Broadcast(ENearbyInteractionIssue::InteractionEmptyInteractionsList);
-		return;
+		this->OnNearbyInteractionIssue.Broadcast(ENearbyInteractionIssue::InteractionEmptyInteractions);
+		return; // if interactions list empty
 	}
 	// Check SelectedInteractionItem is valid
 	if (this->Interactions.Num() < SelectedInteractionIndex) {
-		this->OnNearbyInteractionIssue.Broadcast(ENearbyInteractionIssue::InteractionSelectionIssue);
-		return;
+		this->OnNearbyInteractionIssue.Broadcast(ENearbyInteractionIssue::InteractionInvalidSelection);
+		return; // if selection index is higher than interactions count
 	}
 	// Get selected NearbyInteraction
 	auto Wrapper = this->Interactions[this->SelectedInteractionIndex];
 	// Call event that actor was interacted
 	this->OnActorInteracted.Broadcast(Wrapper->InteractableActor);
 	ExecuteSelectedInteractionActionInternal(InteractedActor, Wrapper);
-	// TODO implement components for environment interactions and inventory interactions
-//	switch (Wrapper->NearbyInteractionStructure.NearbyInteractionType) {
-//	case NearbyInteractionType::None:
-//		NearbyInteractionNone(Wrapper, InteractedActor);
-//		break;
-//	case NearbyInteractionType::Inventory:
-//		NearbyInteractionInventory(Wrapper, InteractedActor);
-//		break;
-//	case NearbyInteractionType::Environment:
-//		NearbyInteractionEnvironment(Wrapper, InteractedActor);
-//		break;
-//	}
-//
-//	// Notify GameItem that it was interacted
-//	Wrapper->NearbyInteractionStructure.Actor->OnGameItemInteracted.Broadcast(InteractedActor);
 }
 
 void UInteractorActorComponent::ExecuteSelectedInteractionActionInternal(AActor* InteractedActor, UInteractionWrapper* Wrapper)
-{   // Check if actor is inventorable
+{   // Check is actor is interactable
+	if (!Wrapper->InteractableActor->GetClass()->ImplementsInterface(UInteractableSphereComponentHolder::StaticClass())) {
+		this->OnNearbyInteractionIssue.Broadcast(ENearbyInteractionIssue::InteractionNotInteractableInterface);
+		return; // if interactable actor doesn't implements InteractableSphereComponentHolder
+	}
+	auto InteractableSphereComponent = IInteractableSphereComponentHolder::Execute_GetInteractableSphereComponent(Wrapper->InteractableActor);
+	if (!IsValid(InteractableSphereComponent)) {
+		this->OnNearbyInteractionIssue.Broadcast(ENearbyInteractionIssue::InteractionNotInteractablePointer);
+		return; // if interactable actor doesn't provides InteractableSphereComponent
+	}
+
+	// Invoke default interaction action event
+	InteractableSphereComponent->OnInteractionAction.Broadcast(InteractedActor, Wrapper);
+
+	// Invoke inventory item action if inventorable
 	if (Wrapper->InteractableActor->GetClass()->ImplementsInterface(UInventorableActorComponentHolder::StaticClass())) {
 		auto InventorableActorComponent = IInventorableActorComponentHolder::Execute_GetInventorableActorComponent(Wrapper->InteractableActor);
 		if (IsValid(InventorableActorComponent)) {
@@ -149,10 +112,5 @@ void UInteractorActorComponent::ExecuteSelectedInteractionActionInternal(AActor*
 
 	// When all interactions was finished - invoke event on the interacted component and current component to finalize it
 	this->OnInteractionFinished.Broadcast(InteractedActor, Wrapper);
-	if (Wrapper->InteractableActor->GetClass()->ImplementsInterface(UInteractableSphereComponentHolder::StaticClass())) {
-		auto InteractableSphereComponent = IInteractableSphereComponentHolder::Execute_GetInteractableSphereComponent(Wrapper->InteractableActor);
-		if (IsValid(InteractableSphereComponent)) {
-			InteractableSphereComponent->OnInteractionFinished.Broadcast(InteractedActor, Wrapper);
-		}
-	}
+	InteractableSphereComponent->OnInteractionFinished.Broadcast(InteractedActor, Wrapper);
 }
