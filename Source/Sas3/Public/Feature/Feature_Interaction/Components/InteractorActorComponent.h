@@ -84,7 +84,6 @@ public:
 	UPROPERTY(BlueprintReadOnly)
 	TArray<UInteractionWrapper*> Interactions;
 
-
 	// Calls when game item was interacted. No matter which item was interacted this event will be called
 	UPROPERTY(BlueprintAssignable, Category = "Interactor Delegates | Action")
 	FOnActorInteracted OnActorInteracted;
@@ -92,7 +91,6 @@ public:
 	// Called when interaction was finished and component can finalize its interaction 
 	UPROPERTY(BlueprintAssignable, Category = "Interactor Delegates | Action")
 	FInteractorComponentInteractionFinished OnInteractionFinished;
-
 
 	// Calls when new interaction was be added to the interactions list
 	UPROPERTY(BlueprintAssignable, BlueprintCallable, Category = "Interactor Delegates | Manipulation")
@@ -105,7 +103,6 @@ public:
 	// Calls when selected interaction index was changed
 	UPROPERTY(BlueprintAssignable, BlueprintCallable, Category = "Interactor Delegates | Selection")
 	FOnChangeSelectedInteractionIndex OnChangeSelectedInteractionIndex;
-
 
 	// Calls when any issue occurs
 	UPROPERTY(BlueprintAssignable, BlueprintCallable, Category = "Interactor Delegates | Errors")
