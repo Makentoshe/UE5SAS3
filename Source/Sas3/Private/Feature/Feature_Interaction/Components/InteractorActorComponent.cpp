@@ -30,8 +30,7 @@ void UInteractorActorComponent::RemoveInteractionWrapper(UInteractionWrapper* Wr
 		return; 
 	}
 	// If we don't remove wrapper - notify about it
-	this->OnNearbyInteractionIssue.Broadcast(ENearbyInteractionIssue::RemoveCantRemoveWrapperFromList);
-	//todo fix issue
+	this->OnNearbyInteractionIssue.Broadcast(ENearbyInteractionIssue::InteractionCantRemoveWrapper);
 }
 
 void UInteractorActorComponent::SelectNextNearbyInteractionIndex()
