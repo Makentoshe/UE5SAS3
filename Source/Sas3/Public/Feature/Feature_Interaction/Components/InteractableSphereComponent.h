@@ -31,6 +31,13 @@ class SAS3_API UInteractableSphereComponent : public USphereComponent
 	
 	// Default constructor
 	UInteractableSphereComponent();
+
+	// Called when a component is registered, after Scene is set, but before CreateRenderState_Concurrent or OnCreatePhysicsState are called.
+	virtual void OnRegister() override;
+
+	// Called when a component is unregistered. Called after DestroyRenderState_Concurrent and OnDestroyPhysicsState are called.
+	virtual void OnUnregister() override;
+
 	// Default virtual destructor
 	virtual ~UInteractableSphereComponent();
 

@@ -12,26 +12,39 @@ UInteractableSphereComponent::UInteractableSphereComponent()
 	this->SphereRadius = 128.0f;
 	// Set shape green collor for Unreal Editor
 	this->ShapeColor = FColor::Green;
+}
 
-
+void UInteractableSphereComponent::OnRegister()
+{
+	Super::OnRegister();
 	this->SetCollisionProfileName("Trigger");
 
 	// Initialize OnBeginOverlap delegate
 	FName FNameBeginOverlap("OnSphereComponentBeginOverlap");
 	FScriptDelegate FScriptDelegateSphereComponentBeginOverlap;
 	FScriptDelegateSphereComponentBeginOverlap.BindUFunction(this, FNameBeginOverlap);
-	this->OnComponentBeginOverlap.Add(FScriptDelegateSphereComponentBeginOverlap);
+	this->OnComponentBeginOverlap.AddUnique(FScriptDelegateSphereComponentBeginOverlap);
 
 	// Initialize OnEndOverlap delegate
 	FName FNameEndOverlap("OnSphereComponentEndOverlap");
 	FScriptDelegate FScriptDelegateSphereComponentEndOverlap;
 	FScriptDelegateSphereComponentEndOverlap.BindUFunction(this, FNameEndOverlap);
-	this->OnComponentEndOverlap.Add(FScriptDelegateSphereComponentEndOverlap);
+	this->OnComponentEndOverlap.AddUnique(FScriptDelegateSphereComponentEndOverlap);
+}
+
+void UInteractableSphereComponent::OnUnregister()
+{
+	Super::OnUnregister();
+
+	this->OnComponentBeginOverlap.Clear();
+	this->OnComponentEndOverlap.Clear();
 }
 
 UInteractableSphereComponent::~UInteractableSphereComponent()
 {
 }
+
+
 
 void UInteractableSphereComponent::OnSphereComponentBeginOverlap(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {   // Check overlapped actor can interact with this item
@@ -49,7 +62,7 @@ void UInteractableSphereComponent::OnSphereComponentBeginOverlap(UPrimitiveCompo
 }
 
 void UInteractableSphereComponent::OnSphereComponentEndOverlap(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
-{    // Check overlapped actor can interact with this item
+{   // Check overlapped actor can interact with this item
 	if (!OtherActor->GetClass()->ImplementsInterface(UInteractorActorComponentHolder::StaticClass())) {
 		this->OnComponentIssues.Broadcast(EInteractableComponentIssues::InteractionOverlapInterface);
 		return;
