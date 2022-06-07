@@ -21,6 +21,6 @@ public:
 	virtual ~UGameItemActorComponent();
 
 	// Contains general info about owner
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Item")
+	UPROPERTY(BlueprintReadWrite, Category = "Item")
 	FGameItemStructure GameItem3;
 };
