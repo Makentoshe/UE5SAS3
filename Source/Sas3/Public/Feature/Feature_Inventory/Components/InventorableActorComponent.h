@@ -33,7 +33,7 @@ protected:
 
 public:
 	// Holds meta info about item usefull for inventory feature
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	UPROPERTY(BlueprintReadWrite)
 	FInventoryMetaStructure InventoryMeta;
 	
 	// Called when inventory action occurs
