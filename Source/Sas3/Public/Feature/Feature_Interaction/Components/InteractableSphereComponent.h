@@ -70,7 +70,7 @@ public:
 
 protected:
 	// This structure will be passed to interactor component to specify interaction
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	UPROPERTY(BlueprintReadWrite)
 	FInteractionStructure InteractionStructure;
 
 	// This structure will be passed to interactor component to specify interaction
