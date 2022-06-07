@@ -75,7 +75,7 @@ void UInteractorActorComponent::ExecuteSelectedInteractionAction(AActor* Interac
 		return; // if interactions list empty
 	}
 	// Check SelectedInteractionItem is valid
-	if (this->Interactions.Num() < SelectedInteractionIndex) {
+	if (this->Interactions.Num() <= SelectedInteractionIndex) {
 		this->OnNearbyInteractionIssue.Broadcast(ENearbyInteractionIssue::InteractionInvalidSelection);
 		return; // if selection index is higher than interactions count
 	}
