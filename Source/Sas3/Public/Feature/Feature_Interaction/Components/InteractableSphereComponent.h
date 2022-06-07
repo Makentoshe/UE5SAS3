@@ -60,6 +60,10 @@ protected:
 
 
 public:
+	// Disables interaction checks if false
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	bool IsInteractionEnabled;
+
 	// Called when interaction was started and component should do something
 	UPROPERTY(BlueprintAssignable)
 	FInteractableComponentInteractionAction OnInteractionAction;

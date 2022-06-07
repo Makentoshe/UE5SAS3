@@ -12,6 +12,8 @@ UInteractableSphereComponent::UInteractableSphereComponent()
 	this->SphereRadius = 128.0f;
 	// Set shape green collor for Unreal Editor
 	this->ShapeColor = FColor::Green;
+	// Enable interaction by default
+	this->IsInteractionEnabled = true;
 }
 
 void UInteractableSphereComponent::OnRegister()
@@ -47,7 +49,12 @@ UInteractableSphereComponent::~UInteractableSphereComponent()
 
 
 void UInteractableSphereComponent::OnSphereComponentBeginOverlap(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
-{   // Check overlapped actor can interact with this item
+{   // Check is interaction enabled for this component
+	if (!this->IsInteractionEnabled) {
+		this->OnComponentIssues.Broadcast(EInteractableComponentIssues::InteractionDisabled);
+		return;
+	}
+	// Check overlapped actor can interact with this item
 	if (!OtherActor->GetClass()->ImplementsInterface(UInteractorActorComponentHolder::StaticClass())) {
 		this->OnComponentIssues.Broadcast(EInteractableComponentIssues::InteractionOverlapInterface);
 		return;
@@ -62,7 +69,12 @@ void UInteractableSphereComponent::OnSphereComponentBeginOverlap(UPrimitiveCompo
 }
 
 void UInteractableSphereComponent::OnSphereComponentEndOverlap(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
-{   // Check overlapped actor can interact with this item
+{   // Check is interaction enabled for this component
+	if (!this->IsInteractionEnabled) {
+		this->OnComponentIssues.Broadcast(EInteractableComponentIssues::InteractionDisabled);
+		return;
+	}
+	// Check overlapped actor can interact with this item
 	if (!OtherActor->GetClass()->ImplementsInterface(UInteractorActorComponentHolder::StaticClass())) {
 		this->OnComponentIssues.Broadcast(EInteractableComponentIssues::InteractionOverlapInterface);
 		return;
