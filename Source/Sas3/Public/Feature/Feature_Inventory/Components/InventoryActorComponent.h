@@ -6,7 +6,6 @@
 #include "Components/ActorComponent.h"
 #include <Sas3/Public/Feature/Feature_Inventory/Structures/FInventoryItemStructure.h>
 #include <Sas3/Public/Feature/Feature_Inventory/Components/InventoryUiActorComponent.h>
-#include <Sas3/Public/Items/Inventory/Actors/InventoryItemActor.h>
 #include <Sas3/Public/Feature/Feature_Inventory/Structures/Wrappers/InventoryItemStructureWrapper.h>
 #include "InventoryActorComponent.generated.h"
 
