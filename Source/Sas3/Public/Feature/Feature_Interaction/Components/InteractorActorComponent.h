@@ -4,11 +4,8 @@
 
 #include "CoreMinimal.h"
 #include "Components/ActorComponent.h"
-#include <Sas3/Public/Feature/Feature_Interaction/Structure/FNearbyInteractionStructure.h>
-#include <Sas3/Public/Feature/Feature_Interaction/Structure/Wrapper/NearbyInteractionWrapper.h>
 #include <Sas3/Public/Feature/Feature_Interaction/Enums/ENearbyInteractionIssue.h>
 #include <Sas3/Public/Feature/Feature_Inventory/Components/InventoryActorComponent.h>
-#include <Sas3/Public/Items/Environment/Actors/EnvironmentItemActor.h>
 #include <Sas3/Public/Feature/Feature_Interaction/Structure/Wrapper/InteractionWrapper.h>
 #include "InteractorActorComponent.generated.h"
 
