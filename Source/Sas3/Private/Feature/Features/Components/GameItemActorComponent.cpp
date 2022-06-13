@@ -1,7 +1,7 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "Feature/Feature_GameItem/Components/GameItemActorComponent.h"
+#include "Feature/Features/Components/GameItemActorComponent.h"
 
 // Default constructor
 UGameItemActorComponent::UGameItemActorComponent()

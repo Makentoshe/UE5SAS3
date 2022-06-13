@@ -4,7 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "UObject/Interface.h"
-#include <Sas3/Public/Feature/Feature_GameItem/Components/GameItemActorComponent.h>
+#include "Feature/Features/Components/GameItemActorComponent.h"
 #include "GameItemActorComponentHolder.generated.h"
 
 // This class does not need to be modified.

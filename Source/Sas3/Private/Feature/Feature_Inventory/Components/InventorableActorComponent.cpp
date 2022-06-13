@@ -3,7 +3,7 @@
 
 #include "Feature/Feature_Inventory/Components/InventorableActorComponent.h"
 #include "Feature/Feature_Inventory/Interfaces/InventoryActorComponentHolder.h"
-#include "Feature/Feature_GameItem/Interfaces/GameItemActorComponentHolder.h"
+#include "Feature/Features/Interfaces/GameItemActorComponentHolder.h"
 
 // Sets default values for this component's properties
 UInventorableActorComponent::UInventorableActorComponent()

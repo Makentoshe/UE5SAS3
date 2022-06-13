@@ -3,7 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include <Sas3/Public/Items/Items/Structures/FGameItemStructure.h>
+#include "Feature/Features/Structures/FGameItemStructure.h"
 #include "FInventoryItemStructure.generated.h"
 
 /**

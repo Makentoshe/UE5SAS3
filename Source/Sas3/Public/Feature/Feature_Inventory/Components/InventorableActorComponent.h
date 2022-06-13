@@ -4,7 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "Components/ActorComponent.h"
-#include <Sas3/Public/Items/Inventory/Structures/FInventoryMetaStructure.h>
+#include <Feature/Feature_Inventory/Structures/FInventoryMetaStructure.h>
 #include "InventorableActorComponent.generated.h"
 
 

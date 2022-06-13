@@ -4,7 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "Components/ActorComponent.h"
-#include <Sas3/Public/Items/Items/Structures/FGameItemStructure.h>
+#include "Feature/Features/Structures/FGameItemStructure.h"
 #include "GameItemActorComponent.generated.h"
 
 /* Component declares that owner actor have some knowledge about itself */
