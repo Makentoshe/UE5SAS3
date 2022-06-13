@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "Components/ActorComponent.h"
 #include "Feature/Feature_CharacterHud/Widgets/CharacterHudObtainerWidget.h"
+#include "Feature/Feature_CharacterHud/Widgets/CharacterHudInterationWidget.h"
 #include "CharacterHudActorComponent.generated.h"
 
 
@@ -40,4 +41,7 @@ protected:
 
 	UPROPERTY(BlueprintReadWrite, Category = "Widgets")
 	TObjectPtr<UCharacterHudObtainerWidget> ObtainingsWidget;
+
+	UPROPERTY(BlueprintReadWrite, Category = "Widgets")
+	TObjectPtr<UCharacterHudInterationWidget> InteractionsWidget;
 };
