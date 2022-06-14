@@ -37,6 +37,9 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void ChangeInteractionEntrySelection(int32 NewIndex);
 
+	UFUNCTION(BlueprintCallable, Category = "CharacterHud | Functions")
+	int32 GetCurrentInteractionsCount();
+
 public:
 	// Event called when new interaction wrapper was added to the InteractionsContainer
 	UPROPERTY(BlueprintAssignable, Category = "Interactor Delegates")

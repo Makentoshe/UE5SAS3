@@ -33,3 +33,8 @@ void UCharacterHudInterationWidget::ChangeInteractionEntrySelection(int32 NewInd
 	// Invoke interaction changed event
 	this->OnInteractionChanged.Broadcast(NewIndex);
 }
+
+int32 UCharacterHudInterationWidget::GetCurrentInteractionsCount()
+{
+	return this->InteractionsContainer.Get()->GetNumItems();
+}
