@@ -4,9 +4,19 @@
 
 #include "CoreMinimal.h"
 #include "Components/ActorComponent.h"
+
+#include "Feature/Feature_Interaction/Structure/Wrapper/InteractionWrapper.h"
 #include "Feature/Feature_CharacterHud/Widgets/CharacterHudObtainerWidget.h"
 #include "Feature/Feature_CharacterHud/Widgets/CharacterHudInterationWidget.h"
+
 #include "CharacterHudActorComponent.generated.h"
+
+
+UDELEGATE()
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FCharacterHudComponentInvalidOwnerPawn, AActor*, PretendsToBePawn);
+
+UDELEGATE()
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FCharacterHudComponentInvalidPlayerController, AController*, PretendsToBePlayerController);
 
 
 UCLASS(BlueprintType, Abstract, Blueprintable, Meta = (BlueprintSpawnableComponent))
@@ -29,19 +39,43 @@ protected:
 	virtual void OnUnregister() override;
 
 
+public:
+	// Called when interaction should be added to the hud
+	UFUNCTION(BlueprintCallable, Category = "CharacterHud | Functions | Interactions")
+	void AddInteraction(UInteractionWrapper* InteractionWrapper);
+
+	// Called when interaction should be removed from the hud
+	UFUNCTION(BlueprintCallable, Category = "CharacterHud | Functions | Interactions")
+	void RemoveInteraction(UInteractionWrapper* InteractionWrapper);
+
+	// Called when interaction selection should be changed in the hud
+	UFUNCTION(BlueprintCallable, Category = "CharacterHud | Functions | Interactions")
+	void ChangeInteractionSelection(int32 NewIndex);
+
 
 protected:
 	// Reference to the owners controller
-	UPROPERTY(BlueprintReadWrite, Category = "Owner")
+	UPROPERTY(BlueprintReadWrite, Category = "CharacterHud | Owner")
 	TObjectPtr<APlayerController> OwnerController;
 
 	// Reference to the owner
-	UPROPERTY(BlueprintReadWrite, Category = "Owner")
+	UPROPERTY(BlueprintReadWrite, Category = "CharacterHud | Owner")
 	TObjectPtr<APawn> OwnerPawn;
 
-	UPROPERTY(BlueprintReadWrite, Category = "Widgets")
+	UPROPERTY(BlueprintReadWrite, Category = "CharacterHud | Properties | Widgets")
 	TObjectPtr<UCharacterHudObtainerWidget> ObtainingsWidget;
 
-	UPROPERTY(BlueprintReadWrite, Category = "Widgets")
+	UPROPERTY(BlueprintReadWrite, Category = "CharacterHud | Properties | Widgets")
 	TObjectPtr<UCharacterHudInterationWidget> InteractionsWidget;
+
+
+
+protected:
+	// Calls when getting a valid owner pawn fails
+	UPROPERTY(BlueprintAssignable, Category = "CharacterHud | Delegates | Errors")
+	FCharacterHudComponentInvalidOwnerPawn OnInvalidOwnerPawn;
+
+	// Calls when getting a valid owner pawn fails
+	UPROPERTY(BlueprintAssignable, Category = "CharacterHud | Delegates | Errors")
+	FCharacterHudComponentInvalidPlayerController OnInvalidPlayerController;
 };
