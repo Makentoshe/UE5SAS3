@@ -25,7 +25,12 @@ void UInteractorActorComponent::AddInteractionWrapper(UInteractionWrapper* Wrapp
 
 void UInteractorActorComponent::RemoveInteractionWrapper(UInteractionWrapper* Wrapper)
 {   // Remove wrapper from the list using operator== to equal elements
-	if (this->Interactions.Remove(Wrapper)) { // Notify about removement
+	if (this->Interactions.Remove(Wrapper)) { 
+		// If selected index becomes invalid - fix it
+		if (this->Interactions.Num() <= this->SelectedInteractionIndex) {
+			this->SelectedInteractionIndex = FMath::Max(0, this->Interactions.Num() - 1);
+		}
+		// Notify about removement
         this->OnRemoveNearbyInteraction3.Broadcast(Wrapper);
 		return; 
 	}
