@@ -22,8 +22,8 @@ void UInteractorActorComponent::AddInteractionWrapper(UInteractionWrapper* Wrapp
 {   // Add wrapper to the list and notify about it
 	this->Interactions.Add(Wrapper);
 	this->OnAddNearbyInteraction3.Broadcast(Wrapper);
-
-	if(this->Interactions.Num() == 1) SelectNearbyInteractionIndex(0);
+	// Change selection index and select added wrapper
+	if (this->Interactions.Num() == 1) SelectNearbyInteractionIndex(0);	
 }
 
 void UInteractorActorComponent::RemoveInteractionWrapper(UInteractionWrapper* Wrapper)
@@ -35,6 +35,11 @@ void UInteractorActorComponent::RemoveInteractionWrapper(UInteractionWrapper* Wr
 		}
 		// Notify about removement
         this->OnRemoveNearbyInteraction3.Broadcast(Wrapper);
+		// Deselect removed wrapper and select new wrapper on the same index if possible
+		ChangeInteractableActorSelection(Wrapper->InteractableActor, false);
+		if (this->Interactions.IsValidIndex(this->SelectedInteractionIndex)) {
+			ChangeInteractableActorSelection(this->Interactions[this->SelectedInteractionIndex]->InteractableActor, true);
+		}
 		return; 
 	}
 	// If we don't remove wrapper - notify about it
@@ -44,6 +49,7 @@ void UInteractorActorComponent::RemoveInteractionWrapper(UInteractionWrapper* Wr
 void UInteractorActorComponent::SelectNextNearbyInteractionIndex()
 {   // If there aren't any available interactions - just ignore method invokation
 	if (this->Interactions.Num() == 0) return;
+
 	// if current index < last index
 	if (this->SelectedInteractionIndex < this->Interactions.Num() - 1) {
 		SelectNearbyInteractionIndex(this->SelectedInteractionIndex + 1);
@@ -72,6 +78,15 @@ void UInteractorActorComponent::SelectNearbyInteractionIndex(int32 NewIndex)
 	this->SelectedInteractionIndex = NewIndex;
 	// Notify about selection change and provide pointer to the new selected wrapper and its index
 	this->OnChangeSelectedInteractionIndex.Broadcast(NewIndex, OldIndex);
+
+	// Deselect old wrapper if possible
+	if (this->Interactions.IsValidIndex(OldIndex)) {
+		ChangeInteractableActorSelection(this->Interactions[OldIndex]->InteractableActor, false);
+	}
+	// Select new wrapper if possible
+	if (this->Interactions.IsValidIndex(NewIndex)) {
+		ChangeInteractableActorSelection(this->Interactions[NewIndex]->InteractableActor, true);
+	}
 }
 
 void UInteractorActorComponent::ExecuteSelectedInteractionAction(AActor* InteractedActor)
@@ -118,4 +133,19 @@ void UInteractorActorComponent::ExecuteSelectedInteractionActionInternal(AActor*
 	// When all interactions was finished - invoke event on the interacted component and current component to finalize it
 	this->OnInteractionFinished.Broadcast(InteractedActor, Wrapper);
 	InteractableSphereComponent->OnInteractionFinished.Broadcast(InteractedActor, Wrapper);
+}
+
+void UInteractorActorComponent::ChangeInteractableActorSelection(AActor* InteractableActor, bool SelectionValue)
+{   // Check is actor is interactable
+	if (!InteractableActor->GetClass()->ImplementsInterface(UInteractableSphereComponentHolder::StaticClass())) {
+		return; // if interactable actor doesn't implements InteractableSphereComponentHolder
+	}
+	// Get interactable component from actor
+	auto InteractableSphereComponent = IInteractableSphereComponentHolder::Execute_GetInteractableSphereComponent(InteractableActor);
+	// Check component pointer is valid
+	if (!IsValid(InteractableSphereComponent)) {
+		return; // if interactable actor doesn't provides InteractableSphereComponent
+	}
+	// Invoke selection callback for component owner
+	InteractableSphereComponent->SelectInteractableOwner(InteractableActor, SelectionValue);
 }
