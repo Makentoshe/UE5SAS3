@@ -88,6 +88,11 @@ void UInteractableSphereComponent::OnSphereComponentEndOverlap(UPrimitiveCompone
 	InteractorActorComponent->RemoveInteractionWrapper(GetInteractionWrapper());
 }
 
+void UInteractableSphereComponent::SelectInteractableOwner(AActor* InteractedActor, bool SelectionValue)
+{
+	this->OnInteractionSelectedChanged.Broadcast(InteractedActor, SelectionValue);
+}
+
 UInteractionWrapper* UInteractableSphereComponent::GetInteractionWrapper()
 {   // if InteractionWrapper already initialized just return it
 	if (IsValid(this->InteractionWrapper)) return this->InteractionWrapper;
