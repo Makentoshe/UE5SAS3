@@ -18,6 +18,9 @@ DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FInteractableComponentInteractionAc
 UDELEGATE()
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FInteractableComponentIssue, EInteractableComponentIssues, Reason);
 
+UDELEGATE()
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FInteractableComponentInteractionSelectionChanged, AActor*, InteractedActor, bool, IsActorSelected);
+
 
 /**
  * SphereComponent enables interaction on collision events
@@ -51,6 +54,9 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void OnSphereComponentEndOverlap(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
 
+	// Called on owner selection. 
+	UFUNCTION(BlueprintCallable)
+	void SelectInteractableOwner(AActor* InteractedActor, bool SelectionValue);
 
 protected:
 
@@ -71,6 +77,10 @@ public:
 	// Called when interaction was finished and component can finalize its interaction 
 	UPROPERTY(BlueprintAssignable)
 	FInteractableComponentInteractionFinished OnInteractionFinished;
+
+	// Called when selection was changed for owner actor by interacted actor
+	UPROPERTY(BlueprintAssignable)
+	FInteractableComponentInteractionSelectionChanged OnInteractionSelectedChanged;
 
 protected:
 	// This structure will be passed to interactor component to specify interaction
