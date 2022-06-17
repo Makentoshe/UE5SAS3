@@ -71,6 +71,11 @@ private:
 	UFUNCTION(Category = "Interactions | Action")
 	void ExecuteSelectedInteractionActionInternal(AActor* InteractedActor, UInteractionWrapper* Wrapper);
 
+	// Invokes InteractableActor's callback with the new SelectionValue if possible
+	// (if InteractableActor contains Interactable component)
+	UFUNCTION(Category = "Interactions | Selection")
+	void ChangeInteractableActorSelection(AActor* InteractableActor, bool SelectionValue);
+
 public:
 
 	// Index of selected element in the interaction list
