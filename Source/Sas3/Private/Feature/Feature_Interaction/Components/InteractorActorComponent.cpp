@@ -8,9 +8,10 @@
 
 // Sets default values for this component's properties
 UInteractorActorComponent::UInteractorActorComponent()
-{
-	// Set this component to be initialized when the game starts, and to be ticked every frame.
+{   // Set this component to be initialized when the game starts, and to be ticked every frame.
 	PrimaryComponentTick.bCanEverTick = false;
+
+	this->SelectedInteractionIndex = -1;
 }
 
 UInteractorActorComponent::~UInteractorActorComponent()
@@ -21,6 +22,8 @@ void UInteractorActorComponent::AddInteractionWrapper(UInteractionWrapper* Wrapp
 {   // Add wrapper to the list and notify about it
 	this->Interactions.Add(Wrapper);
 	this->OnAddNearbyInteraction3.Broadcast(Wrapper);
+
+	if(this->Interactions.Num() == 1) SelectNearbyInteractionIndex(0);
 }
 
 void UInteractorActorComponent::RemoveInteractionWrapper(UInteractionWrapper* Wrapper)
@@ -28,7 +31,7 @@ void UInteractorActorComponent::RemoveInteractionWrapper(UInteractionWrapper* Wr
 	if (this->Interactions.Remove(Wrapper)) { 
 		// If selected index becomes invalid - fix it
 		if (this->Interactions.Num() <= this->SelectedInteractionIndex) {
-			this->SelectedInteractionIndex = FMath::Max(0, this->Interactions.Num() - 1);
+			SelectNearbyInteractionIndex(this->Interactions.Num() - 1);
 		}
 		// Notify about removement
         this->OnRemoveNearbyInteraction3.Broadcast(Wrapper);
@@ -43,13 +46,11 @@ void UInteractorActorComponent::SelectNextNearbyInteractionIndex()
 	if (this->Interactions.Num() == 0) return;
 	// if current index < last index
 	if (this->SelectedInteractionIndex < this->Interactions.Num() - 1) {
-		this->SelectedInteractionIndex = this->SelectedInteractionIndex + 1;
+		SelectNearbyInteractionIndex(this->SelectedInteractionIndex + 1);
 	}
 	else {
-		this->SelectedInteractionIndex = 0;
+		SelectNearbyInteractionIndex(0);
 	}
-	// Notify about selection change and provide pointer to the new selected wrapper and its index
-	this->OnChangeSelectedInteractionIndex.Broadcast(this->SelectedInteractionIndex, this->Interactions[SelectedInteractionIndex]);
 }
 
 void UInteractorActorComponent::SelectPrevNearbyInteractionIndex()
@@ -57,20 +58,20 @@ void UInteractorActorComponent::SelectPrevNearbyInteractionIndex()
 	if (this->Interactions.Num() == 0) return;
 
 	if (this->SelectedInteractionIndex <= 0) {
-		this->SelectedInteractionIndex = FMath::Max(this->Interactions.Num() - 1, 0);
+		SelectNearbyInteractionIndex(FMath::Max(this->Interactions.Num() - 1, 0));
 	}
 	else {
-		this->SelectedInteractionIndex = this->SelectedInteractionIndex - 1;
+		SelectNearbyInteractionIndex(this->SelectedInteractionIndex - 1);
 	}
-	// Notify about selection change and provide pointer to the new selected wrapper and its index
-	this->OnChangeSelectedInteractionIndex.Broadcast(this->SelectedInteractionIndex, this->Interactions[SelectedInteractionIndex]);
 }
 
 void UInteractorActorComponent::SelectNearbyInteractionIndex(int32 NewIndex)
 {
+	int32 OldIndex = this->SelectedInteractionIndex;
+
 	this->SelectedInteractionIndex = NewIndex;
 	// Notify about selection change and provide pointer to the new selected wrapper and its index
-	this->OnChangeSelectedInteractionIndex.Broadcast(this->SelectedInteractionIndex, this->Interactions[SelectedInteractionIndex]);
+	this->OnChangeSelectedInteractionIndex.Broadcast(NewIndex, OldIndex);
 }
 
 void UInteractorActorComponent::ExecuteSelectedInteractionAction(AActor* InteractedActor)
