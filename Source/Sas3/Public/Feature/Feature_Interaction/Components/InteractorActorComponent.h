@@ -23,7 +23,7 @@ UDELEGATE()
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnRemoveNearbyInteraction3, UInteractionWrapper*, InteractionWrapper);
 
 UDELEGATE()
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnChangeSelectedInteractionIndex, int32, NewIndex, UInteractionWrapper*, NewSelectedWrapper);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnChangeSelectedInteractionIndex, int32, NewIndex, int32, OldIndex);
 
 UDELEGATE()
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FInteractorComponentIssue, ENearbyInteractionIssue, Reason);
@@ -70,6 +70,11 @@ private:
 	// Executes selected NearbyInteraction after checks
 	UFUNCTION(Category = "Interactions | Action")
 	void ExecuteSelectedInteractionActionInternal(AActor* InteractedActor, UInteractionWrapper* Wrapper);
+
+	// Invokes InteractableActor's callback with the new SelectionValue if possible
+	// (if InteractableActor contains Interactable component)
+	UFUNCTION(Category = "Interactions | Selection")
+	void ChangeInteractableActorSelection(AActor* InteractableActor, bool SelectionValue);
 
 public:
 
