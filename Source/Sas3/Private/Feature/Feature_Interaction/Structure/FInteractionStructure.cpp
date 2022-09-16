@@ -16,8 +16,6 @@ FInteractionStructure::~FInteractionStructure()
 
 FInteractionStructure& FInteractionStructure::operator=(const FInteractionStructure Structure)
 {
-	this->~FInteractionStructure();
-
 	this->Title = Structure.Title;
 	this->Description = Structure.Description;
 	this->NearbyInteractionType = Structure.NearbyInteractionType;

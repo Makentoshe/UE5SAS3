@@ -32,6 +32,8 @@ struct SAS3_API FInventoryMetaStructure : public FTableRowBase
 
 	FInventoryMetaStructure();
 
+	FInventoryMetaStructure(int32 ItemCount, int32 StackSize);
+
 	// Note: virtual for the super call
 	virtual ~FInventoryMetaStructure();
 
