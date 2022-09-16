@@ -48,3 +48,13 @@ UInventoryItemStructureWrapper* UInventorableActorComponent::GetInventoryItemWra
 	return InventoryItemWrapper;
 }
 
+FInventoryMetaStructure UInventorableActorComponent::GetInventoryMetaStructure()
+{
+	return this->InventoryMeta;
+}
+
+void UInventorableActorComponent::SetInventoryMetaStructure(FInventoryMetaStructure Structure)
+{
+	this->InventoryMeta = Structure;
+}
+

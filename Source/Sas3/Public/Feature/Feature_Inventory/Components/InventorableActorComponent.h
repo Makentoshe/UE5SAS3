@@ -32,11 +32,25 @@ protected:
 	UInventoryItemStructureWrapper* GetInventoryItemWrapper(FName Title);
 
 public:
-	// Holds meta info about item usefull for inventory feature
-	UPROPERTY(BlueprintReadWrite)
-	FInventoryMetaStructure InventoryMeta;
-	
+
 	// Called when inventory action occurs
 	UPROPERTY(BlueprintAssignable)
 	FOnInventoryItemAction OnInventoryItemAction;
+
+
+
+/****		InventoryMetaStructure		****/
+public:
+
+	UFUNCTION(BlueprintCallable, BlueprintPure)
+	FInventoryMetaStructure GetInventoryMetaStructure();
+
+	UFUNCTION(BlueprintCallable)
+	void SetInventoryMetaStructure(FInventoryMetaStructure Structure);
+
+private:
+	// Holds meta info about item usefull for inventory feature
+	UPROPERTY()
+	FInventoryMetaStructure InventoryMeta;
+
 };

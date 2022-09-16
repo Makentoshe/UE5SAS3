@@ -21,6 +21,12 @@ DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FInteractableComponentIssue, EIntera
 UDELEGATE()
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FInteractableComponentInteractionSelectionChanged, AActor*, InteractedActor, bool, IsActorSelected);
 
+UDELEGATE()
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FInteractableComponentOnAddInteractionWrapper, AActor*, InteractorActor, FInteractionStructure, Structure);
+
+UDELEGATE()
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FInteractableComponentOnRemoveInteractionWrapper, AActor*, InteractorActor, FInteractionStructure, Structure);
+
 
 /**
  * SphereComponent enables interaction on collision events
@@ -58,18 +64,24 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void SelectInteractableOwner(AActor* InteractedActor, bool SelectionValue);
 
-protected:
-
-	// Called when something overlaps SphereComponent
-	UFUNCTION(BlueprintCallable)
-	UInteractionWrapper* GetInteractionWrapper();
-
-
 public:
 	// Disables interaction checks if false
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	bool IsInteractionEnabled;
 
+	// This structure will be passed to interactor component to specify interaction
+	UPROPERTY(BlueprintReadWrite)
+	FInteractionStructure InteractionStructure;
+
+
+
+/****		Assignable Callbacks		****/
+protected:
+	// Called when any issue occurs to notify about it
+	UPROPERTY(BlueprintAssignable)
+	FInteractableComponentIssue OnComponentIssues;
+
+public:
 	// Called when interaction was started and component should do something
 	UPROPERTY(BlueprintAssignable)
 	FInteractableComponentInteractionAction OnInteractionAction;
@@ -82,17 +94,12 @@ public:
 	UPROPERTY(BlueprintAssignable)
 	FInteractableComponentInteractionSelectionChanged OnInteractionSelectedChanged;
 
-protected:
-	// This structure will be passed to interactor component to specify interaction
-	UPROPERTY(BlueprintReadWrite)
-	FInteractionStructure InteractionStructure;
-
-	// This structure will be passed to interactor component to specify interaction
-	UPROPERTY()
-	TObjectPtr<UInteractionWrapper> InteractionWrapper;
-
-	// Cause when any issue occurs to notify about it
+	// Called when interaction should be added to the possible interactions list
 	UPROPERTY(BlueprintAssignable)
-	FInteractableComponentIssue OnComponentIssues;
+	FInteractableComponentOnAddInteractionWrapper OnAddInteractionWrapper;
+
+	// Called when interaction should be removed from the possible interactions list
+	UPROPERTY(BlueprintAssignable)
+	FInteractableComponentOnRemoveInteractionWrapper OnRemoveInteractionWrapper;
 
 };

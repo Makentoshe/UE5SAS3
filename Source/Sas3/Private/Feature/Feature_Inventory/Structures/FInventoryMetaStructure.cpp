@@ -8,6 +8,12 @@ FInventoryMetaStructure::FInventoryMetaStructure()
 	this->StackSize = 10;
 }
 
+FInventoryMetaStructure::FInventoryMetaStructure(int32 ItemCount, int32 StackSize)
+{
+	this->ItemCount = ItemCount;
+	this->StackSize = StackSize;
+}
+
 FInventoryMetaStructure::~FInventoryMetaStructure()
 {
 }
