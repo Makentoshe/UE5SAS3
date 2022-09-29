@@ -3,6 +3,9 @@
 #pragma once
 
 #include "CoreMinimal.h"
+
+#include <Sas3/Public/Feature/Feature_Saveload/Objects/InventorableComponentSaveloadWrapper.h>
+
 #include "FSaveloadActorStructure.generated.h"
 
 /**
@@ -28,9 +31,12 @@ public:
 	UPROPERTY(BlueprintReadWrite)
 	TArray<uint8> ByteData;
 
+	UPROPERTY(BlueprintReadWrite)
+	UInventorableComponentSaveloadWrapper* InventorableComponentWrapper;
+
 	FSaveloadActorStructure();
 
-	FSaveloadActorStructure(FName ActorIdentifier, FTransform Transform, TArray<uint8> ByteData);
+	FSaveloadActorStructure(FName ActorIdentifier, FTransform Transform, TArray<uint8> ByteData, UInventorableComponentSaveloadWrapper* InventorableComponentWrapper);
 
 	virtual ~FSaveloadActorStructure();
 };

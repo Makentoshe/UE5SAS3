@@ -1,9 +1,11 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
+#include "Serialization/ObjectAndNameAsStringProxyArchive.h"
+
+#include <Sas3/Public/Feature/Feature_Inventory/Components/InventorableActorComponent.h>
+#include <Sas3/Public/Feature/Feature_Saveload/Objects/InventorableComponentSaveloadWrapper.h>
 
 #include "Feature/Feature_Saveload/Components/SaveloadableActorComponent.h"
-#include "Serialization/ObjectAndNameAsStringProxyArchive.h"
-#include <Sas3/Public/Feature/Feature_Inventory/Components/InventorableActorComponent.h>
 
 // Sets default values for this component's properties
 USaveloadableActorComponent::USaveloadableActorComponent()
@@ -17,15 +19,21 @@ FSaveloadActorStructure USaveloadableActorComponent::GetSaveloadActorStructure()
 	SaveloadActorStructure.ActorIdentifier = GetOwner()->GetFName();
 	SaveloadActorStructure.Transform = GetOwner()->GetActorTransform();
 
+	//// Write InventorableComponent
+	//auto InventorableComponent = GetOwner()->FindComponentByClass<UInventorableActorComponent>();
+	//if (IsValid(InventorableComponent)) {
+	//	UInventorableComponentSaveloadWrapper* InventorableComponentWrapper = NewObject<UInventorableComponentSaveloadWrapper>();
+	//	InventorableComponentWrapper->ItemCount = InventorableComponent->InventoryMeta.ItemCount;
+	//	InventorableComponentWrapper->StackSize = InventorableComponent->InventoryMeta.StackSize;
+	//	SaveloadActorStructure.InventorableComponentWrapper = InventorableComponentWrapper;
+	//}
+
 	// Prepare to actor serialization
 	FMemoryWriter MemoryWriter(SaveloadActorStructure.ByteData);
 	FObjectAndNameAsStringProxyArchive Archive(MemoryWriter, true);
 	//Archive.ArIsSaveGame = true; // Find only variables with UPROPERTY(SaveGame)
 	// Serialize owner actor
 	GetOwner()->Serialize(Archive);
-	// Serialize InventorableActorComponent
-	auto InventorableComponent = GetOwner()->FindComponentByClass<UInventorableActorComponent>();
-	InventorableComponent->Serialize(Archive);
 
 	//Notify that serialization was performed
 	this->OnActorSerialized.Broadcast(SaveloadActorStructure);
@@ -50,9 +58,6 @@ void USaveloadableActorComponent::ConsumeSaveloadActorStructure(FSaveloadActorSt
 	//Archive.ArIsSaveGame = true;
 	// Deserialize actor
 	GetOwner()->Serialize(Archive);
-	// Serialize InventorableActorComponent
-	auto InventorableComponent = GetOwner()->FindComponentByClass<UInventorableActorComponent>();
-	InventorableComponent->Serialize(Archive);
 
 	// Notify that deserialization was performed
 	this->OnActorDeserialized.Broadcast(Structure);
