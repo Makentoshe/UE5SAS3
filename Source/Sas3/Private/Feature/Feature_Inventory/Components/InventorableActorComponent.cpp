@@ -16,28 +16,12 @@ UInventorableActorComponent::~UInventorableActorComponent()
 {
 }
 
-void UInventorableActorComponent::ExecuteInventoryItemAction(AActor* InventoryActor)
-{   // Check if owner is game item
-	if (!this->GetOwner()->GetClass()->ImplementsInterface(UGameItemActorComponentHolder::StaticClass())) {
-		return; // return if not
-	}
-	auto GameItemActorComponent = IGameItemActorComponentHolder::Execute_GetGameItemActorComponent(this->GetOwner());
-	if (!IsValid(GameItemActorComponent)) return; // interface doesn't provide any value
-	
-	// Check if actor is inventory
-	if (!InventoryActor->GetClass()->ImplementsInterface(UInventoryActorComponentHolder::StaticClass())) {
-		return; // return if not
-	}
-	auto InventoryActorComponent = IInventoryActorComponentHolder::Execute_GetInventoryActorComponent(InventoryActor);
-	if (!IsValid(InventoryActorComponent)) return; // interface doesn't provide any value
-	// Create inventory item and add to the inventory
-	auto InventoryItemWrapper = GetInventoryItemWrapper(GameItemActorComponent->GameItem3.Title);
-	InventoryActorComponent->AddInventoryItemWrapper(InventoryItemWrapper);
-	// Notify that item was added to the inventory
-	this->OnInventoryItemAction.Broadcast(InventoryActor, InventoryItemWrapper);
+void UInventorableActorComponent::ExecuteInventoryItemAction(UInventoryActorComponent* InventoryComponent)
+{   
+	this->OnInventoryItemAction.Broadcast(InventoryComponent);
 }
 
-UInventoryItemStructureWrapper* UInventorableActorComponent::GetInventoryItemWrapper(FName Title)
+UInventoryItemStructureWrapper* UInventorableActorComponent::CreateInventoryItemWrapper(FName Title)
 {   // Create new instance
 	auto InventoryItemWrapper = NewObject<UInventoryItemStructureWrapper>();
 	// Initialize
@@ -47,14 +31,3 @@ UInventoryItemStructureWrapper* UInventorableActorComponent::GetInventoryItemWra
 
 	return InventoryItemWrapper;
 }
-
-FInventoryMetaStructure UInventorableActorComponent::GetInventoryMetaStructure()
-{
-	return this->InventoryMeta;
-}
-
-void UInventorableActorComponent::SetInventoryMetaStructure(FInventoryMetaStructure Structure)
-{
-	this->InventoryMeta = Structure;
-}
-

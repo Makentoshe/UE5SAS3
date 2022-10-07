@@ -2,7 +2,6 @@
 
 
 #include "Feature/Feature_Interaction/Components/InteractableSphereComponent.h"
-#include <Sas3/Public/Feature/Feature_Interaction/Structure/Wrapper/InteractionWrapper.h>
 
 
 UInteractableSphereComponent::UInteractableSphereComponent()
@@ -67,4 +66,14 @@ void UInteractableSphereComponent::OnSphereComponentEndOverlap(UPrimitiveCompone
 void UInteractableSphereComponent::SelectInteractableOwner(AActor* InteractedActor, bool SelectionValue)
 {
 	this->OnInteractionSelectedChanged.Broadcast(InteractedActor, SelectionValue);
+}
+
+void UInteractableSphereComponent::InitializeInteraction()
+{
+	this->OnInteractionStarted.Broadcast();
+}
+
+void UInteractableSphereComponent::FinalizeInteraction()
+{
+	this->OnInteractionFinished.Broadcast();
 }

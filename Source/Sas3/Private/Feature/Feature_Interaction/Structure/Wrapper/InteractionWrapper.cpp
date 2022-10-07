@@ -8,27 +8,17 @@ UInteractionWrapper::UInteractionWrapper()
 	this->InteractionStructure = FInteractionStructure();
 }
 
-UInteractionWrapper::UInteractionWrapper(FInteractionStructure& Structure, AActor* Actor)
+UInteractionWrapper::UInteractionWrapper(FInteractionStructure& Structure, UInteractableSphereComponent* Component)
 {
 	this->InteractionStructure = Structure;
-	this->InteractableActor = Actor;
+	this->InteractableComponent = Component;
 }
 
 UInteractionWrapper::~UInteractionWrapper()
 {
 }
 
-FInteractionStructure UInteractionWrapper::GetInteractionStructure()
-{
-	return InteractionStructure;
-}
-
-AActor* UInteractionWrapper::GetInteractableActor()
-{
-	return InteractableActor;
-}
-
 bool UInteractionWrapper::operator==(UInteractionWrapper* Wrapper)
 {
-	return this->InteractableActor == Wrapper->InteractableActor && this->InteractionStructure == Wrapper->InteractionStructure;
+	return this->InteractableComponent == Wrapper->InteractableComponent && this->InteractionStructure == Wrapper->InteractionStructure;
 }

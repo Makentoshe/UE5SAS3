@@ -4,19 +4,17 @@
 
 #include "CoreMinimal.h"
 #include "Components/SphereComponent.h"
+
 #include <Sas3/Public/Feature/Feature_Interaction/Structure/FInteractionStructure.h>
-#include "Feature/Feature_Interaction/Enums/EInteractableComponentIssues.h"
+
 #include "InteractableSphereComponent.generated.h"
 
 
 UDELEGATE()
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FInteractableComponentInteractionFinished, AActor*, InteractedActor, UInteractionWrapper*, InteractionWrapper);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FInteractableComponentOnInteractionFinished);
 
 UDELEGATE()
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FInteractableComponentInteractionAction, AActor*, InteractedActor, UInteractionWrapper*, InteractionWrapper);
-
-UDELEGATE()
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FInteractableComponentIssue, EInteractableComponentIssues, Reason);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FInteractableComponentOnInteractionStarted);
 
 UDELEGATE()
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FInteractableComponentInteractionSelectionChanged, AActor*, InteractedActor, bool, IsActorSelected);
@@ -64,6 +62,14 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void SelectInteractableOwner(AActor* InteractedActor, bool SelectionValue);
 
+	// Called before all interaction events
+	UFUNCTION(BlueprintCallable)
+	void InitializeInteraction();
+
+	// Called after all interaction events (for example: remove actor from the scene)
+	UFUNCTION(BlueprintCallable)
+	void FinalizeInteraction();
+
 public:
 	// Disables interaction checks if false
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
@@ -76,19 +82,14 @@ public:
 
 
 /****		Assignable Callbacks		****/
-protected:
-	// Called when any issue occurs to notify about it
-	UPROPERTY(BlueprintAssignable)
-	FInteractableComponentIssue OnComponentIssues;
-
 public:
 	// Called when interaction was started and component should do something
 	UPROPERTY(BlueprintAssignable)
-	FInteractableComponentInteractionAction OnInteractionAction;
+	FInteractableComponentOnInteractionStarted OnInteractionStarted;
 
 	// Called when interaction was finished and component can finalize its interaction 
 	UPROPERTY(BlueprintAssignable)
-	FInteractableComponentInteractionFinished OnInteractionFinished;
+	FInteractableComponentOnInteractionFinished OnInteractionFinished;
 
 	// Called when selection was changed for owner actor by interacted actor
 	UPROPERTY(BlueprintAssignable)

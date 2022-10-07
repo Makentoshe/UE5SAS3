@@ -21,8 +21,8 @@ FSaveloadActorStructure USaveloadableActorComponent::GetSaveloadActorStructure()
 	// Serialize InventorableComponent
 	auto InventorableComponent = GetOwner()->FindComponentByClass<UInventorableActorComponent>();
 	if (IsValid(InventorableComponent)) { // check is we have InventorableComponent
-		SaveloadActorStructure.InventorableComponentSaveload.ItemCount = InventorableComponent->GetInventoryMetaStructure().ItemCount;
-		SaveloadActorStructure.InventorableComponentSaveload.StackSize = InventorableComponent->GetInventoryMetaStructure().StackSize;
+		SaveloadActorStructure.InventorableComponentSaveload.ItemCount = InventorableComponent->InventoryMeta.ItemCount;
+		SaveloadActorStructure.InventorableComponentSaveload.StackSize = InventorableComponent->InventoryMeta.StackSize;
 	}
 
 	//Notify that serialization was performed
@@ -45,17 +45,11 @@ void USaveloadableActorComponent::ConsumeSaveloadActorStructure(FSaveloadActorSt
 	// Deserialize InventorableComponent
 	auto InventorableComponent = GetOwner()->FindComponentByClass<UInventorableActorComponent>();
 	if (IsValid(InventorableComponent)) { // check is we have InventorableComponent
-		InventorableComponent->SetInventoryMetaStructure({
+		InventorableComponent->InventoryMeta = {
 			Structure.InventorableComponentSaveload.ItemCount,
 			Structure.InventorableComponentSaveload.StackSize
-		});
+		};
 	}
-
-	//// Serialize InteractableComponent
-	//auto InteractableComponent = GetOwner()->FindComponentByClass<UInteractableSphereComponent>();
-	//if (IsValid(InteractableComponent)) { // check is we have InventorableComponent
-	//	InteractableComponent->SetInteractionStructure()
-	//}
 
 	// Notify that deserialization was performed
 	this->OnActorDeserialized.Broadcast(Structure);

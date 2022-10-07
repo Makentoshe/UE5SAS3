@@ -4,7 +4,11 @@
 
 #include "CoreMinimal.h"
 #include "UObject/NoExportTypes.h"
+
 #include <Sas3/Public/Feature/Feature_Interaction/Structure/FInteractionStructure.h>
+#include <Sas3/Public/Feature/Feature_Interaction/Components/InteractableSphereComponent.h>
+
+
 #include "InteractionWrapper.generated.h"
 
 /**
@@ -20,25 +24,17 @@ public:
 	UInteractionWrapper();
 
 	// Constructor with value
-	UInteractionWrapper(FInteractionStructure& Structure, AActor* Actor);
+	UInteractionWrapper(FInteractionStructure& Structure, UInteractableSphereComponent* Component);
 
 	// Default virtual destructor
 	virtual ~UInteractionWrapper();
 
-	// Returns a copied InteractionStructure
-	UFUNCTION(BlueprintCallable)
-	FInteractionStructure GetInteractionStructure();
-
-	UFUNCTION(BlueprintCallable)
-	AActor* GetInteractableActor();
-
 	// Wrapped structure
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta=(ExposeOnSpawn = "true"))
 	FInteractionStructure InteractionStructure;
 
-	// Additionaly wrapped actor
-	UPROPERTY(BlueprintReadWrite)
-	TObjectPtr<AActor> InteractableActor;
+	UPROPERTY(BlueprintReadWrite, meta = (ExposeOnSpawn = "true"))
+	TObjectPtr<UInteractableSphereComponent> InteractableComponent;
 
 	// Allows to compare 2 Wrappers
 	bool operator==(UInteractionWrapper* Wrapper);

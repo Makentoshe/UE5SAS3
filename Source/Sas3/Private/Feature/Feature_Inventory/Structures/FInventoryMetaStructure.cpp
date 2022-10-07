@@ -19,9 +19,7 @@ FInventoryMetaStructure::~FInventoryMetaStructure()
 }
 
 FInventoryMetaStructure& FInventoryMetaStructure::operator=(const FInventoryMetaStructure Structure)
-{   // destroy current data
-	this->~FInventoryMetaStructure();
-	// refill fields
+{   // refill fields
 	this->ItemCount = Structure.ItemCount;
 	this->StackSize = Structure.StackSize;
 	// return reference
