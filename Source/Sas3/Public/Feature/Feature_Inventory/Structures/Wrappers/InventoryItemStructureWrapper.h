@@ -29,7 +29,7 @@ public:
 	FInventoryItemStructure GetInventoryItemStructure();
 
 	// Wrapped structure
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (ExposeOnSpawn = "true"))
 	FInventoryItemStructure InventoryItemStructure;
 	
 };

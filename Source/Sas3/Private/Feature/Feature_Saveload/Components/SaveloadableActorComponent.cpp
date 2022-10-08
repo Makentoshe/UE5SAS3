@@ -23,6 +23,19 @@ FSaveloadActorStructure USaveloadableActorComponent::GetSaveloadActorStructure()
 	if (IsValid(InventorableComponent)) { // check is we have InventorableComponent
 		SaveloadActorStructure.InventorableComponentSaveload.ItemCount = InventorableComponent->InventoryMeta.ItemCount;
 		SaveloadActorStructure.InventorableComponentSaveload.StackSize = InventorableComponent->InventoryMeta.StackSize;
+	} else {
+		SaveloadActorStructure.InventorableComponentSaveload.ItemCount = 0;
+		SaveloadActorStructure.InventorableComponentSaveload.StackSize = 0;
+	}
+
+	// Serialize InventoryComponent
+	auto InventoryComponent = GetOwner()->FindComponentByClass<UInventoryActorComponent>();
+	if (IsValid(InventoryComponent)) { // check is we have InventoryComponent
+		SaveloadActorStructure.InventoryComponentSaveload.InventorySize = InventoryComponent->InventorySize;
+		SaveloadActorStructure.InventoryComponentSaveload.InventoryItems = InventoryComponent->GetInventoryItems();
+	} else {
+		SaveloadActorStructure.InventoryComponentSaveload.InventorySize = 0;
+		SaveloadActorStructure.InventoryComponentSaveload.InventoryItems = TArray<FInventoryItemStructure>();
 	}
 
 	//Notify that serialization was performed
@@ -49,6 +62,13 @@ void USaveloadableActorComponent::ConsumeSaveloadActorStructure(FSaveloadActorSt
 			Structure.InventorableComponentSaveload.ItemCount,
 			Structure.InventorableComponentSaveload.StackSize
 		};
+	}
+
+	// Deserialize InventoryComponent
+	auto InventoryComponent = GetOwner()->FindComponentByClass<UInventoryActorComponent>();
+	if (IsValid(InventoryComponent)) { // check is we have InventoryComponent
+		InventoryComponent->InventorySize = Structure.InventoryComponentSaveload.InventorySize;
+		InventoryComponent->SetInventoryItems(Structure.InventoryComponentSaveload.InventoryItems);
 	}
 
 	// Notify that deserialization was performed
