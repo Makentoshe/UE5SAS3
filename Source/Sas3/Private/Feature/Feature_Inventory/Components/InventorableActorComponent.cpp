@@ -21,13 +21,3 @@ void UInventorableActorComponent::ExecuteInventoryItemAction(UInventoryActorComp
 	this->OnInventoryItemAction.Broadcast(InventoryComponent);
 }
 
-UInventoryItemStructureWrapper* UInventorableActorComponent::CreateInventoryItemWrapper(FName Title)
-{   // Create new instance
-	auto InventoryItemWrapper = NewObject<UInventoryItemStructureWrapper>();
-	// Initialize
-	InventoryItemWrapper->InventoryItemStructure.Count = this->InventoryMeta.ItemCount;
-	InventoryItemWrapper->InventoryItemStructure.StackSize = this->InventoryMeta.StackSize;
-	InventoryItemWrapper->InventoryItemStructure.Title = Title;
-
-	return InventoryItemWrapper;
-}

@@ -29,11 +29,6 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void ExecuteInventoryItemAction(UInventoryActorComponent* InventoryComponent);
 
-protected:
-
-	UFUNCTION(BlueprintCallable)
-	UInventoryItemStructureWrapper* CreateInventoryItemWrapper(FName Title);
-
 public:
 
 	// Holds meta info about item usefull for inventory feature

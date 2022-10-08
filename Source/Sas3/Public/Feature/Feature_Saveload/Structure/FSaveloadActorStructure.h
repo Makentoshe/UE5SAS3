@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 
 #include <Sas3/Public/Feature/Feature_Saveload/Objects/FInventorableComponentSaveload.h>
+#include <Sas3/Public/Feature/Feature_Saveload/Objects/FInventoryComponentSaveload.h>
 
 #include "FSaveloadActorStructure.generated.h"
 
@@ -27,8 +28,13 @@ public:
 	UPROPERTY(BlueprintReadWrite)
 	FTransform Transform;
 
+	/* For inventorable Actors, stores info about how many items */
 	UPROPERTY(BlueprintReadWrite)
 	FInventorableComponentSaveload InventorableComponentSaveload;
+
+	/* For inventory Actors, stores info about it's inventory */
+	UPROPERTY(BlueprintReadWrite)
+	FInventoryComponentSaveload InventoryComponentSaveload;
 
 	FSaveloadActorStructure();
 
