@@ -7,14 +7,12 @@ FSaveloadActorStructure::FSaveloadActorStructure()
 {
 	this->ActorIdentifier = FName(TEXT(""));
 	this->Transform = FTransform();
-	this->InventorableComponentSaveload = InventorableComponentSaveload;
 }
 
 FSaveloadActorStructure::FSaveloadActorStructure(FName ActorIdentifier, FTransform Transform)
 {
 	this->ActorIdentifier = ActorIdentifier;
 	this->Transform = Transform;
-	this->InventorableComponentSaveload = InventorableComponentSaveload;
 }
 
 FSaveloadActorStructure::~FSaveloadActorStructure()
