@@ -8,6 +8,7 @@
 #include <Sas3/Public/Feature/Feature_Saveload/Structure/FSaveloadSlotStructure.h>
 #include <Sas3/Public/Feature/Feature_Saveload/Structure/FSaveloadActorStructure.h>
 #include <Sas3/Public/Feature/Feature_Saveload/Components/SaveloadableActorComponent.h>
+#include <Sas3/Public/Feature/Feature_Saveload/Structure/FSaveloadMetaStructure.h>
 
 #include "SaveloadGameInstanceSubsystem.generated.h"
 
@@ -46,7 +47,7 @@ public:
 	virtual void Initialize(FSubsystemCollectionBase& Collection) override;
 	virtual void Deinitialize() override;
 
-	UFUNCTION(BlueprintCallable)
+	UFUNCTION(BlueprintCallable, BlueprintPure)
 	FSaveloadSlotStructure GetCurrentGeneralSaveloadSlot();
 
 	UFUNCTION(BlueprintCallable)
@@ -60,6 +61,24 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	void LoadCurrentGeneralSaveloadSlot();
+
+	UFUNCTION(BlueprintCallable, BlueprintPure)
+	FSaveloadSlotStructure GetCurrentTemporalSaveloadSlot();
+
+	UFUNCTION(BlueprintCallable)
+	void CreateCurrentTemporalSaveloadNamed(FString SaveGameSlotTitle);
+
+	UFUNCTION(BlueprintCallable)
+	void CreateCurrentTemporalSaveload();
+
+	UFUNCTION(BlueprintCallable)	
+	void RemoveCurrentTemporalSaveloadSlot();
+
+	UFUNCTION(BlueprintCallable)
+	void SaveCurrentTemporalSaveloadSlot();
+
+	UFUNCTION(BlueprintCallable)
+	void LoadCurrentTemporalSaveloadSlot();
 
 private:
 
@@ -83,8 +102,20 @@ public:
 	UPROPERTY(BlueprintAssignable)
 	FOnAsyncLoadGameCompleted OnAsyncLoadGameCompleted;
 
+public:
+
+	/* Storing titles for General and Temporal slots */
+	UPROPERTY(BlueprintReadWrite)
+	FSaveloadMetaStructure CurrentSaveloadMetaStructure;
+
 private:
+
+	/* Storing game between lauches */
 	UPROPERTY()
 	FSaveloadSlotStructure CurrentGeneralSaveloadSlot;
+
+	/* Temporal game storing between actions */
+	UPROPERTY()
+	FSaveloadSlotStructure CurrentTemporalSaveloadSlot;
 	
 };
