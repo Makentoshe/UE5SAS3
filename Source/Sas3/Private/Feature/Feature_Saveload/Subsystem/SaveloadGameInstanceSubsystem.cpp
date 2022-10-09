@@ -88,6 +88,76 @@ void USaveloadGameInstanceSubsystem::LoadCurrentGeneralSaveloadSlot()
 	this->OnAsyncLoadGameStarted.Broadcast(GeneralSaveloadSlot);
 }
 
+FSaveloadSlotStructure USaveloadGameInstanceSubsystem::GetCurrentTemporalSaveloadSlot()
+{
+	return this->CurrentTemporalSaveloadSlot;
+}
+
+void USaveloadGameInstanceSubsystem::CreateCurrentTemporalSaveloadNamed(FString SaveGameSlotTitle)
+{
+	this->CurrentTemporalSaveloadSlot = FSaveloadSlotStructure(SaveGameSlotTitle);
+}
+
+void USaveloadGameInstanceSubsystem::CreateCurrentTemporalSaveload()
+{
+	CreateCurrentTemporalSaveloadNamed(this->CurrentSaveloadMetaStructure.TemporalSlotTitle);
+}
+
+void USaveloadGameInstanceSubsystem::RemoveCurrentTemporalSaveloadSlot()
+{
+	this->CurrentTemporalSaveloadSlot = FSaveloadSlotStructure();
+}
+
+void USaveloadGameInstanceSubsystem::SaveCurrentTemporalSaveloadSlot()
+{	// Get current temporal saveload slot
+	auto TemporalSaveloadSlot = GetCurrentTemporalSaveloadSlot();
+	// Create SaveGameInstance
+	auto StaticClass = USaveGameGeneral::StaticClass();
+	auto SaveGameObject = UGameplayStatics::CreateSaveGameObject(StaticClass);
+	auto SaveGameInstance = Cast<USaveGameGeneral>(SaveGameObject);
+	// Iterate over all actors
+	for (TActorIterator<AActor> Iterator(GetWorld()); Iterator; ++Iterator)
+	{	// Follow iterator object to actual actor pointer
+		AActor* Actor = *Iterator;
+		// Skip all actors that are null or being destroyed or garbage collected
+		if (!IsValid(Actor)) continue;
+		// We interested only in entities that contains SaveloadableComponent.
+		if (!Actor->GetClass()->ImplementsInterface(USaveloadableActorComponentHolder::StaticClass())) {
+			continue; //if not
+		}
+		auto SaveloadableComponent = ISaveloadableActorComponentHolder::Execute_GetSaveloadableActorComponent(Actor);
+		if (!IsValid(SaveloadableComponent)) continue; // interface doesn't provide any value
+		// Serialized actor's structure
+		auto Structure = SaveloadableComponent->GetSaveloadActorStructure();
+		SaveGameInstance->AddSerializedActor(Structure);
+	}
+	// Initialize callback
+	auto AsyncSaveDelegate = FAsyncSaveGameToSlotDelegate();
+	AsyncSaveDelegate.BindUFunction(this, "OnAsyncSaveGame");
+	// Perform async savegame
+	UGameplayStatics::AsyncSaveGameToSlot(SaveGameInstance, TemporalSaveloadSlot.Filename, 0, AsyncSaveDelegate);
+	// Notify that async savegame process began
+	this->OnAsyncSaveGameStarted.Broadcast(CurrentTemporalSaveloadSlot, SaveGameInstance);
+}
+
+void USaveloadGameInstanceSubsystem::LoadCurrentTemporalSaveloadSlot()
+{	// Get current temporal saveload slot
+	auto TemporalSaveloadSlot = GetCurrentTemporalSaveloadSlot();
+	// Check current general saveload slot exists
+	if (!UGameplayStatics::DoesSaveGameExist(TemporalSaveloadSlot.Filename, 0)) {
+		return; //if not
+	}
+
+	// Initialize callback
+	auto AsyncLoadDelegate = FAsyncLoadGameFromSlotDelegate();
+	AsyncLoadDelegate.BindUFunction(this, "OnAsyncLoadGame");
+	// Perform async loading
+	UGameplayStatics::AsyncLoadGameFromSlot(TemporalSaveloadSlot.Filename, 0, AsyncLoadDelegate);
+
+	// Notify that async loadgame process began
+	this->OnAsyncLoadGameStarted.Broadcast(TemporalSaveloadSlot);
+}
+
 void USaveloadGameInstanceSubsystem::OnAsyncSaveGame(const FString& SlotName, const int32 UserIndex, bool bSuccess)
 {
 	this->OnAsyncSaveGameCompleted.Broadcast(SlotName, UserIndex, bSuccess);
