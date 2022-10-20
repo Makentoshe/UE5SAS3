@@ -12,6 +12,10 @@
 UDELEGATE()
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnAddInventoryItemWrapper, UInventoryItemStructureWrapper*, ItemStructureWrapper);
 
+UDELEGATE()
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FInventoryActorOnAddInventoryItem, FInventoryItemStructure, InventoryItem);
+
+
 /* Component declares that the Actor contains Inventory */
 UCLASS(BlueprintType)
 class SAS3_API UInventoryActorComponent : public UActorComponent
@@ -27,25 +31,22 @@ public:
 
 	// Add provided item to the inventory
 	UFUNCTION(BlueprintCallable)
-	void AddInventoryItemWrapper(UInventoryItemStructureWrapper* Wrapper);
+	void AddInventoryItem(FInventoryItemStructure InventoryItem);
 
-	//UFUNCTION(BlueprintCallable)
-	//void AddInventoryItemStructure(FInventoryItemStructure)
+	UFUNCTION(BlueprintCallable)
+	void ClearInventoryItems();
+
+	UFUNCTION(BlueprintCallable)
+	void SetInventoryItems(TArray<FInventoryItemStructure> InventoryItems);
 
 	// Returns all items currently placed in the inventory
-	UFUNCTION(BlueprintCallable)
-	TArray<UInventoryItemStructureWrapper*> GetInventoryItems();
-
-protected:
-	UFUNCTION()
-	UInventoryItemStructureWrapper* BuildInventoryItemStructureWrapper(FInventoryItemStructure& Structure);
+	UFUNCTION(BlueprintCallable, BlueprintPure)
+	TArray<FInventoryItemStructure> GetInventoryItems();
 
 private:
 	// Add provided item to the inventory starting from the new stack
 	UFUNCTION()
-	void AddInventoryItemNewStackWrapper(UInventoryItemStructureWrapper* Wrapper);
-
-
+	void AddInventoryItemNewStack(FInventoryItemStructure InventoryItem);
 
 public:
 	// Defines how many stacks of items might be in the inventory
@@ -53,11 +54,14 @@ public:
 	int32 InventorySize;
 
 protected:
-	// Calls when new inventory item was added to the inventory
-	UPROPERTY(BlueprintAssignable, Category = "Inventory Delegates")
-	FOnAddInventoryItemWrapper OnAddInventoryItemWrapper;
 
 	// Contains all items in the inventory
 	UPROPERTY(BlueprintReadOnly)
-	TArray<UInventoryItemStructureWrapper*> InventoryItems;
+	TArray<FInventoryItemStructure> InventoryItems;
+
+public:
+
+	// Calls when new inventory item was added to the inventory
+	UPROPERTY(BlueprintAssignable)
+	FInventoryActorOnAddInventoryItem OnAddInventoryItem;
 };

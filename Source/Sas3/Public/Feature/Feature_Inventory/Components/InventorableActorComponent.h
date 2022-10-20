@@ -4,12 +4,15 @@
 
 #include "CoreMinimal.h"
 #include "Components/ActorComponent.h"
+
 #include <Feature/Feature_Inventory/Structures/FInventoryMetaStructure.h>
+#include <Sas3/Public/Feature/Feature_Inventory/Components/InventoryActorComponent.h>
+
 #include "InventorableActorComponent.generated.h"
 
-
 UDELEGATE()
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnInventoryItemAction, AActor*, InventoryActor, UInventoryItemStructureWrapper*, InventoryItemWrapper);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FInventorableComponentOnInventoryItemAction, UInventoryActorComponent*, InventoryComponent);
+
 
 UCLASS(BlueprintType, Abstract, Blueprintable, meta = (BlueprintSpawnableComponent))
 class SAS3_API UInventorableActorComponent : public UActorComponent
@@ -24,19 +27,15 @@ public:
 
 	// Called to execute inventory item action
 	UFUNCTION(BlueprintCallable)
-	void ExecuteInventoryItemAction(AActor* InventoryActor);
-
-protected:
-
-	UFUNCTION(BlueprintCallable)
-	UInventoryItemStructureWrapper* GetInventoryItemWrapper(FName Title);
+	void ExecuteInventoryItemAction(UInventoryActorComponent* InventoryComponent);
 
 public:
+
 	// Holds meta info about item usefull for inventory feature
 	UPROPERTY(BlueprintReadWrite)
 	FInventoryMetaStructure InventoryMeta;
-	
-	// Called when inventory action occurs
+
 	UPROPERTY(BlueprintAssignable)
-	FOnInventoryItemAction OnInventoryItemAction;
+	FInventorableComponentOnInventoryItemAction OnInventoryItemAction;
+
 };

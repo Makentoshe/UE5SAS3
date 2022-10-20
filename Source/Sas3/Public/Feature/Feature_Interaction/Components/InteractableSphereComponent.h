@@ -4,22 +4,26 @@
 
 #include "CoreMinimal.h"
 #include "Components/SphereComponent.h"
+
 #include <Sas3/Public/Feature/Feature_Interaction/Structure/FInteractionStructure.h>
-#include "Feature/Feature_Interaction/Enums/EInteractableComponentIssues.h"
+
 #include "InteractableSphereComponent.generated.h"
 
 
 UDELEGATE()
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FInteractableComponentInteractionFinished, AActor*, InteractedActor, UInteractionWrapper*, InteractionWrapper);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FInteractableComponentOnInteractionFinished);
 
 UDELEGATE()
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FInteractableComponentInteractionAction, AActor*, InteractedActor, UInteractionWrapper*, InteractionWrapper);
-
-UDELEGATE()
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FInteractableComponentIssue, EInteractableComponentIssues, Reason);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FInteractableComponentOnInteractionStarted);
 
 UDELEGATE()
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FInteractableComponentInteractionSelectionChanged, AActor*, InteractedActor, bool, IsActorSelected);
+
+UDELEGATE()
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FInteractableComponentOnAddInteractionWrapper, AActor*, InteractorActor, FInteractionStructure, Structure);
+
+UDELEGATE()
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FInteractableComponentOnRemoveInteractionWrapper, AActor*, InteractorActor, FInteractionStructure, Structure);
 
 
 /**
@@ -58,41 +62,45 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void SelectInteractableOwner(AActor* InteractedActor, bool SelectionValue);
 
-protected:
-
-	// Called when something overlaps SphereComponent
+	// Called before all interaction events
 	UFUNCTION(BlueprintCallable)
-	UInteractionWrapper* GetInteractionWrapper();
+	void InitializeInteraction();
 
+	// Called after all interaction events (for example: remove actor from the scene)
+	UFUNCTION(BlueprintCallable)
+	void FinalizeInteraction();
 
 public:
 	// Disables interaction checks if false
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	bool IsInteractionEnabled;
 
+	// This structure will be passed to interactor component to specify interaction
+	UPROPERTY(BlueprintReadWrite)
+	FInteractionStructure InteractionStructure;
+
+
+
+/****		Assignable Callbacks		****/
+public:
 	// Called when interaction was started and component should do something
 	UPROPERTY(BlueprintAssignable)
-	FInteractableComponentInteractionAction OnInteractionAction;
+	FInteractableComponentOnInteractionStarted OnInteractionStarted;
 
 	// Called when interaction was finished and component can finalize its interaction 
 	UPROPERTY(BlueprintAssignable)
-	FInteractableComponentInteractionFinished OnInteractionFinished;
+	FInteractableComponentOnInteractionFinished OnInteractionFinished;
 
 	// Called when selection was changed for owner actor by interacted actor
 	UPROPERTY(BlueprintAssignable)
 	FInteractableComponentInteractionSelectionChanged OnInteractionSelectedChanged;
 
-protected:
-	// This structure will be passed to interactor component to specify interaction
-	UPROPERTY(BlueprintReadWrite)
-	FInteractionStructure InteractionStructure;
-
-	// This structure will be passed to interactor component to specify interaction
-	UPROPERTY()
-	TObjectPtr<UInteractionWrapper> InteractionWrapper;
-
-	// Cause when any issue occurs to notify about it
+	// Called when interaction should be added to the possible interactions list
 	UPROPERTY(BlueprintAssignable)
-	FInteractableComponentIssue OnComponentIssues;
+	FInteractableComponentOnAddInteractionWrapper OnAddInteractionWrapper;
+
+	// Called when interaction should be removed from the possible interactions list
+	UPROPERTY(BlueprintAssignable)
+	FInteractableComponentOnRemoveInteractionWrapper OnRemoveInteractionWrapper;
 
 };
