@@ -4,14 +4,17 @@
 
 #include "CoreMinimal.h"
 #include "Components/ActorComponent.h"
+
 #include <Sas3/Public/Feature/Feature_Saveload/Structure/FSaveloadActorStructure.h>
+#include <Sas3/Public/Feature/Feature_Saveload/Structure/FSaveloadJsonStructure.h>
+
 #include "SaveloadableActorComponent.generated.h"
 
 UDELEGATE()
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FSaveloadableActorComponentOnActorSerialized, FSaveloadActorStructure, Structure);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FSaveloadableActorComponentOnActorSerialized, FSaveloadActorStructure, ActorStructure, FSaveloadJsonStructure, JsonStructure);
 
 UDELEGATE()
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FSaveloadableActorComponentOnActorDeserialized, FSaveloadActorStructure, Structure);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FSaveloadableActorComponentOnActorDeserialized, FSaveloadActorStructure, ActorStructure, FSaveloadJsonStructure, JsonStructure);
 
 UCLASS(BlueprintType, Abstract, Blueprintable)
 class SAS3_API USaveloadableActorComponent : public UActorComponent

@@ -2,7 +2,11 @@
 
 
 #include "Feature/Feature_Saveload/Components/SaveloadableActorComponent.h"
+
 #include "Serialization/ObjectAndNameAsStringProxyArchive.h"
+#include "JsonObjectConverter.h"
+
+
 #include <Sas3/Public/Feature/Feature_Inventory/Components/InventorableActorComponent.h>
 #include <Sas3/Public/Feature/Feature_Interaction/Components/InteractableSphereComponent.h>
 
@@ -13,33 +17,35 @@ USaveloadableActorComponent::USaveloadableActorComponent()
 }
 
 FSaveloadActorStructure USaveloadableActorComponent::GetSaveloadActorStructure()
-{   // Generate SaveloadActorStructure
-	FSaveloadActorStructure SaveloadActorStructure;
-	SaveloadActorStructure.ActorIdentifier = GetOwner()->GetFName();
-	SaveloadActorStructure.Transform = GetOwner()->GetActorTransform();
+{   // Generate SaveloadJsonStructure
+	FSaveloadJsonStructure SaveloadJsonStructure;
 
 	// Serialize InventorableComponent
 	auto InventorableComponent = GetOwner()->FindComponentByClass<UInventorableActorComponent>();
 	if (IsValid(InventorableComponent)) { // check is we have InventorableComponent
-		SaveloadActorStructure.InventorableComponentSaveload.ItemCount = InventorableComponent->InventoryMeta.ItemCount;
-		SaveloadActorStructure.InventorableComponentSaveload.StackSize = InventorableComponent->InventoryMeta.StackSize;
-	} else {
-		SaveloadActorStructure.InventorableComponentSaveload.ItemCount = 0;
-		SaveloadActorStructure.InventorableComponentSaveload.StackSize = 0;
+		SaveloadJsonStructure.InventorableComponentItemCount = InventorableComponent->InventoryMeta.ItemCount;
+		SaveloadJsonStructure.InventorableComponentStackSize = InventorableComponent->InventoryMeta.StackSize;
 	}
 
 	// Serialize InventoryComponent
 	auto InventoryComponent = GetOwner()->FindComponentByClass<UInventoryActorComponent>();
 	if (IsValid(InventoryComponent)) { // check is we have InventoryComponent
-		SaveloadActorStructure.InventoryComponentSaveload.InventorySize = InventoryComponent->InventorySize;
-		SaveloadActorStructure.InventoryComponentSaveload.InventoryItems = InventoryComponent->GetInventoryItems();
-	} else {
-		SaveloadActorStructure.InventoryComponentSaveload.InventorySize = 0;
-		SaveloadActorStructure.InventoryComponentSaveload.InventoryItems = TArray<FInventoryItemStructure>();
+		SaveloadJsonStructure.InventoryComponentInventorySize = InventoryComponent->InventorySize;
+		SaveloadJsonStructure.InventoryComponentInventoryItems = InventoryComponent->GetInventoryItems();
 	}
 
+	// Serialize Structure to JSON Object string
+	FString SerializedSaveloadJsonStructure;
+	FJsonObjectConverter::UStructToJsonObjectString(SaveloadJsonStructure, SerializedSaveloadJsonStructure);
+	
+	// Generate SaveloadActorStructure
+	FSaveloadActorStructure SaveloadActorStructure;
+	SaveloadActorStructure.ActorIdentifier = GetOwner()->GetFName();
+	SaveloadActorStructure.Transform = GetOwner()->GetActorTransform();
+	SaveloadActorStructure.SerializedData = SerializedSaveloadJsonStructure;
+
 	//Notify that serialization was performed
-	this->OnActorSerialized.Broadcast(SaveloadActorStructure);
+	this->OnActorSerialized.Broadcast(SaveloadActorStructure, SaveloadJsonStructure);
 
 	return SaveloadActorStructure;
 }
@@ -54,23 +60,30 @@ void USaveloadableActorComponent::ConsumeSaveloadActorStructure(FSaveloadActorSt
 	if (GetSaveloadActorIdentifier() != Structure.ActorIdentifier) return;
 	// Restore actor transform
 	GetOwner()->SetActorTransform(Structure.Transform);
+	//Deserialize JSON Object string
+	FSaveloadJsonStructure SaveloadJsonStructure;
+	if (!FJsonObjectConverter::JsonObjectStringToUStruct(Structure.SerializedData, &SaveloadJsonStructure, 0, 0))
+	{
+		GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Yellow, TEXT("Error"));
+		return;
+	}
 
 	// Deserialize InventorableComponent
 	auto InventorableComponent = GetOwner()->FindComponentByClass<UInventorableActorComponent>();
 	if (IsValid(InventorableComponent)) { // check is we have InventorableComponent
 		InventorableComponent->InventoryMeta = {
-			Structure.InventorableComponentSaveload.ItemCount,
-			Structure.InventorableComponentSaveload.StackSize
+			SaveloadJsonStructure.InventorableComponentItemCount,
+			SaveloadJsonStructure.InventorableComponentStackSize,
 		};
 	}
 
 	// Deserialize InventoryComponent
 	auto InventoryComponent = GetOwner()->FindComponentByClass<UInventoryActorComponent>();
 	if (IsValid(InventoryComponent)) { // check is we have InventoryComponent
-		InventoryComponent->InventorySize = Structure.InventoryComponentSaveload.InventorySize;
-		InventoryComponent->SetInventoryItems(Structure.InventoryComponentSaveload.InventoryItems);
+		InventoryComponent->InventorySize = SaveloadJsonStructure.InventoryComponentInventorySize;
+		InventoryComponent->SetInventoryItems(SaveloadJsonStructure.InventoryComponentInventoryItems);
 	}
 
 	// Notify that deserialization was performed
-	this->OnActorDeserialized.Broadcast(Structure);
+	this->OnActorDeserialized.Broadcast(Structure, SaveloadJsonStructure);
 }
