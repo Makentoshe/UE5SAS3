@@ -35,7 +35,11 @@ public:
 
 	/* Disable PlayerController and save the battle results */
 	UFUNCTION(BlueprintCallable)
-	void FinishBattle();
+	void FinishBattleWithSuccess();
+
+	/* Disable PlayerController and save the battle results */
+	UFUNCTION(BlueprintCallable)
+	void FinishBattleWithFailure();
 
 	/* Uninitialize state and reset variables */
 	UFUNCTION(BlueprintCallable)

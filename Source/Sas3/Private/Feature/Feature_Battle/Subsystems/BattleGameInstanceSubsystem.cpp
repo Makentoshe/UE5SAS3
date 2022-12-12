@@ -21,9 +21,15 @@ void UBattleGameInstanceSubsystem::BeginBattle()
 	this->OnBattleStateChanged.Broadcast(this->BattleState);
 }
 
-void UBattleGameInstanceSubsystem::FinishBattle()
+void UBattleGameInstanceSubsystem::FinishBattleWithSuccess()
 {
-	this->BattleState.State = EBattleState::Finished;
+	this->BattleState.State = EBattleState::FinishedSuccess;
+	this->OnBattleStateChanged.Broadcast(this->BattleState);
+}
+
+void UBattleGameInstanceSubsystem::FinishBattleWithFailure()
+{
+	this->BattleState.State = EBattleState::FinishedFailure;
 	this->OnBattleStateChanged.Broadcast(this->BattleState);
 }
 

@@ -12,6 +12,7 @@ enum class EBattleState : uint8
 {	
 	Initialized				UMETA(DisplayName = "Initialized"),
 	Started					UMETA(DisplayName = "Started"),
-	Finished				UMETA(DisplayName = "Finished"),
+	FinishedFailure			UMETA(DisplayName = "Finished with Failure"),
+	FinishedSuccess			UMETA(DisplayName = "Finished with Success"),
 	Uninitialized			UMETA(DisplayName = "Uninitialized"),
 };

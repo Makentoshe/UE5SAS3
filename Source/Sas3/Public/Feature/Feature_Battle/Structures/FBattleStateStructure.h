@@ -9,14 +9,12 @@
 #include "FBattleStateStructure.generated.h"
 
 
-/**
- * When IsBattleStarted and IsBattleFinished false - battle wasn't started
- */
 USTRUCT(BlueprintType)
 struct SAS3_API FBattleStateStructure
 {
 	GENERATED_BODY()
 
+	/* State of the battle */
 	UPROPERTY(BlueprintReadWrite)
 	EBattleState State;
 
