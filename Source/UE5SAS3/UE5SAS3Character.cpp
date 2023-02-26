@@ -41,6 +41,7 @@ AUE5SAS3Character::AUE5SAS3Character()
 	CameraBoom->SetupAttachment(RootComponent);
 	CameraBoom->TargetArmLength = 400.0f; // The camera follows at this distance behind the character	
 	CameraBoom->bUsePawnControlRotation = true; // Rotate the arm based on the controller
+	CameraBoom->SocketOffset = FVector(0.0f, 90.0f, 30.0f);
 
 	// Create a follow camera
 	FollowCamera = CreateDefaultSubobject<UCameraComponent>(TEXT("FollowCamera"));
@@ -84,6 +85,8 @@ void AUE5SAS3Character::SetupPlayerInputComponent(class UInputComponent* PlayerI
 		//Looking
 		EnhancedInputComponent->BindAction(LookAction, ETriggerEvent::Triggered, this, &AUE5SAS3Character::Look);
 
+		//Camera Zooming
+		EnhancedInputComponent->BindAction(CameraZoomAction, ETriggerEvent::Triggered, this, &AUE5SAS3Character::CameraZoom);
 	}
 
 }
@@ -124,6 +127,27 @@ void AUE5SAS3Character::Look(const FInputActionValue& Value)
 	}
 }
 
+void AUE5SAS3Character::CameraZoom(const FInputActionValue& Value) 
+{
+	// Input is a bool
+	// If positive value DirectionUp othervise DirectionDown
+	float CameraZoomDirection = Value.Get<float>();
 
+	// Define a zooming step
+	float CameraZoomStep = 10.0f;
+
+	// Camera arm length will be changed 
+	float CameraZoomValue = CameraZoomDirection * CameraZoomStep;
+
+	// Resulted arm length
+	float CameraZoomLength = GetCameraBoom()->TargetArmLength + CameraZoomValue;
+
+	// Forbid to zoom close than 200 and far than 600
+	if (CameraZoomLength < 200) return;
+	if (CameraZoomLength > 600) return;
+
+	// Update camera arm length
+	GetCameraBoom()->TargetArmLength += CameraZoomValue;
+}
 
 

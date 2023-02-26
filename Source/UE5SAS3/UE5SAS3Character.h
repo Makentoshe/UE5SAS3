@@ -37,6 +37,10 @@ class AUE5SAS3Character : public ACharacter
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
 	class UInputAction* LookAction;
 
+	/** Camera Zoom Action */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
+	class UInputAction* CameraZoomAction;
+
 public:
 	AUE5SAS3Character();
 	
@@ -49,6 +53,8 @@ protected:
 	/** Called for looking input */
 	void Look(const FInputActionValue& Value);
 			
+	/** Called for zooming camera input */
+	void CameraZoom(const FInputActionValue& Value);
 
 protected:
 	// APawn interface
