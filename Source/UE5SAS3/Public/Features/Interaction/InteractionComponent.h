@@ -7,7 +7,7 @@
 #include "InteractionComponent.generated.h"
 
 // This class does not need to be modified.
-UINTERFACE(MinimalAPI)
+UINTERFACE(MinimalAPI, BlueprintType)
 class UInteractionComponent : public UInterface
 {
 	GENERATED_BODY()

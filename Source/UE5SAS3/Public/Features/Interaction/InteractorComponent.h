@@ -20,6 +20,15 @@ class UE5SAS3_API IInteractorComponent
 {
 	GENERATED_BODY()
 
-	// Add interface functions to this class. This is the class that will be inherited to implement this interface.
+	// This is the class that will be inherited to implement this interface.
 public:
+	UFUNCTION(BlueprintCallable, BlueprintImplementableEvent, Category = "Interaction")
+	void AddInteractionComponent(const TScriptInterface<IInteractionComponent> &Component);
+
+	UFUNCTION(BlueprintCallable, BlueprintImplementableEvent, Category = "Interaction")
+	void RemoveInteractionComponent(const TScriptInterface<IInteractionComponent> &Component);
+
+	UFUNCTION(BlueprintCallable, BlueprintImplementableEvent, Category = "Interaction")
+	void GetInteractionComponents(TArray<TScriptInterface<IInteractionComponent>>& Components);
+
 };
