@@ -22,6 +22,6 @@ class UE5SAS3_API IInteractionComponentHolder
 
 public:
 
-	//UFUNCTION(BlueprintCallable, BlueprintImplementableEvent)
-	//UInteractionComponent* GetInteractionComponent();
+	UFUNCTION(BlueprintCallable, BlueprintImplementableEvent)
+	void GetInteractionComponent(TScriptInterface<IInteractionComponent>& Component);
 };
