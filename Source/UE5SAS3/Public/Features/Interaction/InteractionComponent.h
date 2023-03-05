@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "UObject/Interface.h"
+#include "Math/Vector.h"
 #include "InteractionComponent.generated.h"
 
 // This class does not need to be modified.
@@ -20,6 +21,20 @@ class UE5SAS3_API IInteractionComponent
 {
 	GENERATED_BODY()
 
-	// Add interface functions to this class. This is the class that will be inherited to implement this interface.
+	// This is the class that will be inherited to implement this interface.
 public:
+	UFUNCTION(BlueprintCallable, BlueprintImplementableEvent)
+	FVector GetWorldLocationFromOwnerActor();
+
+	UFUNCTION(BlueprintCallable, BlueprintImplementableEvent, Category = "Interaction")
+	void OnInteractionComponentAdded();
+
+	UFUNCTION(BlueprintCallable, BlueprintImplementableEvent, Category = "Interaction")
+	void OnInteractionComponentRemoved();
+
+	UFUNCTION(BlueprintCallable, BlueprintImplementableEvent, Category = "Interaction")
+	void OnInteractionComponentSelected();
+
+	UFUNCTION(BlueprintCallable, BlueprintImplementableEvent, Category = "Interaction")
+	void OnInteractionComponentUnselected();
 };
