@@ -19,10 +19,6 @@ class UE5SAS3_API UInteractorActorComponent : public UActorComponent
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Interaction", meta = (AllowPrivateAccess = "true"))
 	TScriptInterface<IInteractionComponent> SelectedInteractionComponent;
 
-	/** Components that can be selected */
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Interaction", meta = (AllowPrivateAccess = "true"))
-	TArray<TScriptInterface<IInteractionComponent>> InteractionComponents;
-
 public:	
 	// Sets default values for this component's properties
 	UInteractorActorComponent();
@@ -36,9 +32,6 @@ public:
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 
 public:
-	/** Returns currently selected InteractionComponent **/
-	FORCEINLINE class TScriptInterface<IInteractionComponent> GetSelectedInteractionComponent() const { return SelectedInteractionComponent; }
-
 	/** Returns SelectedInteractionComponent **/
-	FORCEINLINE class TArray<TScriptInterface<IInteractionComponent>> GetInteractionComponents() const { return InteractionComponents; }
+	FORCEINLINE class TScriptInterface<IInteractionComponent> GetSelectedInteractionComponent() const { return SelectedInteractionComponent; }
 };
