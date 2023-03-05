@@ -7,7 +7,7 @@
 #include "InteractorComponentHolder.generated.h"
 
 // This class does not need to be modified.
-UINTERFACE(MinimalAPI)
+UINTERFACE(MinimalAPI, NotBlueprintable)
 class UInteractorComponentHolder : public UInterface
 {
 	GENERATED_BODY()
@@ -22,5 +22,5 @@ class UE5SAS3_API IInteractorComponentHolder
 
 public:
 	UFUNCTION(BlueprintCallable, BlueprintImplementableEvent)
-	void  GetInteractorComponent(TScriptInterface<IInteractorComponent>& Component);
+	TScriptInterface<IInteractorComponent>&  GetInteractorComponent();
 };
