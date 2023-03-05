@@ -21,6 +21,6 @@ class UE5SAS3_API IInteractorComponentHolder
 	GENERATED_BODY()
 
 public:
-	UFUNCTION(BlueprintCallable, BlueprintImplementableEvent)
-	UInteractorComponent* GetInteractorComponent();
+	//UFUNCTION(BlueprintCallable, BlueprintImplementableEvent)
+	//UInteractorComponent* GetInteractorComponent();
 };
