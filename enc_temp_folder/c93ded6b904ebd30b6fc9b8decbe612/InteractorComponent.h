@@ -11,5 +11,5 @@ UCLASS(BlueprintType, Blueprintable)
 class UE5SAS3_API UInteractorComponent : public UActorComponent
 {
 	GENERATED_BODY()
-		
+
 };
