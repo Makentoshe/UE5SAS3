@@ -4,13 +4,13 @@
 
 #include "CoreMinimal.h"
 #include "Components/SphereComponent.h"
-#include "InteractionComponent.generated.h"
+#include "UE5SASSphereComponent.generated.h"
 
 /**
- * Base class for inherit from SphereComponent
+ * 
  */
 UCLASS(BlueprintType, Blueprintable)
-class UE5SAS3_API UInteractionComponent : public USphereComponent
+class UE5SAS3_API UUE5SASSphereComponent : public USphereComponent
 {
 	GENERATED_BODY()
 	
