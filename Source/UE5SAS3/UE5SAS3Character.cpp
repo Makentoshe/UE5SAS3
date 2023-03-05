@@ -85,6 +85,9 @@ void AUE5SAS3Character::SetupPlayerInputComponent(class UInputComponent* PlayerI
 		//Looking
 		EnhancedInputComponent->BindAction(LookAction, ETriggerEvent::Triggered, this, &AUE5SAS3Character::Look);
 
+		// Interacting
+		EnhancedInputComponent->BindAction(InteractAction, ETriggerEvent::Triggered, this, &AUE5SAS3Character::Interact);
+
 		//Camera Zooming
 		EnhancedInputComponent->BindAction(CameraZoomAction, ETriggerEvent::Triggered, this, &AUE5SAS3Character::CameraZoom);
 	}
@@ -148,6 +151,10 @@ void AUE5SAS3Character::CameraZoom(const FInputActionValue& Value)
 
 	// Update camera arm length
 	GetCameraBoom()->TargetArmLength += CameraZoomValue;
+}
+
+void AUE5SAS3Character::Interact(const FInputActionValue& Value)
+{
 }
 
 
