@@ -10,6 +10,9 @@
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
 
+#include <UE5SAS3/Public/Features/Interaction/InteractorActorComponent.h>
+
+
 
 //////////////////////////////////////////////////////////////////////////
 // AUE5SAS3Character
@@ -50,8 +53,6 @@ AUE5SAS3Character::AUE5SAS3Character()
 
 	// Note: The skeletal mesh and anim blueprint references on the Mesh component (inherited from Character) 
 	// are set in the derived blueprint asset named ThirdPersonCharacter (to avoid direct content references in C++)
-
-	// InteractorComponent also set in blueprints in ConstructionScript, this allows to specify how component works internally using blueprints
 }
 
 void AUE5SAS3Character::BeginPlay()
@@ -88,7 +89,7 @@ void AUE5SAS3Character::SetupPlayerInputComponent(class UInputComponent* PlayerI
 		EnhancedInputComponent->BindAction(LookAction, ETriggerEvent::Triggered, this, &AUE5SAS3Character::Look);
 
 		// Interacting
-		EnhancedInputComponent->BindAction(InteractAction, ETriggerEvent::Triggered, this, &AUE5SAS3Character::Interact);
+		EnhancedInputComponent->BindAction(InteractAction, ETriggerEvent::Started, this, &AUE5SAS3Character::Interact);
 
 		//Camera Zooming
 		EnhancedInputComponent->BindAction(CameraZoomAction, ETriggerEvent::Triggered, this, &AUE5SAS3Character::CameraZoom);
@@ -157,6 +158,24 @@ void AUE5SAS3Character::CameraZoom(const FInputActionValue& Value)
 
 void AUE5SAS3Character::Interact(const FInputActionValue& Value)
 {
+	// Move execution to derived blueprint using delegates
+	OnInputActionInteract.Broadcast();
+
+	//////////// OLD Version with issues
+	//// Get currently selected InteractionComponent from InteractorComponent
+	//auto SelectedInteractionComponent = GetInteractorComponent()->GetSelectedInteractionComponent();
+
+	//// Get object from TScriptInterface
+	//// When TScriptInterface is set from blueprints its interface pointer is null
+	//// But we know which interface we're waiting for, so let's just cast it as a workaround
+	//// See https://forums.unrealengine.com/t/c-interface-implemented-in-bp-is-null/491758/13 for more information
+	//auto Object = SelectedInteractionComponent.GetObject();
+
+
+	//if (Object) {
+	//	GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Yellow, TEXT("Object not null"));
+	//}
+
 }
 
 

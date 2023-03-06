@@ -37,4 +37,8 @@ public:
 
 	UFUNCTION(BlueprintCallable, BlueprintImplementableEvent, Category = "Interaction")
 	void OnInteractionComponentUnselected();
+
+	/** Interaction with component owner should be performed */
+	UFUNCTION(BlueprintCallable, BlueprintImplementableEvent, Category = "Interaction")
+	void Interact(const TScriptInterface<IInteractorComponent>& TriggerComponent);
 };

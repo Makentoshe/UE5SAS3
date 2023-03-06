@@ -7,6 +7,8 @@
 #include "InputActionValue.h"
 #include "UE5SAS3Character.generated.h"
 
+UDELEGATE()
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnUE5SAS3CharacterInputActionInteract);
 
 UCLASS(config=Game)
 class AUE5SAS3Character : public ACharacter
@@ -20,10 +22,6 @@ class AUE5SAS3Character : public ACharacter
 	/** Follow camera */
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
 	class UCameraComponent* FollowCamera;
-
-	/** Interactor component */
-	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Interaction", meta = (AllowPrivateAccess = "true"))
-	class UInteractorActorComponent* InteractorComponent;
 	
 	/** MappingContext */
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
@@ -48,6 +46,10 @@ class AUE5SAS3Character : public ACharacter
 	/** Interaction Action */
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
 	class UInputAction* InteractAction;
+
+	/** Interaction Action Callback */
+	UPROPERTY(BlueprintAssignable)
+	FOnUE5SAS3CharacterInputActionInteract OnInputActionInteract;
 
 public:
 	AUE5SAS3Character();

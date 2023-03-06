@@ -9,6 +9,8 @@
 
 #include "InteractorActorComponent.generated.h"
 
+UDELEGATE()
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnInteractorActorComponentInteractionComponentInteracted, TScriptInterface<IInteractionComponent>, InteractionComponent);
 
 UCLASS(BlueprintType, Blueprintable, ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
 class UE5SAS3_API UInteractorActorComponent : public UActorComponent
@@ -22,6 +24,10 @@ class UE5SAS3_API UInteractorActorComponent : public UActorComponent
 	/** Components that can be selected */
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Interaction", meta = (AllowPrivateAccess = "true"))
 	TArray<TScriptInterface<IInteractionComponent>> InteractionComponents;
+
+	/** Interaction Action Callback */
+	UPROPERTY(BlueprintAssignable)
+	FOnInteractorActorComponentInteractionComponentInteracted OnInteractionComponentInteractedDelegate;
 
 public:	
 	// Sets default values for this component's properties

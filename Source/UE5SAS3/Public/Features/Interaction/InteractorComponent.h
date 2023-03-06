@@ -22,13 +22,20 @@ class UE5SAS3_API IInteractorComponent
 
 	// This is the class that will be inherited to implement this interface.
 public:
+
+	/** Add a new InteractionComponent to the list of available interactions that Character can see */
 	UFUNCTION(BlueprintCallable, BlueprintImplementableEvent, Category = "Interaction")
 	void AddInteractionComponent(const TScriptInterface<IInteractionComponent> &Component);
 
+	/** Remove InteractionComponent from the list of available interactions that Character can see */
 	UFUNCTION(BlueprintCallable, BlueprintImplementableEvent, Category = "Interaction")
 	void RemoveInteractionComponent(const TScriptInterface<IInteractionComponent> &Component);
 
+	/** Return the list of available interactions that Character can see*/
 	UFUNCTION(BlueprintCallable, BlueprintImplementableEvent, Category = "Interaction")
 	void GetInteractionComponents(TArray<TScriptInterface<IInteractionComponent>>& Components);
 
+	/** Event calls when InteractionComponent was interacted right before its own interaction event occurs */
+	UFUNCTION(BlueprintCallable, BlueprintImplementableEvent, Category = "Interaction")
+	void OnInteractionComponentInteracted(const TScriptInterface<IInteractionComponent>& Component);
 };
