@@ -1,4 +1,4 @@
-// Fill out your copyright notice in the Description page of Project Settings.
+﻿// Fill out your copyright notice in the Description page of Project Settings.
 
 #pragma once
 
@@ -15,30 +15,42 @@ class UInteractionComponent : public UInterface
 };
 
 /**
+ * Component, inherited this interface can handle interactions from interactor component
+ * 
+ * 
+ * 
+ * There is a lifecycle of the InteractionComponent:
+ * 
+ *                          OnInteractionComponentAvailable								OnInteractionComponentSelected							 Interact
+ * Unavailable/Unselected -----------------------------------> Available/Unselected --------------------------------------> Available/Selected -------------->
+ *			^														|		^														|
+ * 			|			OnInteractionComponentUnvailable			|		|				OnInteractionComponentUnselected		| 
+ *			┕-------------------------------------------------------┙		┕-------------------------------------------------------┙
  * 
  */
 class UE5SAS3_API IInteractionComponent
 {
 	GENERATED_BODY()
 
-	// This is the class that will be inherited to implement this interface.
 public:
-	UFUNCTION(BlueprintCallable, BlueprintImplementableEvent)
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, Category = "Interaction, Utils")
 	FVector GetWorldLocationFromOwnerActor();
 
-	UFUNCTION(BlueprintCallable, BlueprintImplementableEvent, Category = "Interaction")
-	void OnInteractionComponentAdded();
+	/** Interaction component becomes available to interaction and selection */
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, Category = "Interaction")
+	void OnInteractionComponentAvailable();
 
-	UFUNCTION(BlueprintCallable, BlueprintImplementableEvent, Category = "Interaction")
-	void OnInteractionComponentRemoved();
+	/**Interaction component becomes unavailable to interaction and selection */
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, Category = "Interaction")
+	void OnInteractionComponentUnavailable();
 
-	UFUNCTION(BlueprintCallable, BlueprintImplementableEvent, Category = "Interaction")
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, Category = "Interaction")
 	void OnInteractionComponentSelected();
 
-	UFUNCTION(BlueprintCallable, BlueprintImplementableEvent, Category = "Interaction")
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, Category = "Interaction")
 	void OnInteractionComponentUnselected();
 
 	/** Interaction with component owner should be performed */
-	UFUNCTION(BlueprintCallable, BlueprintImplementableEvent, Category = "Interaction")
-	void Interact(const TScriptInterface<IInteractorComponent>& TriggerComponent);
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, Category = "Interaction")
+	void Interact(const TScriptInterface<IInteractorComponent>& InteractorComponent);
 };

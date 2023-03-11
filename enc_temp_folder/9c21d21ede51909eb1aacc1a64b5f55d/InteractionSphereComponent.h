@@ -23,9 +23,8 @@ DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnInteractionSphereComponentInteractionUnsel
 
 UDELEGATE()
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnInteractionSphereComponentInteract, const TScriptInterface<IInteractorComponent>&, InteractorComponent);
-
 /**
- *  This is an InteractionComponent with the Sphere collision. Those collision can be used in interaction.
+ *  
  */
 UCLASS(Blueprintable, BlueprintType)
 class UE5SAS3_API UInteractionSphereComponent : public UUE5SASSphereComponent, public IInteractionComponent

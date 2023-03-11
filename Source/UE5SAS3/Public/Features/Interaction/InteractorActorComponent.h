@@ -12,6 +12,9 @@
 UDELEGATE()
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnInteractorActorComponentInteractionComponentInteracted, TScriptInterface<IInteractionComponent>, InteractionComponent);
 
+/** 
+	Base class which holds properties for InteractorComponent implementation 
+*/
 UCLASS(BlueprintType, Blueprintable, ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
 class UE5SAS3_API UInteractorActorComponent : public UActorComponent
 {
@@ -25,7 +28,7 @@ class UE5SAS3_API UInteractorActorComponent : public UActorComponent
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Interaction", meta = (AllowPrivateAccess = "true"))
 	TArray<TScriptInterface<IInteractionComponent>> InteractionComponents;
 
-	/** Interaction Action Callback */
+	/** Interaction Action Callback (allows to do something in blueprint) */
 	UPROPERTY(BlueprintAssignable)
 	FOnInteractorActorComponentInteractionComponentInteracted OnInteractionComponentInteractedDelegate;
 
