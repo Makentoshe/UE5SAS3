@@ -24,11 +24,11 @@ class UE5SAS3_API IInteractorComponent
 public:
 
 	/** Add a new InteractionComponent to the list of available interactions that Character can see */
-	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, Category = "Interaction")
+	UFUNCTION(BlueprintNativeEvent, Category = "Interaction")
 	void AddInteractionComponent(const TScriptInterface<IInteractionComponent> &Component);
 
 	/** Remove InteractionComponent from the list of available interactions that Character can see */
-	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, Category = "Interaction")
+	UFUNCTION(BlueprintNativeEvent, Category = "Interaction")
 	void RemoveInteractionComponent(const TScriptInterface<IInteractionComponent> &Component);
 
 	/** Return the list of available interactions that Character can see. Consumes empty array reference and rewrites it. Makes this way for bp compatibility */

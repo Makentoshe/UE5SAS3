@@ -8,9 +8,6 @@ void UInteractorSphereComponent::AddInteractionComponent_Implementation(const TS
 	// Add InteractionComponent to available components list
 	this->AvailableInteractionComponents.Add(InteractionComponent);
 
-	// Invoke InteractionComponent.OnInteractionComponentAvailable
-	InteractionComponent.GetInterface()->Execute_OnInteractionComponentAvailable(InteractionComponent.GetObject());
-
 	// Invoke delegate that new InteractionComponent was added
 	this->OnInteractionComponentAvailableDelegate.Broadcast(InteractionComponent);
 }
@@ -19,9 +16,6 @@ void UInteractorSphereComponent::RemoveInteractionComponent_Implementation(const
 {
 	// Remove InteractionComponent from available components list
 	this->AvailableInteractionComponents.Remove(InteractionComponent);
-
-	// Invoke InteractionComponent.OnInteractionComponentAvailable
-	InteractionComponent.GetInterface()->Execute_OnInteractionComponentUnavailable(InteractionComponent.GetObject());
 
 	// Invoke delegate that InteractionComponent was removed
 	this->OnInteractionComponentUnavailableDelegate.Broadcast(InteractionComponent);

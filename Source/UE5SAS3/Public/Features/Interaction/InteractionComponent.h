@@ -37,11 +37,11 @@ public:
 	FVector GetWorldLocationFromOwnerActor();
 
 	/** Interaction component becomes available to interaction and selection */
-	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, Category = "Interaction")
+	UFUNCTION(BlueprintNativeEvent, Category = "Interaction")
 	void OnInteractionComponentAvailable();
 
 	/**Interaction component becomes unavailable to interaction and selection */
-	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, Category = "Interaction")
+	UFUNCTION(BlueprintNativeEvent, Category = "Interaction")
 	void OnInteractionComponentUnavailable();
 
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, Category = "Interaction")
