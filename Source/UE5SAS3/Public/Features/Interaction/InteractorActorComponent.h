@@ -48,6 +48,4 @@ public:
 	/** Returns currently selected InteractionComponent **/
 	FORCEINLINE class TScriptInterface<IInteractionComponent> GetSelectedInteractionComponent() const { return SelectedInteractionComponent; }
 
-	/** Returns SelectedInteractionComponent **/
-	FORCEINLINE class TArray<TScriptInterface<IInteractionComponent>> GetInteractionComponents() const { return InteractionComponents; }
 };
