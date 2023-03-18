@@ -85,6 +85,13 @@ void UInteractionSphereComponent::OnSphereComponentEndOverlap(UPrimitiveComponen
 	}
 }
 
+
+
+FVector UInteractionSphereComponent::GetWorldLocationFromOwnerActor_Implementation()
+{
+	return this->GetOwner()->GetActorLocation();
+}
+
 void UInteractionSphereComponent::OnInteractionComponentAvailable_Implementation()
 {
 	// If interaction already available: do nothing

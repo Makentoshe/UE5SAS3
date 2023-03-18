@@ -21,7 +21,7 @@ void UInteractorSphereComponent::RemoveInteractionComponent_Implementation(const
 	this->OnInteractionComponentUnavailableDelegate.Broadcast(InteractionComponent);
 }
 
-void UInteractorSphereComponent::GetInteractionComponents_Implementation(TArray<TScriptInterface<IInteractionComponent>>& InteractionComponents)
+void UInteractorSphereComponent::GetAvailableInteractionComponents_Implementation(TArray<TScriptInterface<IInteractionComponent>>& InteractionComponents)
 {
 	InteractionComponents = this->AvailableInteractionComponents;
 }

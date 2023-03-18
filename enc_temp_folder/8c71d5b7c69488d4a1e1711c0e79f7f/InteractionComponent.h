@@ -33,6 +33,8 @@ class UE5SAS3_API IInteractionComponent
 	GENERATED_BODY()
 
 public:
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, Category = "Interaction, Utils")
+	FVector GetWorldLocationFromOwnerActor();
 
 	/** Interaction component becomes available to interaction and selection */
 	UFUNCTION(BlueprintNativeEvent, Category = "Interaction")

@@ -55,18 +55,12 @@ public:
 
 	// From InteractorComponent interface
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, Category = "Interaction")
-	void GetInteractionComponents(TArray<TScriptInterface<IInteractionComponent>>& InteractionComponents);
-	virtual void GetInteractionComponents_Implementation(TArray<TScriptInterface<IInteractionComponent>>& InteractionComponents);
+	void GetAvailableInteractionComponents(TArray<TScriptInterface<IInteractionComponent>>& InteractionComponents);
+	virtual void GetAvailableInteractionComponents_Implementation(TArray<TScriptInterface<IInteractionComponent>>& InteractionComponents);
 
+	// From InteractorComponent interface
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, Category = "Interaction")
 	void GetSelectedInteractionComponent(TScriptInterface<IInteractionComponent>& Component);
 	virtual void GetSelectedInteractionComponent_Implementation(TScriptInterface<IInteractionComponent>& Component);
 
-
-public:
-	/** Returns currently selected InteractionComponent **/
-	FORCEINLINE class TScriptInterface<IInteractionComponent> GetSelectedInteractionComponent2() const { return SelectedInteractionComponent; }
-
-	/** Returns SelectedInteractionComponent **/
-	FORCEINLINE class TArray<TScriptInterface<IInteractionComponent>> GetAvailableInteractionComponents() const { return AvailableInteractionComponents; }
 };

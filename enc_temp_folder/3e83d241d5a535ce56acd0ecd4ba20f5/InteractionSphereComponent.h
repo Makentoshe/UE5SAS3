@@ -92,6 +92,10 @@ class UE5SAS3_API UInteractionSphereComponent : public UUE5SASSphereComponent, p
 
 public:
 
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
+	FVector GetWorldLocationFromOwnerActor();
+	virtual FVector GetWorldLocationFromOwnerActor_Implementation() override;
+
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, Category = "Interaction")
 	void OnInteractionComponentAvailable();
 	virtual void OnInteractionComponentAvailable_Implementation() override;

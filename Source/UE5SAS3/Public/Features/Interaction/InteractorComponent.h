@@ -33,7 +33,7 @@ public:
 
 	/** Return the list of available interactions that Character can see. Consumes empty array reference and rewrites it. Makes this way for bp compatibility */
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, Category = "Interaction")
-	void GetInteractionComponents(TArray<TScriptInterface<IInteractionComponent>>& Components);
+	void GetAvailableInteractionComponents(TArray<TScriptInterface<IInteractionComponent>>& Components);
 
 	/** Event calls when InteractionComponent was interacted right before its own interaction event occurs */
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, Category = "Interaction")
