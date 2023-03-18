@@ -25,3 +25,9 @@ void UInteractorSphereComponent::GetInteractionComponents_Implementation(TArray<
 {
 	InteractionComponents = this->AvailableInteractionComponents;
 }
+
+void UInteractorSphereComponent::GetSelectedInteractionComponent_Implementation(TScriptInterface<IInteractionComponent>& Component)
+{
+	Component = SelectedInteractionComponent;
+}
+

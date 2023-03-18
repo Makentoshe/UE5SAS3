@@ -32,6 +32,7 @@ class UE5SAS3_API UInteractorSphereComponent : public UUE5SASSphereComponent, pu
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Interaction", meta = (AllowPrivateAccess = "true"))
 	TArray<TScriptInterface<IInteractionComponent>> AvailableInteractionComponents;
 
+
 	/** Delegate for invoking each time on InteractionComponent becomes available */
 	UPROPERTY(VisibleAnywhere, BlueprintAssignable, BlueprintReadWrite, Category = Interaction, meta = (AllowPrivateAccess = "true"))
 	FOnInteractorSphereComponentInteractionAvailable OnInteractionComponentAvailableDelegate;
@@ -57,10 +58,14 @@ public:
 	void GetInteractionComponents(TArray<TScriptInterface<IInteractionComponent>>& InteractionComponents);
 	virtual void GetInteractionComponents_Implementation(TArray<TScriptInterface<IInteractionComponent>>& InteractionComponents);
 
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, Category = "Interaction")
+	void GetSelectedInteractionComponent(TScriptInterface<IInteractionComponent>& Component);
+	virtual void GetSelectedInteractionComponent_Implementation(TScriptInterface<IInteractionComponent>& Component);
+
 
 public:
 	/** Returns currently selected InteractionComponent **/
-	FORCEINLINE class TScriptInterface<IInteractionComponent> GetSelectedInteractionComponent() const { return SelectedInteractionComponent; }
+	FORCEINLINE class TScriptInterface<IInteractionComponent> GetSelectedInteractionComponent2() const { return SelectedInteractionComponent; }
 
 	/** Returns SelectedInteractionComponent **/
 	FORCEINLINE class TArray<TScriptInterface<IInteractionComponent>> GetAvailableInteractionComponents() const { return AvailableInteractionComponents; }

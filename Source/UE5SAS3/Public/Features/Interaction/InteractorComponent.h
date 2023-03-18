@@ -38,4 +38,7 @@ public:
 	/** Event calls when InteractionComponent was interacted right before its own interaction event occurs */
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, Category = "Interaction")
 	void OnInteractionComponentInteracted(const TScriptInterface<IInteractionComponent>& Component);
+
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, Category = "Interaction")
+	void GetSelectedInteractionComponent(TScriptInterface<IInteractionComponent> &Component);
 };

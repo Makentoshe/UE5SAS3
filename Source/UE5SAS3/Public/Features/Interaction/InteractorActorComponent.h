@@ -46,6 +46,6 @@ public:
 
 public:
 	/** Returns currently selected InteractionComponent **/
-	FORCEINLINE class TScriptInterface<IInteractionComponent> GetSelectedInteractionComponent() const { return SelectedInteractionComponent; }
+	FORCEINLINE class TScriptInterface<IInteractionComponent> GetSelectedInteractionComponent2() const { return SelectedInteractionComponent; }
 
 };

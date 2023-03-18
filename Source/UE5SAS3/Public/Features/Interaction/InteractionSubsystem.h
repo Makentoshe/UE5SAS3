@@ -18,9 +18,10 @@ class UE5SAS3_API UInteractionSubsystem : public UGameInstanceSubsystem
 {
 	GENERATED_BODY()
 
+
 public:
 
-	/** Adds Interaction component to Interactorand notifies both components about it */
+	/** Adds Interaction component to Interactor and notifies both components about it */
 	UFUNCTION(BlueprintCallable)
 	void AddInteractionToInteractor(const TScriptInterface<IInteractionComponent>& InteractionComponent, const TScriptInterface<IInteractorComponent>& InteractorComponent);
 	
@@ -28,4 +29,12 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void RemoveInteractionFromInteractor(const TScriptInterface<IInteractionComponent>& InteractionComponent, const TScriptInterface<IInteractorComponent>& InteractorComponent);
 
+
+	/** Invokes interaction between InteractorComponent and InteractionComponent and notifies both components about it */
+	UFUNCTION(BlueprintCallable)
+	void Interact(const TScriptInterface<IInteractionComponent>& InteractionComponent, const TScriptInterface<IInteractorComponent>& InteractorComponent);
+
+	/** Invokes interaction between InteractorComponent and its selected InteractionComponent and notifies both components about it */
+	UFUNCTION(BlueprintCallable)
+	void InteractSelectedComponent(const TScriptInterface<IInteractorComponent>& InteractorComponent);
 };

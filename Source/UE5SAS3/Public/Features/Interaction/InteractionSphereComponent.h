@@ -114,7 +114,7 @@ public:
 
 	/** Interaction with component owner should be performed */
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, Category = "Interaction")
-	void Interact(const TScriptInterface<IInteractorComponent>& InteractorComponent);
-	virtual void Interact_Implementation(const TScriptInterface<IInteractorComponent>& InteractorComponent) override;
+	void OnInteractionComponentInteracted(const TScriptInterface<IInteractorComponent>& InteractorComponent);
+	virtual void OnInteractionComponentInteracted_Implementation(const TScriptInterface<IInteractorComponent>& InteractorComponent) override;
 
 };

@@ -140,7 +140,7 @@ void UInteractionSphereComponent::OnInteractionComponentUnselected_Implementatio
 	this->OnInteractionComponentUnselectedDelegate.Broadcast();
 }
 
-void UInteractionSphereComponent::Interact_Implementation(const TScriptInterface<IInteractorComponent>& InteractorComponent)
+void UInteractionSphereComponent::OnInteractionComponentInteracted_Implementation(const TScriptInterface<IInteractorComponent>& InteractorComponent)
 {
 	// We can delegate this method to blueprints
 	this->OnInteractionComponentInteractDelegate.Broadcast(InteractorComponent);

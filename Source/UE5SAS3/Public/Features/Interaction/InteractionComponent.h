@@ -52,5 +52,5 @@ public:
 
 	/** Interaction with component owner should be performed */
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, Category = "Interaction")
-	void Interact(const TScriptInterface<IInteractorComponent>& InteractorComponent);
+	void OnInteractionComponentInteracted(const TScriptInterface<IInteractorComponent>& InteractorComponent);
 };
