@@ -47,6 +47,7 @@ class UE5SAS3_API UInteractionSphereComponent : public UUE5SASSphereComponent, p
 	virtual ~UInteractionSphereComponent();
 
 
+
 	/** Is component selected. Only one component can be selected at the same time. */
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = Interaction, meta = (AllowPrivateAccess = "true"))
 	bool IsSelected;
@@ -58,6 +59,7 @@ class UE5SAS3_API UInteractionSphereComponent : public UUE5SASSphereComponent, p
 	/** Is component enabled. If true collision events will be triggered */
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = Interaction, meta = (AllowPrivateAccess = "true"))
 	bool IsInteractionEnabled;
+
 
 
 	/** Delegate for invoking each time on InteractionComponent becomes available */
@@ -81,6 +83,7 @@ class UE5SAS3_API UInteractionSphereComponent : public UUE5SASSphereComponent, p
 	FOnInteractionSphereComponentInteract OnInteractionComponentInteractDelegate;
 
 
+
 	// Called when something overlaps SphereComponent
 	UFUNCTION()
 	void OnSphereComponentBeginOverlap(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
@@ -88,7 +91,6 @@ class UE5SAS3_API UInteractionSphereComponent : public UUE5SASSphereComponent, p
 	// Called when something overlaps SphereComponent
 	UFUNCTION()
 	void OnSphereComponentEndOverlap(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
-
 
 public:
 

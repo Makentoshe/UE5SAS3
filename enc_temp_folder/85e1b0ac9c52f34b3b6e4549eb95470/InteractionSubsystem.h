@@ -11,7 +11,7 @@
 #include "InteractionSubsystem.generated.h"
 
 /**
- * Subsystem works as Mediator between InteractorComponent and InteractionComponent
+ * 
  */
 UCLASS()
 class UE5SAS3_API UInteractionSubsystem : public UGameInstanceSubsystem
@@ -20,11 +20,9 @@ class UE5SAS3_API UInteractionSubsystem : public UGameInstanceSubsystem
 
 public:
 
-	/** Adds Interaction component to Interactorand notifies both components about it */
 	UFUNCTION(BlueprintCallable)
 	void AddInteractionToInteractor(const TScriptInterface<IInteractionComponent>& InteractionComponent, const TScriptInterface<IInteractorComponent>& InteractorComponent);
 	
-	/** Removes Interaction component from Interactor and notifies both components about it */
 	UFUNCTION(BlueprintCallable)
 	void RemoveInteractionFromInteractor(const TScriptInterface<IInteractionComponent>& InteractionComponent, const TScriptInterface<IInteractorComponent>& InteractorComponent);
 
