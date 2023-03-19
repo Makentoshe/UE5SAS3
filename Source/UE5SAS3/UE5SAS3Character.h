@@ -7,6 +7,8 @@
 #include "InputActionValue.h"
 #include "UE5SAS3Character.generated.h"
 
+UDELEGATE()
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnUE5SAS3CharacterInputActionInteract);
 
 UCLASS(config=Game)
 class AUE5SAS3Character : public ACharacter
@@ -41,6 +43,14 @@ class AUE5SAS3Character : public ACharacter
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
 	class UInputAction* CameraZoomAction;
 
+	/** Interaction Action */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
+	class UInputAction* InteractAction;
+
+	/** Interaction Action Callback */
+	UPROPERTY(BlueprintAssignable)
+	FOnUE5SAS3CharacterInputActionInteract OnInputActionInteract;
+
 public:
 	AUE5SAS3Character();
 	
@@ -55,6 +65,9 @@ protected:
 			
 	/** Called for zooming camera input */
 	void CameraZoom(const FInputActionValue& Value);
+
+	/** Called for interaction input */
+	void Interact(const FInputActionValue& Value);
 
 protected:
 	// APawn interface

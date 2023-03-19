@@ -10,6 +10,9 @@
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
 
+#include <UE5SAS3/Public/Features/Interaction/InteractorActorComponent.h>
+
+
 
 //////////////////////////////////////////////////////////////////////////
 // AUE5SAS3Character
@@ -85,6 +88,9 @@ void AUE5SAS3Character::SetupPlayerInputComponent(class UInputComponent* PlayerI
 		//Looking
 		EnhancedInputComponent->BindAction(LookAction, ETriggerEvent::Triggered, this, &AUE5SAS3Character::Look);
 
+		// Interacting
+		EnhancedInputComponent->BindAction(InteractAction, ETriggerEvent::Started, this, &AUE5SAS3Character::Interact);
+
 		//Camera Zooming
 		EnhancedInputComponent->BindAction(CameraZoomAction, ETriggerEvent::Triggered, this, &AUE5SAS3Character::CameraZoom);
 	}
@@ -148,6 +154,28 @@ void AUE5SAS3Character::CameraZoom(const FInputActionValue& Value)
 
 	// Update camera arm length
 	GetCameraBoom()->TargetArmLength += CameraZoomValue;
+}
+
+void AUE5SAS3Character::Interact(const FInputActionValue& Value)
+{
+	// Move execution to derived blueprint using delegates
+	OnInputActionInteract.Broadcast();
+
+	//////////// OLD Version with issues
+	//// Get currently selected InteractionComponent from InteractorComponent
+	//auto SelectedInteractionComponent = GetInteractorComponent()->GetSelectedInteractionComponent();
+
+	//// Get object from TScriptInterface
+	//// When TScriptInterface is set from blueprints its interface pointer is null
+	//// But we know which interface we're waiting for, so let's just cast it as a workaround
+	//// See https://forums.unrealengine.com/t/c-interface-implemented-in-bp-is-null/491758/13 for more information
+	//auto Object = SelectedInteractionComponent.GetObject();
+
+
+	//if (Object) {
+	//	GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Yellow, TEXT("Object not null"));
+	//}
+
 }
 
 
