@@ -21,5 +21,5 @@ protected:
 public:
 	
 	FORCEINLINE FString GetLabelString() const { return LabelText; }
-	FORCEINLINE void SetLabelString(const FString String) { LabelText = String; }
+	void SetLabelString(FString String) { LabelText = String; }
 };
