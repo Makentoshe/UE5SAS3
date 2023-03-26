@@ -1,8 +1,9 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
+#include "Features/Interaction/InteractionSphereComponent.h"
+
 #include "Kismet/GameplayStatics.h"
 
-#include "Features/Interaction/InteractionSphereComponent.h"
 #include "Features/Interaction/InteractorComponent.h"
 #include "Features/Interaction/InteractionSubsystem.h"
 

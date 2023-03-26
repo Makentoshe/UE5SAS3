@@ -1,8 +1,8 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
-#include "Kismet/GameplayStatics.h"
-
 #include "Features/Interaction/InteractionSubsystem.h"
+
+#include "Kismet/GameplayStatics.h"
 
 
 void UInteractionSubsystem::AddInteractionToInteractor(const TScriptInterface<IInteractionComponent>& InteractionComponent, const TScriptInterface<IInteractorComponent>& InteractorComponent)
