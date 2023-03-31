@@ -7,7 +7,7 @@
 #include "LabelDisplayUserWidget.generated.h"
 
 /**
- * 
+ * Widget for displaying a FSDisplayLabel structure for the player
  */
 UCLASS(Abstract, BlueprintType, Category = "Display Feature")
 class UE5SAS3_API ULabelDisplayUserWidget : public UUserWidget
