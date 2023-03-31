@@ -1,8 +1,9 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
+#include "Features/Interaction/InteractionSphereComponent.h"
+
 #include "Kismet/GameplayStatics.h"
 
-#include "Features/Interaction/InteractionSphereComponent.h"
 #include "Features/Interaction/InteractorComponent.h"
 #include "Features/Interaction/InteractionSubsystem.h"
 
@@ -104,6 +105,8 @@ void UInteractionSphereComponent::OnInteractionComponentUnavailable_Implementati
 
 	// Mark component as not available to interaction
 	this->IsAvailable = false;
+	// Component cant be selected if it is not avaialble
+	this->IsSelected = false;
 
 	// Send event if we want todo something in blueprints, for example
 	this->OnInteractionComponentUnavailableDelegate.Broadcast();
@@ -116,6 +119,8 @@ void UInteractionSphereComponent::OnInteractionComponentSelected_Implementation(
 
 	// Mark component as selected
 	this->IsSelected = true;
+	// So, component also should be avaialble
+	this->IsAvailable = true;
 
 	// Send event if we want todo something in blueprints, for example
 	this->OnInteractionComponentSelectedDelegate.Broadcast();
