@@ -13,6 +13,9 @@ void USaveloadSubsystem::SaveGameToSlot()
 {	// Create an instance of the SaveGame class
 	UUE5SAS3SaveGame *SaveGameInstance = Cast<UUE5SAS3SaveGame>(UGameplayStatics::CreateSaveGameObject(UUE5SAS3SaveGame::StaticClass()));
 
+	// Invoke SaveGameStarted broadcast
+	OnSaveGameStarted.Broadcast();
+
 	// Iterate though all actors in the world
 	for (TActorIterator<AActor> ActorItr(GetWorld()); ActorItr; ++ActorItr)
 	{  	// Follow iterator object to actual actor pointer
@@ -42,6 +45,9 @@ void USaveloadSubsystem::SaveGameToSlot()
 
 	UGameplayStatics::SaveGameToSlot(SaveGameInstance, TEXT("Slot"), 0);
 
+	// Invoke SaveGameCompleted broadcast
+	OnSaveGameCompleted.Broadcast();
+
 	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, TEXT("SaveGame"));
 }
 
@@ -49,7 +55,10 @@ void USaveloadSubsystem::LoadGameFromSlot()
 {
 	// Get an instance of the SaveGame class
 	UUE5SAS3SaveGame* SaveGameInstance = Cast<UUE5SAS3SaveGame>(UGameplayStatics::LoadGameFromSlot(TEXT("Slot"), 0));
-	
+
+	// Invoke LoadGameStarted broadcast
+	OnLoadGameStarted.Broadcast();
+
 	// Iterate though all actors in the world
 	for (TActorIterator<AActor> ActorItr(GetWorld()); ActorItr; ++ActorItr)
 	{  	// Follow iterator object to actual actor pointer
@@ -69,10 +78,14 @@ void USaveloadSubsystem::LoadGameFromSlot()
 		// Get Identifier which helps to find correct object
 		FName Identifier = SaveloadComponent->Execute_GetOwnerActor(SaveloadComponent.GetObject())->GetFName();
 		FSSaveloadObject SaveloadObject = SaveGameInstance->GetSaveloadObject(Identifier);
+
 		// Deserialize 
 		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, Identifier.ToString());
 		SaveloadComponent->Execute_Deserialize(SaveloadComponent.GetObject(), SaveloadObject);
 	}
+
+	// Invoke LoadGameCompleted broadcast
+	OnLoadGameCompleted.Broadcast();
 
 	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, TEXT("LoadGame"));
 
