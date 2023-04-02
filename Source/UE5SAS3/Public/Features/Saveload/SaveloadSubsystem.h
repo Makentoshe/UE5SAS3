@@ -9,14 +9,14 @@
 /**
  * 
  */
-UCLASS()
+UCLASS(Category = "Saveload Feature")
 class UE5SAS3_API USaveloadSubsystem : public UGameInstanceSubsystem
 {
 	GENERATED_BODY()
 
-	UFUNCTION(BlueprintCallable)
+	UFUNCTION(BlueprintCallable, Category = "Saveload Feature")
 	void SaveGameToSlot();
 
-	UFUNCTION(BlueprintCallable)
+	UFUNCTION(BlueprintCallable, Category = "Saveload Feature")
 	void LoadGameFromSlot();
 };

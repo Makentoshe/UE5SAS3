@@ -4,6 +4,10 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/SaveGame.h"
+#include "Containers/Map.h"
+
+#include "Features/Saveload/FSSaveloadObject.h"
+
 #include "UE5SAS3SaveGame.generated.h"
 
 /**
@@ -14,9 +18,31 @@ class UE5SAS3_API UUE5SAS3SaveGame : public USaveGame
 {
 	GENERATED_BODY()
 
-	UUE5SAS3SaveGame();
+	UPROPERTY(EditAnywhere, SaveGame, Category = "Saveload Feature", meta = (AllowPrivateAccess = "true"))
+	FSSaveloadObject SaveloadObject;
+
+	UPROPERTY(EditAnywhere, SaveGame, Category = "Saveload Feature", meta = (AllowPrivateAccess = "true"))
+	TMap<FName, FSSaveloadObject> SaveloadObjects;
 
 public:
-	UPROPERTY(EditAnywhere)
-	FVector PlayerLocation;
+
+	/** Returns SaveloadObject **/
+	FORCEINLINE struct FSSaveloadObject GetSaveloadObject() const { return SaveloadObject; }
+	FORCEINLINE void SetSaveloadObject(const FSSaveloadObject Object) { this->SaveloadObject = Object; }
+
+	FORCEINLINE void AddSaveloadObject(const FName Identifier, const FSSaveloadObject Object) { this->SaveloadObjects.Add(Identifier, Object); }
+	FORCEINLINE struct FSSaveloadObject GetSaveloadObject(const FName Identifier) { return this->SaveloadObjects[Identifier]; }
+	FORCEINLINE TMapBase<FName, FSSaveloadObject, FDefaultSetAllocator, TDefaultMapHashableKeyFuncs<FName, FSSaveloadObject, false>>::TConstIterator GetSaveloadObjectsIterator() const 
+	{
+		return SaveloadObjects.CreateConstIterator();
+	}
+
+
+	// Default constructor
+	UUE5SAS3SaveGame();
+
+	// Default destructor
+	// Note: virtual for the super call
+	virtual ~UUE5SAS3SaveGame();
+
 };

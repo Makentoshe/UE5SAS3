@@ -7,3 +7,7 @@ UUE5SAS3SaveGame::UUE5SAS3SaveGame()
 {
 
 }
+
+UUE5SAS3SaveGame::~UUE5SAS3SaveGame()
+{
+}
