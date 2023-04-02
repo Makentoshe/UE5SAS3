@@ -28,6 +28,11 @@ class UE5SAS3_API USaveloadSubsystem : public UGameInstanceSubsystem
 
 public:
 
+	// Flag indicates current subsystem work
+	UPROPERTY(BlueprintReadOnly , Category = "Saveload Feature")
+	bool IsSaveloadInProgress;
+
+
 	UPROPERTY(BlueprintAssignable, Category = "Saveload Feature")
 	FOnSaveloadSubsystemSaveGameStarted OnSaveGameStarted;
 

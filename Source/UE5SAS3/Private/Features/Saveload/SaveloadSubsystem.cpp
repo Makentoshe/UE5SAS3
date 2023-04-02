@@ -12,6 +12,8 @@
 void USaveloadSubsystem::SaveGameToSlot()
 {	// Create an instance of the SaveGame class
 	UUE5SAS3SaveGame *SaveGameInstance = Cast<UUE5SAS3SaveGame>(UGameplayStatics::CreateSaveGameObject(UUE5SAS3SaveGame::StaticClass()));
+	
+	IsSaveloadInProgress = true;
 
 	// Invoke SaveGameStarted broadcast
 	OnSaveGameStarted.Broadcast();
@@ -39,8 +41,6 @@ void USaveloadSubsystem::SaveGameToSlot()
 		// Put SaveloadObject to SaveGameInstance
 		FName Identifier = SaveloadComponent->Execute_GetOwnerActor(SaveloadComponent.GetObject())->GetFName();
 		SaveGameInstance->AddSaveloadObject(Identifier, SaveloadObject);
-
-		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, Identifier.ToString());
 	}
 
 	UGameplayStatics::SaveGameToSlot(SaveGameInstance, TEXT("Slot"), 0);
@@ -48,13 +48,15 @@ void USaveloadSubsystem::SaveGameToSlot()
 	// Invoke SaveGameCompleted broadcast
 	OnSaveGameCompleted.Broadcast();
 
-	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, TEXT("SaveGame"));
+	IsSaveloadInProgress = false;
 }
 
 void USaveloadSubsystem::LoadGameFromSlot()
 {
 	// Get an instance of the SaveGame class
 	UUE5SAS3SaveGame* SaveGameInstance = Cast<UUE5SAS3SaveGame>(UGameplayStatics::LoadGameFromSlot(TEXT("Slot"), 0));
+
+	IsSaveloadInProgress = true;
 
 	// Invoke LoadGameStarted broadcast
 	OnLoadGameStarted.Broadcast();
@@ -80,13 +82,11 @@ void USaveloadSubsystem::LoadGameFromSlot()
 		FSSaveloadObject SaveloadObject = SaveGameInstance->GetSaveloadObject(Identifier);
 
 		// Deserialize 
-		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, Identifier.ToString());
 		SaveloadComponent->Execute_Deserialize(SaveloadComponent.GetObject(), SaveloadObject);
 	}
 
 	// Invoke LoadGameCompleted broadcast
 	OnLoadGameCompleted.Broadcast();
 
-	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, TEXT("LoadGame"));
-
+	IsSaveloadInProgress = false;
 }

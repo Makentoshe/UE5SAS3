@@ -19,16 +19,9 @@ class UE5SAS3_API UUE5SAS3SaveGame : public USaveGame
 	GENERATED_BODY()
 
 	UPROPERTY(EditAnywhere, SaveGame, Category = "Saveload Feature", meta = (AllowPrivateAccess = "true"))
-	FSSaveloadObject SaveloadObject;
-
-	UPROPERTY(EditAnywhere, SaveGame, Category = "Saveload Feature", meta = (AllowPrivateAccess = "true"))
 	TMap<FName, FSSaveloadObject> SaveloadObjects;
 
 public:
-
-	/** Returns SaveloadObject **/
-	FORCEINLINE struct FSSaveloadObject GetSaveloadObject() const { return SaveloadObject; }
-	FORCEINLINE void SetSaveloadObject(const FSSaveloadObject Object) { this->SaveloadObject = Object; }
 
 	FORCEINLINE void AddSaveloadObject(const FName Identifier, const FSSaveloadObject Object) { this->SaveloadObjects.Add(Identifier, Object); }
 	FORCEINLINE struct FSSaveloadObject GetSaveloadObject(const FName Identifier) { return this->SaveloadObjects[Identifier]; }

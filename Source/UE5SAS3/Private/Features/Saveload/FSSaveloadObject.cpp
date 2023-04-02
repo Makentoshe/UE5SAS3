@@ -5,6 +5,7 @@
 
 FSSaveloadObject::FSSaveloadObject()
 {
+	IsActorDestroyed = true;
 }
 
 FSSaveloadObject::~FSSaveloadObject()
@@ -16,6 +17,7 @@ FSSaveloadObject& FSSaveloadObject::operator=(const FSSaveloadObject Structure)
 {
 	this->~FSSaveloadObject();
 
+	this->IsActorDestroyed = Structure.IsActorDestroyed;
 	this->ActorTransform = Structure.ActorTransform;
 
 	return *this;

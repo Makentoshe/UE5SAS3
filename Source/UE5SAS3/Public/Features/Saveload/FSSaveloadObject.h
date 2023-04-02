@@ -16,10 +16,13 @@ struct UE5SAS3_API FSSaveloadObject
 
 public:
 
+	// Is current actor hidden or not. This is an alternative for destroying
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, SaveGame, Category = "Saveload Feature")
+	bool IsActorDestroyed;
+
 	// Contains actor transform state
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, SaveGame, Category = "Saveload Feature")
 	FTransform ActorTransform;
-
 
 	// Default constructor
 	FSSaveloadObject();
