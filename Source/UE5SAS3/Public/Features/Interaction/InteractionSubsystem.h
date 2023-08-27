@@ -10,6 +10,12 @@
 
 #include "InteractionSubsystem.generated.h"
 
+/** 
+	Delegate for invoking on each interaction invocation for each object subscribed for it 
+	Id allows to understood which object invoked it. It can be any string
+*/
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnInteractionSubsystemBroadcast, FString, Id);
+
 /**
  * Subsystem works as Mediator between InteractorComponent and InteractionComponent
  */
@@ -19,7 +25,16 @@ class UE5SAS3_API UInteractionSubsystem : public UGameInstanceSubsystem
 	GENERATED_BODY()
 
 
+	/** Delegate for invoking on each interaction invocation for each object subscribed for it */
+	UPROPERTY(VisibleAnywhere, BlueprintAssignable, BlueprintReadWrite, Category = Interaction, meta = (AllowPrivateAccess = "true"))
+	FOnInteractionSubsystemBroadcast OnInteractionSubsystemBroadcastDelegate;
+
 public:
+
+	/** Invokes interaction between InteractorComponent and its selected InteractionComponent and notifies both components about it */
+	UFUNCTION(BlueprintCallable)
+	void Broadcast(FString id);
+
 
 	/** Adds Interaction component to Interactor and notifies both components about it */
 	UFUNCTION(BlueprintCallable)

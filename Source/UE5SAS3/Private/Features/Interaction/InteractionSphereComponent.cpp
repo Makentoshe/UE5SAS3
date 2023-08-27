@@ -16,6 +16,8 @@ UInteractionSphereComponent::UInteractionSphereComponent()
 	this->ShapeColor = FColor::Yellow;
 	// Enable interaction by default
 	this->IsInteractionEnabled = true;
+	// Disable broadcast by default. We need it only for interactions between objects on the map e.g. open door on lever interaction
+	this->IsBroadcastEnabled = false;
 }
 
 void UInteractionSphereComponent::OnRegister()
@@ -140,6 +142,25 @@ void UInteractionSphereComponent::OnInteractionComponentUnselected_Implementatio
 
 void UInteractionSphereComponent::OnInteractionComponentInteracted_Implementation(const TScriptInterface<IInteractorComponent>& InteractorComponent)
 {
-	// We can delegate this method to blueprints
+	// Get a reference to the current world	
+	UWorld* World = GetWorld(); 
+	// Return from function if we cannot access World object
+	if(!IsValid(World)) return;
+	
+	// Get game instance from world and check pointer is ok
+	auto GameInstance = UGameplayStatics::GetGameInstance(World);
+	// Return from function if we cannot access GameInstance object
+	if (!IsValid(GameInstance)) return;
+
+	// Get InteractionSubsystem
+	auto InteractionSubsystem = GameInstance->GetSubsystem<UInteractionSubsystem>();
+	if (!IsValid(InteractionSubsystem)) return;
+
+	// Send broadcast string if enabled
+	if (this->IsBroadcastEnabled) {
+		InteractionSubsystem->Broadcast(this->BroadcastStringId);
+	}
+
+	// We delegate this method to blueprints
 	this->OnInteractionComponentInteractDelegate.Broadcast(InteractorComponent);
 }

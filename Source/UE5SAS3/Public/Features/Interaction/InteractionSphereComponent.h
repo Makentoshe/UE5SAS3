@@ -59,6 +59,14 @@ class UE5SAS3_API UInteractionSphereComponent : public UUE5SASSphereComponent, p
 	UPROPERTY(EditAnywhere, Category = Interaction, meta = (AllowPrivateAccess = "true"))
 	bool IsInteractionEnabled;
 
+	/** On each interaction broadcast event to InteractionSubsystem will be called */
+	UPROPERTY(EditAnywhere, Category = Interaction, meta = (AllowPrivateAccess = "true"))
+	bool IsBroadcastEnabled;
+
+	/** If broadcast enabled, those string will be broadcasted  */
+	UPROPERTY(EditAnywhere, Category = Interaction, meta = (AllowPrivateAccess = "true"))
+	FString BroadcastStringId;
+
 
 	/** Delegate for invoking each time on InteractionComponent becomes available */
 	UPROPERTY(VisibleAnywhere, BlueprintAssignable, BlueprintReadWrite, Category = Interaction, meta = (AllowPrivateAccess = "true"))

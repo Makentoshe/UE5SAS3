@@ -43,3 +43,7 @@ void UInteractionSubsystem::InteractSelectedComponent(const TScriptInterface<IIn
 		Interact(SelectedInteractionComponent, InteractorComponent);
 	}
 }
+
+void UInteractionSubsystem::Broadcast(FString id) {
+	this->OnInteractionSubsystemBroadcastDelegate.Broadcast(id);
+}
